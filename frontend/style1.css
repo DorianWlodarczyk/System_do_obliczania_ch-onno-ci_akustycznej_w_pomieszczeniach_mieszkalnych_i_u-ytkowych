@@ -71,7 +71,8 @@ h1{
       font-size: 20px;
   }
   p1 {
-    margin: auto;
+  
+    margin-left: 18%;
     text-align:right;
     font-size: 40px;
     
@@ -136,7 +137,7 @@ header {
   padding: 14px 0px;
 }
 .brand-logo img {
-  max-width: 100%;
+  max-width: 160%;
 }
 .navigation {
   margin: 0px;
