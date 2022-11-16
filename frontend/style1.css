@@ -1,0 +1,196 @@
+.header {
+  padding: 0px;
+  text-align: center;
+  background: #5f6866;
+  color: white;
+  font-size: 30px;
+}
+
+body {
+  background-color: #F7F8FC;
+  font-family: Verdana;
+}
+
+#container {
+  width: 50%;
+  margin: auto;
+  background-color: #A9A9A9;
+}
+
+#container-head {
+  width: 50%;
+  height: 15%;
+  margin: auto;
+  background-color: #A9A9A9;
+  padding-top: 9%;
+  padding-bottom: 2%;
+}
+
+h1{
+  text-align: center;
+
+}
+
+
+  
+  input[type="text"] {
+    display: inline-block;
+    margin-left: 35%;       /* This is when the drop down box appears */
+    position: relative;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px;
+    width: 30%;
+    border-radius: 15px;
+  }
+  
+  input[type="button"] {
+    /* font-size: 1.2em; */
+    margin: -6px 4px 0px 0px;
+    /* padding: 5px; */
+    display: inline-block;
+    margin-left: 10%;
+    margin-top: 5px;
+    position: relative;
+    text-align: center;
+    font-weight: bold;
+    padding: 0px;
+    width: 10%;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    background-color: red;
+  }
+  
+  #addButton {
+    padding: 10px;
+  }
+   
+  
+  p {
+    text-align: center;
+      font-size: 20px;
+  }
+  
+  span {
+      font-weight: bold;
+  }
+
+  label{
+    display: inline-block;
+    margin-left: 35%;       /* This is when the drop down box appears */
+    position: relative;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px;
+    width: 30%;
+    border-radius: 15px;
+  }
+  
+select {
+    display: inline-block;
+    margin-left: 35%;       /* This is when the drop down box appears */
+    position: relative;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px;
+    width: 30%;
+    border-radius: 15px;
+
+}
+
+button {
+  display: inline-block;
+  margin-left: 43%;       /* This is when the drop down box appears */
+  position: relative;
+  text-align: center;
+  font-weight: bold;
+  padding: 5px;
+  width: 14%;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: arial;
+}
+header {
+  height: 100%;
+  width: 100%;
+  float: left;
+  background: #289BDB;
+  padding: 0 20px;
+  color: #fff;
+}
+.brand-logo {
+  max-width: 75px;
+  float: left;
+  padding: 14px 0px;
+}
+.brand-logo img {
+  max-width: 100%;
+}
+.navigation {
+  margin: 0px;
+  float: right;
+}
+.navigation li {
+  list-style: none;
+  float: left;
+}
+.navigation li a {
+  color: #fff;
+  padding: 28px 15px;
+  text-transform: uppercase;
+  text-align: center;
+  display: block;
+  text-decoration: none;
+}
+.navigation li a i {
+  width: 100%;
+  font-size: 20px;
+  margin-bottom: 7px;
+}
+.show-menu-btn,
+.hide-menu-btn {
+  transition: 0.4s;
+  font-size: 30px;
+  cursor: pointer;
+  display: none;
+}
+.show-menu-btn {
+  margin: 0px;
+  float: right;
+}
+.show-menu-btn i {
+  line-height: 100px;
+}
+.navigation a:hover,
+.show-menu-btn:hover,
+.hide-menu-btn:hover {
+  color: #a2c7a3;
+}
+#toggle-btn {
+  position: absolute;
+  visibility: hidden;
+  z-index: -1111;
+}
+
+.footer{
+padding-top: 15px;
+height: 50px;
+background: #eee;
+}
+
+.sufit{
+  padding-top: 10px;
+}
+ul{
+  
+    list-style-type: none;
+
+}
+
+
