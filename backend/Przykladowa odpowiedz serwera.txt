@@ -1,0 +1,31 @@
+{
+    "error": false,
+    "min": "1.10",
+    "sredni_czas_poglosu": 4.333888222470414,
+    "wyniki": {
+        "1000": {
+            "chlonnosc_akustyczna": 779.24,
+            "czas_poglosu": 3.3409937888198757
+        },
+        "125": {
+            "chlonnosc_akustyczna": 442.86000000000007,
+            "czas_poglosu": 5.878688524590164
+        },
+        "2000": {
+            "chlonnosc_akustyczna": 832.4800000000001,
+            "czas_poglosu": 3.1273255813953487
+        },
+        "250": {
+            "chlonnosc_akustyczna": 445.28000000000003,
+            "czas_poglosu": 5.846739130434782
+        },
+        "4000": {
+            "chlonnosc_akustyczna": 878.4600000000002,
+            "czas_poglosu": 2.9636363636363634
+        },
+        "500": {
+            "chlonnosc_akustyczna": 537.24,
+            "czas_poglosu": 4.845945945945946
+        }
+    }
+}

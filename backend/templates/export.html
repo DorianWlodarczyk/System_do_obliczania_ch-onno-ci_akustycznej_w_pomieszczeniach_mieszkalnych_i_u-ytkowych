@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head> 
+</head>
+  <style>
+     table, th, td {
+  border:1px solid black;
+  border-collapse: collapse;
+}
+  </style>
+<body>
+   <div align="right">
+  {{data}}
+</div>
+  <h1>1. Wymagania: 
+      
+    {% if wymagania == -1 %}
+    brak
+    {% else %}
+    {{wymagania}}
+    {% endif %}
+     </h1></div>
+  <hr width="100%" />
+  
+  <h1>2. Budowa pomieszczenia</h1>
+  <table style="width:100%">
+  
+  <tr>
+    <td><b>Objętość: </b>{{objetosc}} m3</td>
+    <td><b>Długość: </b>{{dlugosc}} m</td>
+    <td><b>Szerokość: </b>{{szerokosc}} m</td>
+    <td><b>Wysokość: </b>{{wysokosc}} m</td>
+  </tr> 
+</table>
+  <br>
+  <table style="width:100%"> 
+    <tr>
+      <td>Sufit: {{sufit_powierzchnia}} m2</td>
+       {{budowa_pomieszczenia[0]}}
+     </tr> 
+    <tr>
+      <td>Podłoga: {{podloga_powierzchnia}} m2</td>
+      {{budowa_pomieszczenia[1]}}
+    </tr> 
+    <tr>
+      <td>Ściana lewa: {{scianalewa_powierzchnia}} m2</td>
+      {{budowa_pomieszczenia[2]}}
+     </tr> 
+    <tr>
+      <td>Ściana prawa: {{scianaprawa_powierzchnia}} m2</td>
+      {{budowa_pomieszczenia[3]}}
+    </tr> 
+     <tr>
+      <td>Ściana frontowa: {{scianafrontowa_powierzchnia}} m2</td>
+      {{budowa_pomieszczenia[4]}}
+    </tr> 
+    <tr>
+      <td>Ściana tylna: {{scianatylna_powierzchnia}} m2</td>
+      {{budowa_pomieszczenia[5]}}
+    </tr> 
+  </table>
+
+  
+  <h1>3. Wyniki</h1>
+ <table style="width:100%">
+    <tr>
+    <th>Częstotliwość</th>
+    <th>125</th> 
+    <th>250</th> 
+    <th>500</th> 
+    <th>1000</th> 
+    <th>2000</th> 
+    <th>4000</th> 
+    <th>Hz</th> 
+   </tr>
+   <tr>
+    <td>Chłonność akustyczna</td>
+    <td><center>{{wynik_obliczen["wyniki"]["125"]["chlonnosc_akustyczna"]}}</center></td>
+    <td><center>{{wynik_obliczen["wyniki"]["250"]["chlonnosc_akustyczna"]}}</center></td>
+    <td><center>{{wynik_obliczen["wyniki"]["500"]["chlonnosc_akustyczna"]}}</center></td>
+    <td><center>{{wynik_obliczen["wyniki"]["1000"]["chlonnosc_akustyczna"]}}</center></td>
+    <td><center>{{wynik_obliczen["wyniki"]["2000"]["chlonnosc_akustyczna"]}}</center></td>
+    <td><center>{{wynik_obliczen["wyniki"]["4000"]["chlonnosc_akustyczna"]}}</center></td>
+    <td>m2</td>
+  </tr>
+  <tr>
+    <td>Chlonność akustyczna na 1m2</td>
+    <td><center>{{wynik_obliczen["wyniki"]["125"]["chlonnosc_akustyczna_na_1m2"]}}</center></td>
+    <td><center>{{wynik_obliczen["wyniki"]["250"]["chlonnosc_akustyczna_na_1m2"]}}</center></td>
+    <td><center>{{wynik_obliczen["wyniki"]["500"]["chlonnosc_akustyczna_na_1m2"]}}</center></td>
+    <td><center>{{wynik_obliczen["wyniki"]["1000"]["chlonnosc_akustyczna_na_1m2"]}}</center></td>
+    <td><center>{{wynik_obliczen["wyniki"]["2000"]["chlonnosc_akustyczna_na_1m2"]}}</center></td>
+    <td><center>{{wynik_obliczen["wyniki"]["4000"]["chlonnosc_akustyczna_na_1m2"]}}</center></td>
+    <td>m2</td>
+  </tr>
+  <tr>   
+    <TR><TD rowspan=1>Średni czas pogłosu T(s)</TD><TD colspan=6><center>{{wynik_obliczen["sredni_czas_poglosu"]}}</center></TD><td>sek</td/></TR>
+</tr> 
+</table>
+<h2>{{wynik_obliczen["wyniki"]["Komunikat"]}}</h2>
+</body>
+</html>

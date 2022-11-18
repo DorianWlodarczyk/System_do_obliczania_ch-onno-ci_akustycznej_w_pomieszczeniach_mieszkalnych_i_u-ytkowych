@@ -1,0 +1,52 @@
+{
+  "wymiar_pomieszczenia": {
+    "szerokosc": 33,
+    "dlugosc": 22,
+    "wysokosc": 22
+  },
+  "norma_id": 1,
+  "elementy": {
+    "sufit": [
+      {
+        "id": 32,
+        "powierzchnia": 726
+      }
+    ],
+    "podloga": [
+      {
+        "id": 109,
+        "powierzchnia": 726
+      }
+    ],
+    "scianalewa": [
+      {
+        "id": 10,
+        "powierzchnia": 484
+      }
+    ],
+    "scianaprawa": [
+      {
+        "id": 11,
+        "powierzchnia": 484
+      }
+    ],
+    "scianafrontowa": [
+      {
+        "id": 7,
+        "powierzchnia": 726
+      }
+    ],
+    "scianatylna": [
+      {
+        "id": 15,
+        "powierzchnia": 726
+      }
+    ],
+    "inne": [
+      {
+        "id": 47,
+        "powierzchnia": 22
+      }
+    ]
+  }
+}
