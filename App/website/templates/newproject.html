@@ -4,24 +4,24 @@
 <html >
 
 <body style = "background-image: linear-gradient(#0ec77f, #1eb07a, #076b45);">
-    <div href="style.css" id='container'>
+    <div  id='container'>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/all.css">
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
-    <div style="margin-left: 400px" id="container-head"><h1>Wymagania (PN-B-02151-4)</h1> <select style="width: 100px" id="wymaganiaSelect"> </select></div>
+    <div style="display: flex;align-items: center;justify-content: center;" id="container-head"><h1>Wymagania (PN-B-02151-4)</h1> <select style="" id="wymaganiaSelect"> </select></div>
 
 
-    <link rel="stylesheet" href="style1.css">
+    <link rel="stylesheet" style="display: flex;align-items: center;justify-content: center;">
     <p>Wymiary pomieszczenia:</p>
     <div> <label for="fname">Długość pomieszczenia[&#13217]:</label> <input type="text" id="dlugosc" onchange="oblicz_wymiary_pomieszczen()"><br><br> <label for="fname">Szerokość pomieszczenia[&#13217]:</label> <input type="text" id="szerokosc" onchange="oblicz_wymiary_pomieszczen()"><br><br> <label for="fname">Wysokość pomieszczenia[&#13217]:</label> <input type="text" id="wysokosc" onchange="oblicz_wymiary_pomieszczen()"><br><br> </div>
 
 
-   <div class ="sufit">
+   <div class ="sufit"  >
     <p href="style1.css">Sufit: <span id="sufit_rozmiar">0</span>&#13217</p> <select id="sufit_Select">
-        <option value="dodaj_material">-- Dodaj materiał: --</option>
+        <option style="border-radius: 10px;  " value="dodaj_material">-- Dodaj materiał: --</option>
     </select>
     <p>Materiały:</p>
     <ul id="sufit"> </ul> <br><br>
@@ -41,7 +41,7 @@
     </select>
     <p>Materiały:</p>
     <ul id="scianaprawa"> </ul> <br><br>
-    <p>Sciana frontowa <span id="scianafrontowa_rozmiar">0</span>&#13217</p> <select style=" background-color: #8ecae6;width: "id="scianafrontowa_Select">
+    <p>Sciana frontowa <span id="scianafrontowa_rozmiar">0</span>&#13217</p> <select id="scianafrontowa_Select">
         <option  value="dodaj_material">-- Dodaj materiał: --</option>
     </select>
     <p>Materiały:</p>
