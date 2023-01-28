@@ -1,277 +1,48 @@
-{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
-%}
+{% extends "base.html" %}
+{% block title %}Measurement Form{% endblock %}
+{% block content %}
 
-<html >
-
-<body style = "background-image: linear-gradient(#0ec77f, #1eb07a, #076b45);">
-    <div  id='container'>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="style1.css">
-    </head>
-    <body>
-    <div style="display: flex;align-items: center;justify-content: center;" id="container-head"><h1>Wymagania (PN-B-02151-4)</h1> <select style="" id="wymaganiaSelect"> </select></div>
-
-
-    <link rel="stylesheet" style="display: flex;align-items: center;justify-content: center;">
-    <p>Wymiary pomieszczenia:</p>
-    <div> <label for="fname">Długość pomieszczenia[&#13217]:</label> <input type="text" id="dlugosc" onchange="oblicz_wymiary_pomieszczen()"><br><br> <label for="fname">Szerokość pomieszczenia[&#13217]:</label> <input type="text" id="szerokosc" onchange="oblicz_wymiary_pomieszczen()"><br><br> <label for="fname">Wysokość pomieszczenia[&#13217]:</label> <input type="text" id="wysokosc" onchange="oblicz_wymiary_pomieszczen()"><br><br> </div>
-
-
-   <div class ="sufit"  >
-    <p href="style1.css">Sufit: <span id="sufit_rozmiar">0</span>&#13217</p> <select id="sufit_Select">
-        <option style="border-radius: 10px;  " value="dodaj_material">-- Dodaj materiał: --</option>
+<form method="POST">
+  <h3 align="center">Projekt pomieszczenia</h3>
+  <div class="form-group">
+    <label for="norms">Wybierz norme budowlaną</label>
+    <select class="form-control" id="norms" name="norms">
+        {% for norm in norms %}
+            <option value="{{ norm.id }}">{{ norm.name }}</option>
+        {% endfor %}
     </select>
-    <p>Materiały:</p>
-    <ul id="sufit"> </ul> <br><br>
-    </div>
-    <p>Podłoga: <span id="podloga_rozmiar">0</span>&#13217</p> <select id="podloga_Select">
-        <option value="dodaj_material">-- Dodaj materiał: --</option>
-    </select>
-    <p>Materiały:</p>
-    <ul id="podloga"> </ul> <br><br>
-    <p>Sciana lewa: <span id="scianalewa_rozmiar">0</span>&#13217</p> <select id="scianalewa_Select">
-        <option value="dodaj_material">-- Dodaj materiał: --</option>
-    </select>
-    <p>Materiały:</p>
-    <ul id="scianalewa"> </ul> <br><br>
-    <p>Sciana prawa: <span id="scianaprawa_rozmiar">0</span>&#13217</p> <select id="scianaprawa_Select">
-        <option value="dodaj_material">-- Dodaj materiał: --</option>
-    </select>
-    <p>Materiały:</p>
-    <ul id="scianaprawa"> </ul> <br><br>
-    <p>Sciana frontowa <span id="scianafrontowa_rozmiar">0</span>&#13217</p> <select id="scianafrontowa_Select">
-        <option  value="dodaj_material">-- Dodaj materiał: --</option>
-    </select>
-    <p>Materiały:</p>
-    <ul id="scianafrontowa"> </ul> <br><br>
-    <p>Sciana tylna <span id="scianatylna_rozmiar">0</span>&#13217</p> <select id="scianatylna_Select">
-        <option value="dodaj_material">-- Dodaj materiał: --</option>
-    </select>
-    <p>Materiały:</p>
-    <ul id="scianatylna"> </ul> <br><br>
-    <p>Dodatkowe wyposażenie:</p> <select id="inne_Select">
-        <option value="dodaj_material">-- Dodaj materiał: --</option>
-    </select>
-    <p>Materiały</p>
-    <ul id="inne"> </ul> <br><br> <button type="button" onclick="oblicz(false)">Oblicz!</button> <button type="button" onclick="oblicz(true)">Generuj pdf!</button>
-    <div id="wynik"></div>
-    <script>
-        function oblicz(generowacPDF)
-        {
-                        var tab2 = ["sufit", "podloga", "scianalewa", "scianaprawa", "scianafrontowa", "scianatylna", "inne"]
-            var obj = new Object();
-            obj.wymiar_pomieszczenia =  new Object();
-            obj.wymiar_pomieszczenia.szerokosc = parseInt(document.getElementById("szerokosc").value);
-            obj.wymiar_pomieszczenia.dlugosc = parseInt(document.getElementById("dlugosc").value);
-            obj.wymiar_pomieszczenia.wysokosc = parseInt(document.getElementById("wysokosc").value);
-            obj.norma_id = parseInt(document.getElementById("wymaganiaSelect").options[document.getElementById("wymaganiaSelect").selectedIndex].value);
-            obj.elementy = new Object();
-            obj.elementy.sufit = [];
-            obj.elementy.podloga = [];
-            obj.elementy.scianalewa = [];
-            obj.elementy.scianaprawa = [];
-            obj.elementy.scianafrontowa = [];
-            obj.elementy.scianatylna = [];
-            obj.elementy.inne = [];
-
-
-            for(var i = 0 ; i < tab2.length; i++){
-                console.log(tab2[i])
-
-                var iloscEl = document.getElementById(tab2[i]).getElementsByTagName("li").length;
-                for(var j = 0; j < iloscEl; j++)
-                {
-                    console.log(document.getElementById(tab2[i]).getElementsByTagName("li")[j].children[1].textContent)
-                    console.log(document.getElementById(tab2[i]).getElementsByTagName("li")[j].children[2].value)
-
-                    var nowyObj = new Object();
-                    nowyObj.id = parseInt(document.getElementById(tab2[i]).getElementsByTagName("li")[j].children[1].getAttribute("data-id"));//document.getElementById(tab2[i]).getElementsByTagName("li")[j].children[1].textContent;
-                    nowyObj.powierzchnia = parseInt(document.getElementById(tab2[i]).getElementsByTagName("li")[j].children[2].value);
-                    obj.elementy[tab2[i]].push(nowyObj);
-                }
-            }
-
-           var jsonString= JSON.stringify(obj);
-
-         if(generowacPDF === false) {
-           async function pobierz_dane_z_serwera(obj) {
-                    const response = await fetch("http://127.0.0.1:5050/oblicz", {
-                        method: "post",
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json',
-                            'Access-Control-Allow-Origin':'http://127.0.0.1:5050'
-                        },
-                        body: obj
-
-                    });
-
-                        const data = await response.json();
-                        console.log(data)
-                        document.getElementById("wynik").innerHTML = data;
-
-                    }
-                    pobierz_dane_z_serwera(jsonString)
-         } else{
-            async function pobierz_dane_z_serwera(obj) {
-                    const response = await fetch("http://127.0.0.1:5050/pobierz-raport", {
-                        method: "post",
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json',
-                            'Access-Control-Allow-Origin':'http://127.0.0.1:5050'
-                        },
-                        body: obj
-
-                    });
-
-                    const blob = await response.blob();
-
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.style.display = 'none';
-                    a.href = url;
-
-                    a.download = 'raport.pdf';
-                    document.body.appendChild(a);
-                    a.click();
-                    window.URL.revokeObjectURL(url);
-
-                    }
-                    pobierz_dane_z_serwera(jsonString)
-         }
-        }
-
-        function oblicz_wymiary_pomieszczen()
-        {
-            var dl   = parseInt(document.getElementById("dlugosc").value);
-            var szer = parseInt(document.getElementById("szerokosc").value);
-            var wys  = parseInt(document.getElementById("wysokosc").value);
-
-            var sufit_rozmiar = document.getElementById("sufit_rozmiar")
-            var podloga_rozmiar = document.getElementById("podloga_rozmiar")
-            var scianalewa_rozmiar = document.getElementById("scianalewa_rozmiar")
-            var scianaprawa_rozmiar = document.getElementById("scianaprawa_rozmiar")
-            var scianafrontowa_rozmiar = document.getElementById("scianafrontowa_rozmiar")
-            var scianatylna_rozmiar = document.getElementById("scianatylna_rozmiar")
-
-            sufit_rozmiar.textContent = dl * szer ;
-            podloga_rozmiar.textContent = dl * szer ;
-            scianalewa_rozmiar.textContent = dl * wys ;
-            scianaprawa_rozmiar.textContent = dl * wys ;
-            scianafrontowa_rozmiar.textContent = szer * wys ;
-            scianatylna_rozmiar.textContent = szer * wys ;
-        }
-
-            function dodaj_element_do_listy (zawartosc, d, id) {
-
-            var gdzie = d.substr(0,d.indexOf("Select")-1);
-            var powierzchnia = d.substr(0,d.indexOf("Select")) + "rozmiar";
-
-
-            var newTask = zawartosc;
-            if (newTask != "") {
-
-                var item = document.createElement("li");
-
-                item.innerHTML =
-                '<input type="button" class="remove" onclick="remove(this.parentNode)" value="&#x2715;" />' +
-                '<div id="typ" data-id=' +  id +'>'+newTask+'</div>'+
-                '  <input name="txtId" type="text" style="width: 150px; height:2px;" />';
-
-                document.getElementById(gdzie).appendChild(item);
-
-
-                if(powierzchnia != "inne_rozmiar") {
-                var ilosc =  parseInt(document.getElementById(gdzie).getElementsByTagName("li").length)
-
-                var rozmiar = parseInt(document.getElementById(powierzchnia).textContent);
-
-
-                var liczba = Math.floor(rozmiar / ilosc);
-
-                var temp = ilosc - 1;
-                for(var i = temp; i > 0; i--)
-                {
-                    document.getElementById(gdzie).getElementsByTagName("li")[i].children[2].value = liczba;
-
-                }
-                document.getElementById(gdzie).getElementsByTagName("li")[0].children[2].value = rozmiar - liczba*temp ;
-                }
-
-
-            }
-
-            console.log(document.getElementById(gdzie))
-            }
-
-
-            async function pobierz_dane(endpoint, cos) {
-                    const response = await fetch("http://127.0.0.1:5050/" + endpoint + cos, {
-                        method: "get",
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json',
-                            'Access-Control-Allow-Origin':'http://127.0.0.1:5050'
-                        },
-                    });
-
-                    const data = await response.json();
-
-                    return data
-            }
-
-                    (async () => {
-        	            var lista_norm =  await pobierz_dane("normy", "")
-                        var select = document.getElementById("wymaganiaSelect");
-                        for (var i = 0; i< lista_norm.length; i++){
-                            var opt = document.createElement('option');
-                            opt.value = lista_norm[i][1];
-                            opt.innerHTML = lista_norm[i][0];
-                            select.appendChild(opt);
-                        }
-
-                        tab2= ["sufit", "podloga", "sciana", "sciana", "sciana","sciana", "inne"]
-                        tab = ["sufit_Select", "podloga_Select", "scianalewa_Select", "scianaprawa_Select", "scianafrontowa_Select", "scianatylna_Select", "inne_Select"]
-
-                        for(var j = 0; j < tab.length; j++)
-                        {
-                            var data = await pobierz_dane("materialy/", tab2[j]);
-                            for (var i = 0; i< data.length; i++) {
-                                var opt = document.createElement('option');
-
-                                opt.value = data[i][1];
-                                opt.innerHTML = data[i][0];
-                                document.getElementById(tab[j]).appendChild(opt);
-                            }
-                        }
-                        for(var d = 0; d < tab.length; d++)
-                        {
-                            let wybrany_element = document.getElementById(tab[d]);
-                            wybrany_element.cnt = tab[d];
-                            wybrany_element.addEventListener('change', (event) => {
-                                    dodaj_element_do_listy(wybrany_element.options[wybrany_element.selectedIndex].text, event.currentTarget.cnt, wybrany_element.options[wybrany_element.selectedIndex].value)
-                                    wybrany_element.value = 'dodaj_material';
-
-                            });
-                        }
-
-                })()
-
-
-        function remove(item){
-            item.remove();
-        }
-    </script>
-    <div class="footer">
-        <p>Autorzy: Dorian Włodarczyk, Artur Szydłowski, Jakub Mościcki</p>
-        <p></p>
-    </div>
-</body>
-</div> <!-- /.container -->
-</body>
-</html>
-
+  </div>
+  <div class="form-group">
+    <label for="length">Długość pokoju</label>
+    <input
+      type="number"
+      class="form-control"
+      id="length"
+      name="length"
+      placeholder="Wpisz długość pokojuh"
+    />
+  </div>
+  <div class="form-group">
+    <label for="width">Szerokość pokoju</label>
+    <input
+      type="number"
+      class="form-control"
+      id="width"
+      name="width"
+      placeholder="Wpisz szerokość pokoju"
+    />
+  </div>
+  <div class="form-group">
+    <label for="height">Wysokość pokoju</label>
+    <input
+      type="number"
+      class="form-control"
+      id="height"
+      name="height"
+      placeholder="Wpisz wysokość pokoju"
+    />
+  </div>
+  <br />
+  <button type="submit" class="btn btn-primary">Zapisz projekt</button>
+</form>
 {% endblock %}

@@ -16,3 +16,20 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(150))
     first_name = db.Column(db.String(150))
     notes = db.relationship('Note')
+
+
+class Material(db.Model):
+    pkey = db.Column(db.Integer, primary_key=True)
+    type = db.Column(db.String(100), nullable=False)
+    name = db.Column(db.String(100), nullable=False)
+    _120 = db.Column(db.Numeric(precision=22, scale=2), nullable=False)
+    _250 = db.Column(db.Numeric(precision=22, scale=2), nullable=False)
+    _500 = db.Column(db.Numeric(precision=22, scale=2), nullable=False)
+    _1000 = db.Column(db.Numeric(precision=22, scale=2), nullable=False)
+    _2000 = db.Column(db.Numeric(precision=22, scale=2), nullable=False)
+    _4000 = db.Column(db.Numeric(precision=22, scale=2), nullable=False)
+
+class Norms(db.Model):
+    pkey = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=False)
+    absorption_multiplayer = db.Column(db.Numeric(22,2), nullable=False)

@@ -13,7 +13,7 @@ from .models import Note
 from . import db
 import json
 
-from .new_project import oblicz, zwroc_nazwe_normy, zwroc_nazwe_materialu
+
 
 views = Blueprint('views', __name__)
 
