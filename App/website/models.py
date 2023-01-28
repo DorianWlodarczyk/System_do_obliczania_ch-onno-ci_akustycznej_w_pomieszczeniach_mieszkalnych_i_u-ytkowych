@@ -19,6 +19,7 @@ class User(db.Model, UserMixin):
 
 
 class Material(db.Model):
+    __tablename__ = 'materials'
     pkey = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.String(100), nullable=False)
     name = db.Column(db.String(100), nullable=False)
@@ -30,6 +31,7 @@ class Material(db.Model):
     _4000 = db.Column(db.Numeric(precision=22, scale=2), nullable=False)
 
 class Norms(db.Model):
+    #__tablename__ = 'norms'
     pkey = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
     absorption_multiplayer = db.Column(db.Numeric(22,2), nullable=False)
