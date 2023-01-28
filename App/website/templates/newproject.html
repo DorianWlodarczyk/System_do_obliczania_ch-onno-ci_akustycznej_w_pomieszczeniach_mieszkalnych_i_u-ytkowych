@@ -19,7 +19,7 @@
       class="form-control"
       id="length"
       name="length"
-      placeholder="Wpisz długość pokojuh"
+      placeholder="Wpisz długość pokoju"
     />
   </div>
   <div class="form-group">
@@ -42,7 +42,75 @@
       placeholder="Wpisz wysokość pokoju"
     />
   </div>
+   <div class="form-group">
+    <label for="sufit">Wybierz sufit</label>
+    <select class="form-control" id="sufit" name="sufit" multiple>
+        {% for material_ceiling in materials_ceiling %}
+            <option value="{{ material_ceiling.id }}" onclick="addMaterial(this)">{{ material_ceiling.name }}</option>
+        {% endfor %}
+    </select>
+  </div>
+   <div id="selected-items"></div>
+ <script>
+    function addMaterial(element) {
+        var materialId = element.value;
+        var materialName = element.text;
+        var selectedMaterials = document.getElementById("material-list");
+        var newMaterial = document.createElement("li");
+        var removeButton = document.createElement("button");
+        removeButton.innerHTML = "x";
+        removeButton.setAttribute("onclick", "removeMaterial(this)");
+        newMaterial.innerHTML = materialName;
+        newMaterial.setAttribute("data-material-id", materialId);
+        newMaterial.appendChild(removeButton);
+        selectedMaterials.appendChild(newMaterial);
+    }
+
+    function removeMaterial(element) {
+        element.parentNode.remove();
+    }
+</script>
+  </div>
+<div id="selected-materials">
+    <h4>Wybrane sufity:</h4>
+    <ul id="material-list"></ul>
+</div>
+</div>
+   <div class="form-group">
+    <label for="wall1">Wybierz pierwszą ścianę</label>
+    <select class="form-control" id="wall1" name="wall1" multiple>
+        {% for material_wall in materials_walls %}
+            <option value="{{ material_wall.id }}" onclick="addMaterialWall(this)">{{ material_wall.name }}</option>
+        {% endfor %}
+    </select>
+  </div>
+  <div id="selected-items"></div>
+ <script>
+    function addMaterialWall(element) {
+        var materialId = element.value;
+        var materialName = element.text;
+        var selectedMaterials = document.getElementById("material-wall-list");
+        var newMaterial = document.createElement("li");
+        var removeButton = document.createElement("button");
+        removeButton.innerHTML = "x";
+        removeButton.setAttribute("onclick", "removeMaterial(this)");
+        newMaterial.innerHTML = materialName;
+        newMaterial.setAttribute("data-material-id", materialId);
+        newMaterial.appendChild(removeButton);
+        selectedMaterials.appendChild(newMaterial);
+    }
+
+    function removeMaterial(element) {
+    element.parentNode.remove();
+}
+</script>
+  </div>
+<div id="selected-materials-wall">
+    <h4>Wybrane ściany:</h4>
+    <ul id="material-wall-list"></ul>
+</div>
   <br />
   <button type="submit" class="btn btn-primary">Zapisz projekt</button>
+  <button type="checker" class="btn btn-primary">Sprawdź czy pomieszczenie spełnia normy</button>
 </form>
 {% endblock %}

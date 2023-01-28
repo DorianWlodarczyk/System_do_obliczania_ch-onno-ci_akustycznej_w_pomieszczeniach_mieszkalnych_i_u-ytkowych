@@ -9,7 +9,7 @@ from pdfkit import pdfkit
 from sqlalchemy.dialects.postgresql import psycopg2
 from werkzeug.exceptions import BadRequest
 
-from .models import Note
+from .models import Note, Norms, Material
 from . import db
 import json
 
@@ -20,10 +20,14 @@ views = Blueprint('views', __name__)
 
 @views.route('/newproject')
 def new_project():
-    return render_template("newproject.html", user=current_user)
+    if request.method == 'GET':
+        norms = Norms.query.all()
+        materials_ceiling = Material.query.filter_by(type='Sufit').all()
+        material_walls = Material.query.filter_by(type='Ściany').all()
+    return render_template("newproject.html", user=current_user, norms=norms, materials_ceiling=materials_ceiling, materials_walls=material_walls)
 
 
-@views.route('/myProjects')
+@views.route('/myProjects', methods =['GET', 'POST'])
 def my_Projects():
     if request.method == 'POST':
         note = request.form.get('note')
