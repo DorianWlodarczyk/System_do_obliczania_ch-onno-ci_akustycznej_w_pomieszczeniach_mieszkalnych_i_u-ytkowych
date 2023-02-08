@@ -12,7 +12,7 @@ def create_app():
     with app.app_context():
         app.config['SECRET_KEY'] = 'hjshjhdjah kjshkjdhjs'
         #app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:12345@localhost:5432/projekt'
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:12345@localhost:5432/postgres'
         db.init_app(app)
 
         from .views import views

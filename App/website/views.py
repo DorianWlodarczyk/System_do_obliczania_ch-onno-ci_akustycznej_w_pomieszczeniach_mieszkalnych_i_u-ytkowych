@@ -1,7 +1,7 @@
 from datetime import date
 from statistics import mean
 
-from flask import Blueprint, render_template, request, flash, jsonify, Response, Flask
+from flask import Blueprint, render_template, request, flash, jsonify, Response, Flask, session, redirect, url_for
 from flask_cors import CORS
 from flask_login import login_required, current_user
 from markupsafe import Markup
@@ -13,8 +13,6 @@ from .models import Note, Norms, Material
 from . import db
 import json
 
-
-
 views = Blueprint('views', __name__)
 
 
@@ -24,10 +22,14 @@ def new_project():
         norms = Norms.query.all()
         materials_ceiling = Material.query.filter_by(type='Sufit').all()
         material_walls = Material.query.filter_by(type='Ściany').all()
-    return render_template("newproject.html", user=current_user, norms=norms, materials_ceiling=materials_ceiling, materials_walls=material_walls)
+        material_floor = Material.query.filter_by(type='Podłogi').all()
+        material_other = Material.query.filter_by(type='Inne').all()
+
+    return render_template("newproject.html", user=current_user, norms=norms, materials_ceiling=materials_ceiling,
+                           materials_walls=material_walls, material_floor=material_floor, material_other=material_other)
 
 
-@views.route('/myProjects', methods =['GET', 'POST'])
+@views.route('/myProjects', methods=['GET', 'POST'])
 def my_Projects():
     if request.method == 'POST':
         note = request.form.get('note')
@@ -57,6 +59,7 @@ def home():
             flash('Note added!', category='success')
 
     return render_template("home.html", user=current_user)
+
 
 @views.route('/delete-note', methods=['POST'])
 def delete_note():
@@ -100,6 +103,7 @@ def zwroc_liste_materialow(typ):
 
     # za pomocą paraemtru GET pobierane są dostepne normy w bazie danych
 
+
 @views.route('/normy', methods=['GET'])
 def zwroc_liste_norm():
     cur = db.cursor()
@@ -108,6 +112,10 @@ def zwroc_liste_norm():
     cur.close()
     return dane
 
+
+
+
+
 # funkcja odpowiedzialna za zwrocenie czestotliwosci przypisanej do materialu
 def zwroc_czestotliwosci_dla_materialu(id):
     cur = db.cursor()
@@ -115,6 +123,8 @@ def zwroc_czestotliwosci_dla_materialu(id):
     czestotliwosci = cur.fetchall()
     cur.close()
     return czestotliwosci
+
+
 # walidacja
 def val(request):
     # sprawdzamy czy otrzymane dane sa poprawnie zapisane w formacie JSON
@@ -238,9 +248,12 @@ def val(request):
             }
         }
         return (dane_do_wyslania)
+
+
 @views.route('/oblicz', methods=['POST'])
 def oblicz_parametry():
     return jsonify(oblicz(request))
+
 
 # zwraca plik pdf na frontend
 @views.route("/pobierz-raport", methods=['POST'])
