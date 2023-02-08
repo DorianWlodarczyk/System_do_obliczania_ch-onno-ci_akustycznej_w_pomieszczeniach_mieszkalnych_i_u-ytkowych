@@ -2,7 +2,7 @@
 {% block title %}Measurement Form{% endblock %}
 {% block content %}
 
-<div method="POST">
+<form method="POST">
   <h3 align="center">Projekt pomieszczenia</h3>
   <div class="form-group">
     <label for="norms">Wybierz norme budowlaną</label>
@@ -54,50 +54,50 @@
    <div class="form-group">
     <label style="font-size: 20px" for="sufit">Wybierz materjał dla sufitu</label>
     <select class="form-control" id="sufit" name="sufit" >
-        <option value=""  selected></option>
+        <option value="null" selected>------------</option>
         {% for material_ceiling in materials_ceiling %}
-            <option value="{{ material_ceiling.id }}" onclick="addMaterial(this)">{{ material_ceiling.name }}</option>
+            <option value="{{ material_ceiling.id }}">{{ material_ceiling.name }}</option>
         {% endfor %}
     </select>
   </div>
    <div id="selected-items"></div>
 
 <div class="form-group">
-    <label style="font-size: 20px" for="wall1">Wybierz materjał dla ściny prawej</label>
-    <select class="form-control" id="wall1" name="wall1"  >
-    <option value="" selected></option>
-    {% for material_wall in materials_walls %}
-        <option value="{{ material_wall.id }}" onclick="addMaterialWall1(this)">{{ material_wall.name }}</option>
-    {% endfor %}
-</select>
+    <label style="font-size: 20px" for="norms">Wybierz materjał ściany prawej</label>
+    <select class="form-control" id="wall1" name="wall1">
+    <option value="null" selected>------------</option>
+        {% for material_wall in materials_walls %}
+            <option value="{{ material_wall.id }}" >{{ material_wall.name }}</option>
+        {% endfor %}
+    </select>
   </div>
 
   <div class="form-group">
-    <label style="font-size: 20px" for="wall2">Wybierz materjał dla ściny lewej</label>
+    <label style="font-size: 20px" for="norms">Wybierz materjał ściany lewej</label>
     <select class="form-control" id="wall2" name="wall2">
-    <option value="" selected></option>
+    <option value=null selected>------------</option>
         {% for material_wall in materials_walls %}
-            <option value="{{ material_wall.id }}" onclick="addMaterialWall(this, 2)">{{ material_wall.name }}</option>
+            <option value="{{ material_wall.id }}" >{{ material_wall.name }}</option>
         {% endfor %}
     </select>
   </div>
 
 <div class="form-group">
-    <label style="font-size: 20px" for="wall3">Wybierz materjał dla ściny na wprost</label>
+    <label style="font-size: 20px" for="norms">Wybierz materjał ściany na wprost</label>
     <select class="form-control" id="wall3" name="wall3">
-    <option value="" selected></option>
+    <option value="null" selected>------------</option>
         {% for material_wall in materials_walls %}
-            <option value="{{ material_wall.id }}" onclick="addMaterialWall(this, 3)">{{ material_wall.name }}</option>
+            <option value="{{ material_wall.id }}" >{{ material_wall.name }}</option>
         {% endfor %}
     </select>
   </div>
 
 <div class="form-group">
-    <label style="font-size: 20px" for="wall4">Wybierz materjał dla ściny z tylu</label>
+    <label style="font-size: 20px" for="norms">Wybierz materjał ściany z tyłu</label>
     <select class="form-control" id="wall4" name="wall4">
-    <option value="" selected></option>
+    <option value="null" selected>------------</option>
         {% for material_wall in materials_walls %}
-            <option value="{{ material_wall.id }}" onclick="addMaterialWall(this, 4)">{{ material_wall.name }}</option>
+            <option value="{{ material_wall.id }}" >{{ material_wall.name }}</option>
         {% endfor %}
     </select>
   </div>
@@ -105,12 +105,12 @@
 <div class="form-group">
     <label style="font-size: 20px" for="flor">Wybierz materjał dla podłogi</label>
     <select class="form-control" id="podloga" name="podloga">
-    <option value="" selected></option>
+    <option value="null" selected>------------</option>
         {% for material_floor in material_floor %}
-            <option value="{{ material_floor.id }}" onclick="addMaterialFlor(this)">{{ material_floor.name }}</option>
+            <option value="{{ material_floor.id }}">{{ material_floor.name }}</option>
         {% endfor %}
     </select>
-  </div>
+</div>
 
 <div class="form-group">
     <label style="font-size: 20px" for="Other">Dodaj wyposażenie wnętrza </label>
@@ -128,13 +128,35 @@
 <br />
   <button id="submit-button" type="submit" class="btn btn-primary">Zapisz projekt</button>
   <button id="checker-button" type="checker" class="btn btn-primary">Sprawdź czy pomieszczenie spełnia normy</button>
-</div>
-<div id="selected-materials">
-    <h4>Wybrane wyposażenie wnetrza:</h4>
-    <ul id="material-wall-list"></ul>
-</div>
-</div>
+
+</form>
 <script>
+document.getElementById("submit-button").disabled = true;
+document.getElementById("checker-button").disabled = true;
+let sufit = document.getElementById("sufit");
+sufit.addEventListener("change", checkInputs);
+let wall_1 = document.getElementById("wall1");
+wall_1.addEventListener("change", checkInputs);
+let wall_2 = document.getElementById("wall2");
+wall_2.addEventListener("change", checkInputs);
+let wall_3 = document.getElementById("wall3");
+wall_3.addEventListener("change", checkInputs);
+const wall_4 = document.getElementById("wall4");
+wall_4.addEventListener("change", checkInputs);
+const podloga = document.getElementById("podloga");
+podloga.addEventListener("change", checkInputs);
+
+
+function checkInputs() {
+  if (wall_1.value !== "null" && wall_2.value !== "null" && wall_3.value !== "null" && wall_4.value !== "null" && sufit.value !=="null" && podloga.value !== "null") {
+    document.getElementById("submit-button").disabled = false;
+    document.getElementById("checker-button").disabled = false;
+  } else {
+    document.getElementById("submit-button").disabled = true;
+    document.getElementById("checker-button").disabled = true;
+  }
+}
+
 function calculate_wall_area() {
         const length = document.getElementById("length").value;
         const width = document.getElementById("width").value;
@@ -155,32 +177,7 @@ function calculate_wall_area() {
       document.getElementById("podloga").innerHTML = "Wymiar podłogi: " + podloga + "m²";
         }
 
-function addMaterialWall(element) {
-        var materialId = element.value;
-        var materialName = element.text;
-        var selectedMaterials = document.getElementById("material-wall-list");
-        var newMaterial = document.createElement("li");
-        var removeButton = document.createElement("button");
-        removeButton.innerHTML = "x";
-        removeButton.setAttribute("onclick", "removeMaterial(this)");
-        newMaterial.innerHTML = materialName;
-        newMaterial.setAttribute("data-material-id", materialId);
-        newMaterial.appendChild(removeButton);
-        selectedMaterials.appendChild(newMaterial);
-    }
 
-
-    function addMaterialFlor(element) {
-        var materialId = element.value;
-        var materialName = element.text;
-        var selectedMaterials = document.getElementById("material-floor-list");
-        var newMaterial = document.createElement("li");
-        var removeButton = document.createElement("button");
-        newMaterial.innerHTML = materialName;
-        newMaterial.setAttribute("data-material-id", materialId);
-        newMaterial.appendChild(removeButton);
-        selectedMaterials.appendChild(newMaterial);
-    }
        function addMaterialOther(element) {
         var materialId = element.value;
         var materialName = element.text;
