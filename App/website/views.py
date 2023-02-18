@@ -9,7 +9,7 @@ from pdfkit import pdfkit
 from sqlalchemy.dialects.postgresql import psycopg2
 from werkzeug.exceptions import BadRequest
 
-from .models import Note, Norms, Material
+from .models import Notes, Norms, Material
 from . import db
 import json
 
@@ -37,7 +37,7 @@ def my_Projects():
         if len(note) < 1:
             flash('Note is too short!', category='error')
         else:
-            new_note = Note(data=note, user_id=current_user.id)
+            new_note = Notes(data=note, user_id=current_user.id)
             db.session.add(new_note)
             db.session.commit()
             flash('Note added!', category='success')
@@ -53,7 +53,7 @@ def home():
         if len(note) < 1:
             flash('Note is too short!', category='error')
         else:
-            new_note = Note(data=note, user_id=current_user.id)
+            new_note = Notes(data=note, user_id=current_user.id)
             db.session.add(new_note)
             db.session.commit()
             flash('Note added!', category='success')
@@ -65,7 +65,7 @@ def home():
 def delete_note():
     note = json.loads(request.data)
     noteId = note['noteId']
-    note = Note.query.get(noteId)
+    note = Notes.query.get(noteId)
     if note:
         if note.user_id == current_user.id:
             db.session.delete(note)

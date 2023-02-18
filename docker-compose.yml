@@ -1,0 +1,40 @@
+version: '3.1'
+services:
+    nginx:
+        build: ./nginx
+        container_name: nginx
+        depends_on:
+            - flask_app
+        ports:
+            - "80:80"
+        networks:
+            - my_network
+    flask_app:
+        container_name: flask_app
+        build: ./App
+        networks:
+            - my_network
+        links:
+            - db:db
+        depends_on:
+            - db
+        ports:
+            - "5000:5000"
+    db:
+        networks:
+            - my_network
+        image: postgres
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+        ports:
+            - "5432:5432"
+        volumes:
+            - ./init-scripts:/docker-entrypoint-initdb.d
+            - postgres_data:/var/lib/postgresql/data
+
+networks:
+  my_network:
+
+volumes:
+  postgres_data:

@@ -1,3 +1,7 @@
+CREATE DATABASE app_akustyka;
+
+\c app_akustyka;
+
 CREATE SEQUENCE public.materials_pkey_seq
 	INCREMENT BY 1
 	MINVALUE 1
@@ -6,7 +10,7 @@ CREATE SEQUENCE public.materials_pkey_seq
 	CACHE 1
 	NO CYCLE;
 
-commit;
+
 
 create table materials(
 	pkey serial,
@@ -17,17 +21,17 @@ create table materials(
 	"_500"  decimal(22,2) not null,
 	"_1000" decimal(22,2) not null,
 	"_2000" decimal(22,2) not null,
-	"_4000" decimal(22,2) not null  
+	"_4000" decimal(22,2) not null
 );
 
-commit;
+
 
 create table norms(
 	pkey serial,
 	name varchar(255) not null,
 	absorption_multiplayer decimal(22,2) not null
 );
-commit;
+
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
@@ -36,7 +40,7 @@ CREATE TABLE users (
     first_name VARCHAR(150)
 );
 
-commit;
+
 
 CREATE TABLE notes (
     id SERIAL PRIMARY KEY,
@@ -44,40 +48,38 @@ CREATE TABLE notes (
     date TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     user_id INTEGER REFERENCES users(id)
 );
-commit;
 
 
-insert into norms values 
+insert into norms values
 (default,'Biura wielkoprzestrzenne, pomieszczenia biurowe typu "open space", sale operacyjne banków i urzędów, biura obsługi klienta oraz inne pomieszczenia o podobnym przeznaczeniu',1.1);
 
-insert into norms values 
+insert into norms values
 (default,'Centra obsługi telefonicznej',1.3);
 
-insert into norms values 
+insert into norms values
 (default,'Szatnie w szkołach i przedszkołach, w których ubrania zamknięte są w szafkach z pełnymi drzwiami',0.6);
 
-insert into norms values 
+insert into norms values
 (default,'Pracownie do zajęć technicznych i warsztaty szkolne',0.6);
 
-insert into norms values 
+insert into norms values
 (default,'Sale chorych na oddziałach intensywnej opieki medycznej',0.8);
 
-insert into norms values 
+insert into norms values
 (default,'Poczekalnie i punkty przyjęć w szpitalach i przychodniach lekarskich',0.8);
 
-insert into norms values 
+insert into norms values
 (default,'Korytarze w przedszkolach, szkołach podstawowych, gimnazjach i szkołach ponadgimnazjalnych',1.0);
 
-insert into norms values 
+insert into norms values
 (default,'Korytarze w hotelach, szpitalach i przychodniach lekarskich',0.6);
 
-insert into norms values 
+insert into norms values
 (default,'Klatki schodowe w przedszkolach, szkołach, obiektach służby zdrowia i administracji publicznej',0.4);
 
-insert into norms values 
+insert into norms values
 (default,'Kuchnie i pomieszczenia zaplecza gastronomicznego (z wyjatkiem magazynów)',0.4);
 
-commit;
 
 Insert into materials values (default,'Ściany','Fasada aluminiowa słupowo-ryglowa',0.15,0.05,0.03,0.03,0.02,0.02);
 Insert into materials values (default,'Ściany','Beton niemalowany (surowy)',0.01,0.01,0.02,0.02,0.02,0.04);
@@ -216,4 +218,3 @@ Insert into materials values (default,'Inne','Muzyk z instrumentem (1,1 m² / os
 Insert into materials values (default,'Inne','Muzyk z instrumentem (2,3 m² / osoba)',0.03,0.13,0.43,0.7,0.86,0.99);
 Insert into materials values (default,'Inne','Osoba dorosła',0.25,0.35,0.42,0.46,0.5,0.5);
 
-commit;
