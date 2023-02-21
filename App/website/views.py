@@ -16,18 +16,66 @@ import json
 views = Blueprint('views', __name__)
 
 
+@views.route('/submit-button', methods=['GET', 'POST'])
+def save_project():
+    project_name = ""
+    norms = request.form.get('norms')
+    length = request.form.get('length')
+    width = request.form.get('width')
+    height = request.form.get('height')
+    sufit = request.form.get('sufit')
+    wall1 = request.form.get('wall1')
+    wall2 = request.form.get('wall2')
+    wall3 = request.form.get('wall3')
+
+    if request.method == 'POST':
+        # Extract the data from the form
+        project_name = request.form.get('projectName')
+        norms = request.form.get('norms')
+        length = request.form.get('length')
+        width = request.form.get('width')
+        height = request.form.get('height')
+        sufit = request.form.get('sufit')
+        wall1 = request.form.get('wall1')
+        wall2 = request.form.get('wall2')
+        wall3 = request.form.get('wall3')
+
+        # Store the data in the database or in some file
+        # ...
+
+        return redirect(url_for('views.home', project_name=project_name, norms=norms, length=length, width=width,
+                            height=height, sufit=sufit, wall1=wall1, wall2=wall2, wall3=wall3))
+
+    # Redirect the user to the newpage.html with the collected data
+    return render_template('newpage.html', project_name=project_name, norms=norms, length=length, width=width,
+                            height=height, sufit=sufit, wall1=wall1, wall2=wall2, wall3=wall3)
+
+
 @views.route('/newproject')
 def new_project():
-    if request.method == 'GET':
-        norms = Norms.query.all()
-        materials_ceiling = Material.query.filter_by(type='Sufit').all()
-        material_walls = Material.query.filter_by(type='Ściany').all()
-        material_floor = Material.query.filter_by(type='Podłogi').all()
-        material_other = Material.query.filter_by(type='Inne').all()
+    # Extract the collected data from the URL
+    project_name = request.args.get('project_name')
+    length = request.args.get('length')
+    width = request.args.get('width')
+    height = request.args.get('height')
+    sufit = request.args.get('sufit')
+    wall1 = request.args.get('wall1')
+    wall2 = request.args.get('wall2')
+    wall3 = request.args.get('wall3')
 
+    # Get all norms and materials from the database
+    norms = Norms.query.all()
+    materials_ceiling = Material.query.filter_by(type='Sufit').all()
+    material_walls = Material.query.filter_by(type='Ściany').all()
+    material_floor = Material.query.filter_by(type='Podłogi').all()
+    material_other = Material.query.filter_by(type='Inne').all()
+
+    # Return the newproject.html page with the collected data
     return render_template("newproject.html", user=current_user, norms=norms, materials_ceiling=materials_ceiling,
-                           materials_walls=material_walls, material_floor=material_floor, material_other=material_other)
-
+                           materials_walls=material_walls, material_floor=material_floor, material_other=material_other,
+                           project_name=project_name, length=length, width=width, height=height,
+                           sufit=sufit, wall1=wall1, wall2=wall2, wall3=wall3)
+                          
 
 @views.route('/myProjects', methods=['GET', 'POST'])
 def my_Projects():
@@ -73,7 +121,10 @@ def delete_note():
 
     return jsonify({})
 
+# To co poniżej przekopiowane ze starego projektu, trzeba zmodyfikować
 
+
+#Zrobione wyżej, nie potrzebne
 @views.route('/materialy/<string:typ>', methods=['GET'])
 def zwroc_liste_materialow(typ):
     if typ == "sciana":
@@ -103,7 +154,7 @@ def zwroc_liste_materialow(typ):
 
     # za pomocą paraemtru GET pobierane są dostepne normy w bazie danych
 
-
+#Zrobione wyżej, nie potrzebne
 @views.route('/normy', methods=['GET'])
 def zwroc_liste_norm():
     cur = db.cursor()

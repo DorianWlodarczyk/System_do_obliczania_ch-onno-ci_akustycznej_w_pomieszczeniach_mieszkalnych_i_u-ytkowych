@@ -2,7 +2,7 @@
 {% block title %}Measurement Form{% endblock %}
 {% block content %}
 
-<div method="POST">
+<form method="POST">
   <h3 align="center">Projekt pomieszczenia</h3>
 <div class="form-group" >
     <label style="font-size: 30px;  " for="projectName">Nazwa projektu:</label>
@@ -129,14 +129,12 @@
     <h4>Wybrane wyposażenie wnetrza:</h4>
     <ul id="material-other-list"></ul>
 </div>
-<form>
-<br />
-  <button id="submit-button" type="submit" class="btn btn-primary">Zapisz projekt</button>
-  <button id="checker-button" type="checker" class="btn btn-primary">Sprawdź czy pomieszczenie spełnia normy</button>
+<br/>
+ <button type="button" class="btn btn-secondary" id="submit-button" onClick='window.location.href = "{{ url_for('views.save_project') }}"'>Zapisz projekt</button>
+ <button type="button" class="btn btn-secondary" id="checker-button">Sprawdź czy pomieszczenie spełnia normy</button>
 </form>
-</div>
 <script>
-document.getElementById("submit-button").disabled = true;
+document.getElementById("submit-button").enabled = true;
 document.getElementById("checker-button").disabled = true;
 let sufit = document.getElementById("sufit");
 sufit.addEventListener("change", checkInputs);
