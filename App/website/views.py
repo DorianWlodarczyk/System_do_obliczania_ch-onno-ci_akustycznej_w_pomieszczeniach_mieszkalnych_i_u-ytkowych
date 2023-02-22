@@ -15,10 +15,10 @@ import json
 
 views = Blueprint('views', __name__)
 
-@views.route('/newproject/display')
-def display_new_project():
-    # Get the stored data from the session variable
-    new_project = session.get('new_project')
+@views.route('/newproject/display/<project_name>')
+def display_new_project(project_name):
+    # Get the stored data from the session variable for the given project name
+    new_project = session.get(project_name)
 
     # Get the related objects from the database based on the stored IDs
     norm = Norms.query.get(new_project['norm_id'])
@@ -26,16 +26,18 @@ def display_new_project():
     wall1 = Material.query.get(new_project['wall1_id'])
     wall2 = Material.query.get(new_project['wall2_id'])
     wall3 = Material.query.get(new_project['wall3_id'])
-    
+
     # Retrieve the project name, length, width, and height from the session variable
-    project_name = new_project['project_name']
     length = new_project['length']
     width = new_project['width']
     height = new_project['height']
 
-    # Render the display_newproject.html page with the stored data
-    return render_template("display_newproject.html", project_name=project_name, norm_id=norm, new_project=new_project, norm=norm, sufit=sufit, wall1=wall1, wall2=wall2, wall3=wall3, height=height, length=length, width=width)
+    # Render the template with the stored data
+    template_name = "display_newproject.html"
+    rendered_template = render_template(template_name, project_name=project_name, norm_id=norm, new_project=new_project, norm=norm, sufit=sufit, wall1=wall1, wall2=wall2, wall3=wall3, height=height, length=length, width=width)
 
+    # Return the rendered template as a response
+    return rendered_template
 
 @views.route('/newproject', methods=['GET', 'POST'])
 def new_project():
@@ -60,7 +62,7 @@ def new_project():
         print("wall3_id: ", wall3_id)
 
         # Store the data in a session variable
-        session['new_project'] = {
+        session[project_name] = {
             'project_name': project_name,
             'norm_id': norm_id,
             'length': length,
@@ -71,8 +73,8 @@ def new_project():
             'wall2_id': wall2_id,
             'wall3_id': wall3_id
         }
-        # Redirect to a new page
-        return redirect(url_for('views.display_new_project'))
+        # Redirect to the page displaying the generated HTML file for the new project
+        return redirect(url_for('views.display_new_project', project_name=project_name))
 
     # Render the newproject.html page with the collected data
     norms = Norms.query.all()
