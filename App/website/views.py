@@ -15,66 +15,68 @@ import json
 
 views = Blueprint('views', __name__)
 
+@views.route('/newproject/display')
+def display_new_project():
+    # Get the stored data from the session variable
+    new_project = session.get('new_project')
 
-@views.route('/submit-button', methods=['GET', 'POST'])
-def save_project():
-    project_name = ""
-    norms = request.form.get('norms')
-    length = request.form.get('length')
-    width = request.form.get('width')
-    height = request.form.get('height')
-    sufit = request.form.get('sufit')
-    wall1 = request.form.get('wall1')
-    wall2 = request.form.get('wall2')
-    wall3 = request.form.get('wall3')
+    # Get the related objects from the database based on the stored IDs
+    norm = Norms.query.get(new_project['norm_id'])
+    sufit = Material.query.get(new_project['sufit_id'])
+    wall1 = Material.query.get(new_project['wall1_id'])
+    wall2 = Material.query.get(new_project['wall2_id'])
+    wall3 = Material.query.get(new_project['wall3_id'])
 
-    if request.method == 'POST':
-        # Extract the data from the form
-        project_name = request.form.get('projectName')
-        norms = request.form.get('norms')
-        length = request.form.get('length')
-        width = request.form.get('width')
-        height = request.form.get('height')
-        sufit = request.form.get('sufit')
-        wall1 = request.form.get('wall1')
-        wall2 = request.form.get('wall2')
-        wall3 = request.form.get('wall3')
-
-        # Store the data in the database or in some file
-        # ...
-
-        return redirect(url_for('views.home', project_name=project_name, norms=norms, length=length, width=width,
-                            height=height, sufit=sufit, wall1=wall1, wall2=wall2, wall3=wall3))
-
-    # Redirect the user to the newpage.html with the collected data
-    return render_template('newpage.html', project_name=project_name, norms=norms, length=length, width=width,
-                            height=height, sufit=sufit, wall1=wall1, wall2=wall2, wall3=wall3)
+    # Render the display_newproject.html page with the stored data
+    return render_template("display_newproject.html", new_project=new_project, norm=norm, sufit=sufit, wall1=wall1, wall2=wall2, wall3=wall3)
 
 
-@views.route('/newproject')
+@views.route('/newproject', methods=['GET', 'POST'])
 def new_project():
-    # Extract the collected data from the URL
-    project_name = request.args.get('project_name')
-    length = request.args.get('length')
-    width = request.args.get('width')
-    height = request.args.get('height')
-    sufit = request.args.get('sufit')
-    wall1 = request.args.get('wall1')
-    wall2 = request.args.get('wall2')
-    wall3 = request.args.get('wall3')
+    if request.method == 'POST':
+        # Handle form submission
+        project_name = request.form.get('projectName')
+        norm_id = request.form.get('norms.id')
+        print("norm id: ", norm_id)
+        length = request.form.get('length')
+        print("length: ", length)
+        width = request.form.get('width')
+        print("width: ", width)
+        height = request.form.get('height')
+        print("height: ", height)
+        sufit_id = request.form.get('sufit')
+        wall1_id = request.form.get('wall1')
+        wall2_id = request.form.get('wall2')
+        wall3_id = request.form.get('wall3')
+        print("sufit_id: ", sufit_id)
+        print("wall1_id: ", wall1_id)
+        print("wall2_id: ", wall2_id)
+        print("wall3_id: ", wall3_id)
 
-    # Get all norms and materials from the database
+        # Store the data in a session variable
+        session['new_project'] = {
+            'project_name': project_name,
+            'norm_id': norm_id,
+            'length': length,
+            'width': width,
+            'height': height,
+            'sufit_id': sufit_id,
+            'wall1_id': wall1_id,
+            'wall2_id': wall2_id,
+            'wall3_id': wall3_id
+        }
+        # Redirect to a new page
+        return redirect(url_for('views.display_new_project'))
+
+    # Render the newproject.html page with the collected data
     norms = Norms.query.all()
     materials_ceiling = Material.query.filter_by(type='Sufit').all()
     material_walls = Material.query.filter_by(type='Ściany').all()
     material_floor = Material.query.filter_by(type='Podłogi').all()
     material_other = Material.query.filter_by(type='Inne').all()
-
-    # Return the newproject.html page with the collected data
+    
     return render_template("newproject.html", user=current_user, norms=norms, materials_ceiling=materials_ceiling,
-                           materials_walls=material_walls, material_floor=material_floor, material_other=material_other,
-                           project_name=project_name, length=length, width=width, height=height,
-                           sufit=sufit, wall1=wall1, wall2=wall2, wall3=wall3)
+                           materials_walls=material_walls, material_floor=material_floor, material_other=material_other)
                           
 
 @views.route('/myProjects', methods=['GET', 'POST'])

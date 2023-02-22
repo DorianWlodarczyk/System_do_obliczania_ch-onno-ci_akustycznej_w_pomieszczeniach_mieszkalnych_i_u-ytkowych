@@ -4,134 +4,140 @@
 
 <form method="POST">
   <h3 align="center">Projekt pomieszczenia</h3>
-<div class="form-group" >
+  <div class="form-group" >
     <label style="font-size: 30px;  " for="projectName">Nazwa projektu:</label>
-    <input type="text" class="form-control" id="projectName" placeholder="Wpisz nazwę projektu">
-</div>
+    <input type="text" class="form-control" id="projectName" placeholder="Wpisz nazwę projektu" name="projectName" value="{{ value }}">
+  </div>
   <div class="form-group">
-    <label for="norms">Wybierz norme budowlaną</label>
+    <label for="norms">Wybierz normę budowlaną</label>
     <select class="form-control" id="norms" name="norms">
-        {% for norm in norms %}
-            <option value="{{ norm.id }}">{{ norm.name }}</option>
-        {% endfor %}
+      {% for norm in norms %}
+        {% if loop.first %}
+          <option value="{{ norm.id }}" selected>{{ norm.name }}</option>
+        {% else %}
+          <option value="{{ norm.id }}">{{ norm.name }}</option>
+        {% endif %}
+      {% endfor %}
     </select>
   </div>
-  <div class="form-group">
-    <label for="length">Długość pomieszczenia</label>
-    <input
-      type="number"
-      class="form-control"
-      id="length"
-      name="length"
-      placeholder="Wpisz długość pomieszczenia"
-    />
-  </div>
-  <div class="form-group">
-    <label for="width">Szerokość pomieszczenia</label>
-    <input
-      type="number"
-      class="form-control"
-      id="width"
-      name="width"
-      placeholder="Wpisz szerokość pomieszczenia"
-    />
-  </div>
-  <div class="form-group">
-    <label for="height">Wysokość pomieszczenia</label>
-    <input
-      type="number"
-      class="form-control"
-      id="height"
-      name="height"
-      placeholder="Wpisz wysokość pomieszczenia"
-    />
-  </div>
+    <div class="form-group">
+      <label for="length">Długość pomieszczenia</label>
+      <input
+        type="number"
+        class="form-control"
+        id="length"
+        name="length"
+        placeholder="Wpisz długość pomieszczenia"
+      />
+    </div>
+    <div class="form-group">
+      <label for="width">Szerokość pomieszczenia</label>
+      <input
+        type="number"
+        class="form-control"
+        id="width"
+        name="width"
+        value=""
+        placeholder="Wpisz szerokość pomieszczenia"
+      />
+    </div>
+    <div class="form-group">
+      <label for="height">Wysokość pomieszczenia</label>
+      <input
+        type="number"
+        class="form-control"
+        id="height"
+        name="height"
+        value=""
+        placeholder="Wpisz wysokość pomieszczenia"
+      />
+    </div>
 
-    <button onclick="calculate_wall_area()" class="btn btn-primary">Oblicz wymiary pomieszcenia </button>
-    <div id="volume"></div>
-    <div id="prawa"></div>
-    <div id="lewa"></div>
-    <div id="na_wprost"></div>
-    <div id="tyl"></div>
+      <button onclick="calculate_wall_area()" class="btn btn-primary">Oblicz wymiary pomieszcenia </button>
+      <div id="volume"></div>
+      <div id="prawa"></div>
+      <div id="lewa"></div>
+      <div id="na_wprost"></div>
+      <div id="tyl"></div>
 
 
-   <div class="form-group">
-    <label style="font-size: 20px" for="sufit">Wybierz materjał dla sufitu</label>
-    <select class="form-control" id="sufit" name="sufit" >
-        <option value="null" selected>------------</option>
-        {% for material_ceiling in materials_ceiling %}
-            <option value="{{ material_ceiling.id }}">{{ material_ceiling.name }}</option>
-        {% endfor %}
-    </select>
-  </div>
-   <div id="selected-items"></div>
-
-<div class="form-group">
-    <label style="font-size: 20px" for="norms">Wybierz materjał ściany prawej</label>
-    <select class="form-control" id="wall1" name="wall1">
-    <option value="null" selected>------------</option>
-        {% for material_wall in materials_walls %}
-            <option value="{{ material_wall.id }}" >{{ material_wall.name }}</option>
-        {% endfor %}
-    </select>
-  </div>
+    <div class="form-group">
+      <label style="font-size: 20px" for="sufit">Wybierz materjał dla sufitu</label>
+      <select class="form-control" id="sufit" name="sufit" >
+          <option value="null" selected>------------</option>
+          {% for material_ceiling in materials_ceiling %}
+              <option value="{{ material_ceiling.id }}">{{ material_ceiling.name }}</option>
+          {% endfor %}
+      </select>
+    </div>
+    <div id="selected-items"></div>
 
   <div class="form-group">
-    <label style="font-size: 20px" for="norms">Wybierz materjał ściany lewej</label>
-    <select class="form-control" id="wall2" name="wall2">
-    <option value=null selected>------------</option>
-        {% for material_wall in materials_walls %}
-            <option value="{{ material_wall.id }}" >{{ material_wall.name }}</option>
-        {% endfor %}
-    </select>
+      <label style="font-size: 20px" for="norms">Wybierz materjał ściany prawej</label>
+      <select class="form-control" id="wall1" name="wall1">
+      <option value="null" selected>------------</option>
+          {% for material_wall in materials_walls %}
+              <option value="{{ material_wall.id }}" >{{ material_wall.name }}</option>
+          {% endfor %}
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label style="font-size: 20px" for="norms">Wybierz materjał ściany lewej</label>
+      <select class="form-control" id="wall2" name="wall2">
+      <option value=null selected>------------</option>
+          {% for material_wall in materials_walls %}
+              <option value="{{ material_wall.id }}" >{{ material_wall.name }}</option>
+          {% endfor %}
+      </select>
+    </div>
+
+  <div class="form-group">
+      <label style="font-size: 20px" for="norms">Wybierz materjał ściany na wprost</label>
+      <select class="form-control" id="wall3" name="wall3">
+      <option value="null" selected>------------</option>
+          {% for material_wall in materials_walls %}
+              <option value="{{ material_wall.id }}" >{{ material_wall.name }}</option>
+          {% endfor %}
+      </select>
+    </div>
+
+  <div class="form-group">
+      <label style="font-size: 20px" for="norms">Wybierz materjał ściany z tyłu</label>
+      <select class="form-control" id="wall4" name="wall4">
+      <option value="null" selected>------------</option>
+          {% for material_wall in materials_walls %}
+              <option value="{{ material_wall.id }}" >{{ material_wall.name }}</option>
+          {% endfor %}
+      </select>
+    </div>
+
+  <div class="form-group">
+      <label style="font-size: 20px" for="flor">Wybierz materjał dla podłogi</label>
+      <select class="form-control" id="podloga" name="podloga">
+      <option value="null" selected>------------</option>
+          {% for material_floor in material_floor %}
+              <option value="{{ material_floor.id }}">{{ material_floor.name }}</option>
+          {% endfor %}
+      </select>
   </div>
 
-<div class="form-group">
-    <label style="font-size: 20px" for="norms">Wybierz materjał ściany na wprost</label>
-    <select class="form-control" id="wall3" name="wall3">
-    <option value="null" selected>------------</option>
-        {% for material_wall in materials_walls %}
-            <option value="{{ material_wall.id }}" >{{ material_wall.name }}</option>
-        {% endfor %}
-    </select>
+  <div class="form-group">
+      <label style="font-size: 20px" for="Other">Dodaj wyposażenie wnętrza </label>
+      <select class="form-control" id="Inne" name="Inne" multiple>
+          {% for material_other in material_other %}
+              <option value="{{ material_other.id }}" onclick="addMaterialOther(this)">{{ material_other.name }}</option>
+          {% endfor %}
+      </select>
+    </div>
+
+  <div id="selected-materials">
+      <h4>Wybrane wyposażenie wnetrza:</h4>
+      <ul id="material-other-list"></ul>
   </div>
-
-<div class="form-group">
-    <label style="font-size: 20px" for="norms">Wybierz materjał ściany z tyłu</label>
-    <select class="form-control" id="wall4" name="wall4">
-    <option value="null" selected>------------</option>
-        {% for material_wall in materials_walls %}
-            <option value="{{ material_wall.id }}" >{{ material_wall.name }}</option>
-        {% endfor %}
-    </select>
-  </div>
-
-<div class="form-group">
-    <label style="font-size: 20px" for="flor">Wybierz materjał dla podłogi</label>
-    <select class="form-control" id="podloga" name="podloga">
-    <option value="null" selected>------------</option>
-        {% for material_floor in material_floor %}
-            <option value="{{ material_floor.id }}">{{ material_floor.name }}</option>
-        {% endfor %}
-    </select>
-</div>
-
-<div class="form-group">
-    <label style="font-size: 20px" for="Other">Dodaj wyposażenie wnętrza </label>
-    <select class="form-control" id="Inne" name="Inne" multiple>
-        {% for material_other in material_other %}
-            <option value="{{ material_other.id }}" onclick="addMaterialOther(this)">{{ material_other.name }}</option>
-        {% endfor %}
-    </select>
-  </div>
-
-<div id="selected-materials">
-    <h4>Wybrane wyposażenie wnetrza:</h4>
-    <ul id="material-other-list"></ul>
-</div>
-<br/>
- <button type="button" class="btn btn-secondary" id="submit-button" onClick='window.location.href = "{{ url_for('views.save_project') }}"'>Zapisz projekt</button>
- <button type="button" class="btn btn-secondary" id="checker-button">Sprawdź czy pomieszczenie spełnia normy</button>
+  <br/>
+    <button type="submit" class="btn btn-secondary" id="submit-button">Zapisz projekt</button>
+    <button type="button" class="btn btn-secondary" id="checker-button">Sprawdź czy pomieszczenie spełnia normy</button>
 </form>
 <script>
 document.getElementById("submit-button").enabled = true;
@@ -198,6 +204,12 @@ function calculate_wall_area() {
     function removeMaterial(element) {
         element.parentNode.remove();
     }
+
+  const normsSelector = document.getElementById('norms-selector');
+  normsSelector.addEventListener('change', (event) => {
+  const selectedNormId = event.target.value;
+  console.log(selectedNormId); // replace with your desired code
+});
 </script>
 
 {% endblock %}
