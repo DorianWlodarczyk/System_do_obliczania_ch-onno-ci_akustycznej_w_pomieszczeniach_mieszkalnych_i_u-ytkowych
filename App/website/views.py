@@ -26,9 +26,15 @@ def display_new_project():
     wall1 = Material.query.get(new_project['wall1_id'])
     wall2 = Material.query.get(new_project['wall2_id'])
     wall3 = Material.query.get(new_project['wall3_id'])
+    
+    # Retrieve the project name, length, width, and height from the session variable
+    project_name = new_project['project_name']
+    length = new_project['length']
+    width = new_project['width']
+    height = new_project['height']
 
     # Render the display_newproject.html page with the stored data
-    return render_template("display_newproject.html", new_project=new_project, norm=norm, sufit=sufit, wall1=wall1, wall2=wall2, wall3=wall3)
+    return render_template("display_newproject.html", project_name=project_name, norm_id=norm, new_project=new_project, norm=norm, sufit=sufit, wall1=wall1, wall2=wall2, wall3=wall3, height=height, length=length, width=width)
 
 
 @views.route('/newproject', methods=['GET', 'POST'])
@@ -44,10 +50,10 @@ def new_project():
         print("width: ", width)
         height = request.form.get('height')
         print("height: ", height)
-        sufit_id = request.form.get('sufit')
-        wall1_id = request.form.get('wall1')
-        wall2_id = request.form.get('wall2')
-        wall3_id = request.form.get('wall3')
+        sufit_id = request.form.get('sufit.id')
+        wall1_id = request.form.get('wall1.id')
+        wall2_id = request.form.get('wall2.id')
+        wall3_id = request.form.get('wall3.id')
         print("sufit_id: ", sufit_id)
         print("wall1_id: ", wall1_id)
         print("wall2_id: ", wall2_id)

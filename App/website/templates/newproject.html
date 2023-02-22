@@ -2,7 +2,7 @@
 {% block title %}Measurement Form{% endblock %}
 {% block content %}
 
-<form method="POST">
+<form method="POST" >
   <h3 align="center">Projekt pomieszczenia</h3>
   <div class="form-group" >
     <label style="font-size: 30px;  " for="projectName">Nazwa projektu:</label>
@@ -12,7 +12,7 @@
     <label for="norms">Wybierz normę budowlaną</label>
     <select class="form-control" id="norms" name="norms">
       {% for norm in norms %}
-        {% if loop.first %}
+        {% if norm.id == norms_value %}
           <option value="{{ norm.id }}" selected>{{ norm.name }}</option>
         {% else %}
           <option value="{{ norm.id }}">{{ norm.name }}</option>
