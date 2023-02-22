@@ -21,11 +21,14 @@ def display_new_project(project_name):
     new_project = session.get(project_name)
 
     # Get the related objects from the database based on the stored IDs
-    norm = Norms.query.get(new_project['norm_id'])
-    sufit = Material.query.get(new_project['sufit_id'])
-    wall1 = Material.query.get(new_project['wall1_id'])
-    wall2 = Material.query.get(new_project['wall2_id'])
-    wall3 = Material.query.get(new_project['wall3_id'])
+    norm = Norms.query.get(new_project['norm_id']).name
+    sufit = Material.query.get(new_project['sufit_id']).name
+    wall1_material = Material.query.get(new_project['wall1_id']).name
+    wall2_material = Material.query.get(new_project['wall2_id']).name
+    wall4_material = Material.query.get(new_project['wall4_id']).name
+    floor_material = Material.query.get(new_project['floor']).name
+    front_wall_material = Material.query.get(new_project['wall3_id']).name
+    material_list = Material.query.get(new_project['material_list']).name
 
     # Retrieve the project name, length, width, and height from the session variable
     length = new_project['length']
@@ -34,7 +37,9 @@ def display_new_project(project_name):
 
     # Render the template with the stored data
     template_name = "display_newproject.html"
-    rendered_template = render_template(template_name, project_name=project_name, norm_id=norm, new_project=new_project, norm=norm, sufit=sufit, wall1=wall1, wall2=wall2, wall3=wall3, height=height, length=length, width=width)
+    rendered_template = render_template(template_name, project_name=project_name, norm_id=norm, 
+            new_project=new_project, norm=norm, sufit=sufit, wall1_material=wall1_material, wall2_material=wall2_material, 
+            front_wall_material=front_wall_material, height=height, length=length, width=width, back_wall_material = wall4_material, floor_material = floor_material, material_list = material_list)
 
     # Return the rendered template as a response
     return rendered_template
@@ -44,22 +49,17 @@ def new_project():
     if request.method == 'POST':
         # Handle form submission
         project_name = request.form.get('projectName')
-        norm_id = request.form.get('norms.id')
-        print("norm id: ", norm_id)
+        norm_id = request.form.get('norms')
         length = request.form.get('length')
-        print("length: ", length)
         width = request.form.get('width')
-        print("width: ", width)
         height = request.form.get('height')
-        print("height: ", height)
-        sufit_id = request.form.get('sufit.id')
-        wall1_id = request.form.get('wall1.id')
-        wall2_id = request.form.get('wall2.id')
-        wall3_id = request.form.get('wall3.id')
-        print("sufit_id: ", sufit_id)
-        print("wall1_id: ", wall1_id)
-        print("wall2_id: ", wall2_id)
-        print("wall3_id: ", wall3_id)
+        sufit_id = request.form.get('sufit')
+        wall1_id = request.form.get('wall1')
+        wall2_id = request.form.get('wall2')
+        wall3_id = request.form.get('wall3')
+        wall4_id = request.form.get('wall4')
+        floor = request.form.get('podloga')
+        material_list = request.form.get('material-other-list')
 
         # Store the data in a session variable
         session[project_name] = {
@@ -71,7 +71,10 @@ def new_project():
             'sufit_id': sufit_id,
             'wall1_id': wall1_id,
             'wall2_id': wall2_id,
-            'wall3_id': wall3_id
+            'wall3_id': wall3_id,
+            'wall4_id': wall4_id,
+            'floor': floor,
+            'material_list': material_list
         }
         # Redirect to the page displaying the generated HTML file for the new project
         return redirect(url_for('views.display_new_project', project_name=project_name))

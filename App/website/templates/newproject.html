@@ -13,9 +13,9 @@
     <select class="form-control" id="norms" name="norms">
       {% for norm in norms %}
         {% if norm.id == norms_value %}
-          <option value="{{ norm.id }}" selected>{{ norm.name }}</option>
+          <option value="{{ norm.pkey }}" selected>{{ norm.name }}</option>
         {% else %}
-          <option value="{{ norm.id }}">{{ norm.name }}</option>
+          <option value="{{ norm.pkey }}">{{ norm.name }}</option>
         {% endif %}
       {% endfor %}
     </select>
@@ -66,7 +66,7 @@
       <select class="form-control" id="sufit" name="sufit" >
           <option value="null" selected>------------</option>
           {% for material_ceiling in materials_ceiling %}
-              <option value="{{ material_ceiling.id }}">{{ material_ceiling.name }}</option>
+              <option value="{{ material_ceiling.pkey }}">{{ material_ceiling.name }}</option>
           {% endfor %}
       </select>
     </div>
@@ -77,17 +77,17 @@
       <select class="form-control" id="wall1" name="wall1">
       <option value="null" selected>------------</option>
           {% for material_wall in materials_walls %}
-              <option value="{{ material_wall.id }}" >{{ material_wall.name }}</option>
+              <option value="{{ material_wall.pkey }}" >{{ material_wall.name }}</option>
           {% endfor %}
       </select>
     </div>
 
     <div class="form-group">
       <label style="font-size: 20px" for="norms">Wybierz materjał ściany lewej</label>
-      <select class="form-control" id="wall2" name="wall2">
+      <select class="form-control" ="waidll2" name="wall2">
       <option value=null selected>------------</option>
           {% for material_wall in materials_walls %}
-              <option value="{{ material_wall.id }}" >{{ material_wall.name }}</option>
+              <option value="{{ material_wall.pkey }}" >{{ material_wall.name }}</option>
           {% endfor %}
       </select>
     </div>
@@ -97,7 +97,7 @@
       <select class="form-control" id="wall3" name="wall3">
       <option value="null" selected>------------</option>
           {% for material_wall in materials_walls %}
-              <option value="{{ material_wall.id }}" >{{ material_wall.name }}</option>
+              <option value="{{ material_wall.pkey }}" >{{ material_wall.name }}</option>
           {% endfor %}
       </select>
     </div>
@@ -107,7 +107,7 @@
       <select class="form-control" id="wall4" name="wall4">
       <option value="null" selected>------------</option>
           {% for material_wall in materials_walls %}
-              <option value="{{ material_wall.id }}" >{{ material_wall.name }}</option>
+              <option value="{{ material_wall.pkey }}" >{{ material_wall.name }}</option>
           {% endfor %}
       </select>
     </div>
@@ -117,7 +117,7 @@
       <select class="form-control" id="podloga" name="podloga">
       <option value="null" selected>------------</option>
           {% for material_floor in material_floor %}
-              <option value="{{ material_floor.id }}">{{ material_floor.name }}</option>
+              <option value="{{ material_floor.pkey }}">{{ material_floor.name }}</option>
           {% endfor %}
       </select>
   </div>
@@ -126,7 +126,7 @@
       <label style="font-size: 20px" for="Other">Dodaj wyposażenie wnętrza </label>
       <select class="form-control" id="Inne" name="Inne" multiple>
           {% for material_other in material_other %}
-              <option value="{{ material_other.id }}" onclick="addMaterialOther(this)">{{ material_other.name }}</option>
+              <option value="{{ material_other.pkey }}" onclick="addMaterialOther(this)">{{ material_other.name }}</option>
           {% endfor %}
       </select>
     </div>
