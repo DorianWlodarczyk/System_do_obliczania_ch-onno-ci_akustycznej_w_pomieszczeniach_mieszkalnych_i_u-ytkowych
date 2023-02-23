@@ -100,6 +100,9 @@ def new_project():
         # json_materials = json.dumps(material_json, cls=MaterialEncoder)
 
         print("Full List: ", material_json)
+        print(material_json[1])
+        plain_list = [(int(item['quantity']), item['material'].pkey) for item in material_json]
+        print(plain_list)
         if int(length) <= 0 or int(width) <= 0 or int(height) <= 0:
             flash('Wymiary pomieszczenia musza byc wieksze od zera!', category='error')
         else:
@@ -141,27 +144,27 @@ def new_project():
             if (final_absorption_list[2] >= norm[0] and final_absorption_list[3] >= norm[0] and
                     final_absorption_list[4] >= norm[0]):
                 flash('Podany projekt spelnia normy!', category='success')
+                print("Final absorption list:", final_absorption_list)
+
+                # Store the data in a session variable
+                session[project_name] = {
+                    'project_name': project_name,
+                    'norm_id': norm_id,
+                    'length': length,
+                    'width': width,
+                    'height': height,
+                    'sufit_id': sufit_id,
+                    'wall1_id': wall1_id,
+                    'wall2_id': wall2_id,
+                    'wall3_id': wall3_id,
+                    'wall4_id': wall4_id,
+                    'floor': floor,
+                    # 'material_list_quantity': material_json
+                }
+                return redirect(url_for('views.display_new_project', project_name=project_name))
             else:
                 flash('Podany projekt nie spelnia wybranej normy!', category='error')
-            # Print final absorption list
-            print("Final absorption list:", final_absorption_list)
 
-            # Store the data in a session variable
-            session[project_name] = {
-                'project_name': project_name,
-                'norm_id': norm_id,
-                'length': length,
-                'width': width,
-                'height': height,
-                'sufit_id': sufit_id,
-                'wall1_id': wall1_id,
-                'wall2_id': wall2_id,
-                'wall3_id': wall3_id,
-                'wall4_id': wall4_id,
-                'floor': floor,
-                # 'material_list_quantity': material_json
-            }
-            return redirect(url_for('views.display_new_project', project_name=project_name))
 
 
     # Render the newproject.html page with the collected data
