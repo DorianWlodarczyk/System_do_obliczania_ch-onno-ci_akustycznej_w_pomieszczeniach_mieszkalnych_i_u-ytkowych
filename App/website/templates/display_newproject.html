@@ -12,12 +12,15 @@
       <li>Materiał Sufitu: {{ sufit }}</li>
       <li>Materiał Ściany Lewej: {{ wall1_material }}</li>
       <li>Materiał Ściany Prawej: {{ wall2_material }}</li>
-      <li>Materiał Ściany frontowej: {{ front_wall_material }}</li>
-      <li>Materiał Ściany tylnej: {{ back_wall_material }}</li>
+      <li>Materiał Ściany Frontowej: {{ front_wall_material }}</li>
+      <li>Materiał Ściany Tylnej: {{ back_wall_material }}</li>
       <li>Materiał Podłogi: {{ floor_material }}</li>
-      <li>Inne Wyposażenie: {{ material_list }}</li>
-      <li>Nazwa Projektu: {{ project_name }}</li>
-      <li>Norma: {{norm}}</li>
+      <li>Materiały:</li>
+      <ul>
+        {% for material in material_list %}
+          <li>{{ material }}</li>
+        {% endfor %}
+      </ul>
     </ul>
   </body>
 </html>

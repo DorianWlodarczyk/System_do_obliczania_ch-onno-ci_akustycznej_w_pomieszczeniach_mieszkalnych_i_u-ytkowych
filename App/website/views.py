@@ -1,5 +1,6 @@
 from datetime import date
 from statistics import mean
+from flask.json import JSONEncoder
 
 from flask import Blueprint, render_template, request, flash, jsonify, Response, Flask, session, redirect, url_for
 from flask_cors import CORS
@@ -12,8 +13,19 @@ from werkzeug.exceptions import BadRequest
 from .models import Notes, Norms, Material
 from . import db
 import json
+from bs4 import BeautifulSoup
+
+class MaterialEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Material):
+            return {'pkey': obj.pkey, 'name': obj.name, 'type': obj.type, '_120': float(obj._120), '_250': float(obj._250), '_500': float(obj._500), '_1000': float(obj._1000), '_2000': float(obj._2000), '_4000': float(obj._4000)}
+        return super().default(obj)
 
 views = Blueprint('views', __name__)
+app = Flask(__name__)
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
+app.json_encoder = MaterialEncoder
+
 
 @views.route('/newproject/display/<project_name>')
 def display_new_project(project_name):
@@ -28,7 +40,12 @@ def display_new_project(project_name):
     wall4_material = Material.query.get(new_project['wall4_id']).name
     floor_material = Material.query.get(new_project['floor']).name
     front_wall_material = Material.query.get(new_project['wall3_id']).name
-    material_list = Material.query.get(new_project['material_list']).name
+
+     # Get the material list from the session variable
+    # material_list = [] 
+    # material_list = new_project['material_list_quantity']
+    # print("Full List: ", material_list)
+
 
     # Retrieve the project name, length, width, and height from the session variable
     length = new_project['length']
@@ -39,7 +56,7 @@ def display_new_project(project_name):
     template_name = "display_newproject.html"
     rendered_template = render_template(template_name, project_name=project_name, norm_id=norm, 
             new_project=new_project, norm=norm, sufit=sufit, wall1_material=wall1_material, wall2_material=wall2_material, 
-            front_wall_material=front_wall_material, height=height, length=length, width=width, back_wall_material = wall4_material, floor_material = floor_material, material_list = material_list)
+            front_wall_material=front_wall_material, height=height, length=length, width=width, back_wall_material = wall4_material, floor_material = floor_material)
 
     # Return the rendered template as a response
     return rendered_template
@@ -47,6 +64,7 @@ def display_new_project(project_name):
 @views.route('/newproject', methods=['GET', 'POST'])
 def new_project():
     if request.method == 'POST':
+        # print(request.form)
         # Handle form submission
         project_name = request.form.get('projectName')
         norm_id = request.form.get('norms')
@@ -59,7 +77,24 @@ def new_project():
         wall3_id = request.form.get('wall3')
         wall4_id = request.form.get('wall4')
         floor = request.form.get('podloga')
-        material_list = request.form.get('material-other-list')
+
+        # Extract the data-material-id attribute from all li elements inside the ul with id="material-other-list"
+        # Print quantity and pkey for every member of the list with quantity > 0
+
+        material_list_quantity = request.form.getlist('material-other-list')
+
+        material_list = Material.query.filter_by(type='material_li').all()
+
+        # Serialize the Material objects with custom JSON encoder
+        material_list = Material.query.filter_by(type='Inne').all()
+        material_json = []
+        for material in material_list:
+            quantity = request.form.get(f"material_{material.pkey}", 0)
+            if int(quantity) > 0:
+                material_json.append({'quantity': quantity, 'material': material})
+        json_materials = json.dumps(material_json, cls=MaterialEncoder)
+
+        print("Full List: ", material_json)
 
         # Store the data in a session variable
         session[project_name] = {
@@ -74,8 +109,10 @@ def new_project():
             'wall3_id': wall3_id,
             'wall4_id': wall4_id,
             'floor': floor,
-            'material_list': material_list
+            # 'material_list_quantity': material_json
         }
+
+
         # Redirect to the page displaying the generated HTML file for the new project
         return redirect(url_for('views.display_new_project', project_name=project_name))
 

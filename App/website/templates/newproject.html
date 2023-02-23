@@ -84,7 +84,7 @@
 
     <div class="form-group">
       <label style="font-size: 20px" for="norms">Wybierz materjał ściany lewej</label>
-      <select class="form-control" ="waidll2" name="wall2">
+      <select class="form-control" id="wall2" name="wall2">
       <option value=null selected>------------</option>
           {% for material_wall in materials_walls %}
               <option value="{{ material_wall.pkey }}" >{{ material_wall.name }}</option>
@@ -122,26 +122,25 @@
       </select>
   </div>
 
-  <div class="form-group">
-      <label style="font-size: 20px" for="Other">Dodaj wyposażenie wnętrza </label>
-      <select class="form-control" id="Inne" name="Inne" multiple>
-          {% for material_other in material_other %}
-              <option value="{{ material_other.pkey }}" onclick="addMaterialOther(this)">{{ material_other.name }}</option>
-          {% endfor %}
-      </select>
-    </div>
-
   <div id="selected-materials">
-      <h4>Wybrane wyposażenie wnetrza:</h4>
-      <ul id="material-other-list"></ul>
-  </div>
+    <h4>Wybrane wyposażenie wnetrza:</h4>
+    <ul id="material-other-list"></ul>
+  <label style="font-size: 20px" for="Inne">Dodaj wyposażenie wnętrza:</label>
+  {% for material_other in material_other %}
+  <li id="material_li">
+      <input type="number" value="0" id="{{ material_other.pkey }}" name="material_{{ material_other.pkey }}" min="0" max="100">
+      {{ material_other.name }}
+  </li>
+  {% endfor %}
+  </select>
+</div>
   <br/>
     <button type="submit" class="btn btn-secondary" id="submit-button">Zapisz projekt</button>
-    <button type="button" class="btn btn-secondary" id="checker-button">Sprawdź czy pomieszczenie spełnia normy</button>
+    <button type="button" class="btn btn-secondary" id="checker-button">Sprawdź czy pomieszczenie spełnia normy</button> 
 </form>
 <script>
-document.getElementById("submit-button").enabled = true;
-document.getElementById("checker-button").disabled = true;
+document.getElementById("submit-button").disabled = false;
+document.getElementById("checker-button").disabled = false;
 let sufit = document.getElementById("sufit");
 sufit.addEventListener("change", checkInputs);
 let wall_1 = document.getElementById("wall1");
@@ -161,8 +160,8 @@ function checkInputs() {
     document.getElementById("submit-button").disabled = false;
     document.getElementById("checker-button").disabled = false;
   } else {
-    document.getElementById("submit-button").disabled = true;
-    document.getElementById("checker-button").disabled = true;
+    document.getElementById("submit-button").disabled = false;
+    document.getElementById("checker-button").disabled = false;
   }
 }
 
@@ -196,6 +195,7 @@ function calculate_wall_area() {
         removeButton.innerHTML = "x";
         removeButton.setAttribute("onclick", "removeMaterial(this)");
         newMaterial.innerHTML = materialName;
+        newMaterial.setAttribute("name", "material_list")
         newMaterial.setAttribute("data-material-id", materialId);
         newMaterial.appendChild(removeButton);
         selectedMaterials.appendChild(newMaterial);
