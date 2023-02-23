@@ -10,7 +10,7 @@ from pdfkit import pdfkit
 from sqlalchemy.dialects.postgresql import psycopg2
 from werkzeug.exceptions import BadRequest
 
-from .models import Notes, Norms, Material
+from .models import Notes, Norms, Material, Projects
 from . import db
 import json
 # from bs4 import BeautifulSoup
@@ -150,6 +150,10 @@ def new_project():
             # Calculate absorption coefficient per square meter for the room
             for i in range(len(final_absorption_list)):
                 final_absorption_list[i] /= volume
+            list_of_furniture_json = json.dumps(list_of_furniture)
+            new_projekt = Projects(user_id=current_user.id,name=project_name,norm_id=norm_id, length=length, width=width,height=height,floor=floor,sufit_id=sufit_id,wall1_id=wall1_id,wall2_id=wall2_id,wall3_id=wall3_id,wall4_id=wall4_id,furniture=list_of_furniture_json,_120=final_absorption_list[0],_250=final_absorption_list[1],_500=final_absorption_list[2],_1000=final_absorption_list[3],_2000=final_absorption_list[4],_4000=final_absorption_list[5])
+            db.session.add(new_projekt)
+            db.session.commit()
 
             if (final_absorption_list[2] >= norm[0] and final_absorption_list[3] >= norm[0] and
                     final_absorption_list[4] >= norm[0]):
