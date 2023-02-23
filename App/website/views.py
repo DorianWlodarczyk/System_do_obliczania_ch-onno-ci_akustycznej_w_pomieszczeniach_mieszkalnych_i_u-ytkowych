@@ -100,9 +100,7 @@ def new_project():
         # json_materials = json.dumps(material_json, cls=MaterialEncoder)
 
         print("Full List: ", material_json)
-        print(material_json[1])
         plain_list = [(int(item['quantity']), item['material'].pkey) for item in material_json]
-        print(plain_list)
         if int(length) <= 0 or int(width) <= 0 or int(height) <= 0:
             flash('Wymiary pomieszczenia musza byc wieksze od zera!', category='error')
         else:
@@ -112,6 +110,7 @@ def new_project():
             # Define frequency list and reverb time list
             frequency_list = ['_120', '_250', '_500', '_1000', '_2000', '_4000']
             reverb_time = [0] * len(frequency_list)
+            list_of_furniture = []
             # norm = Norms.query.filter_by(pkey=norm_id)
             norm = Norms.query.filter_by(pkey=norm_id).with_entities(Norms.absorption_multiplayer).first()
             print("norm:", norm[0])
@@ -137,6 +136,17 @@ def new_project():
                 floor_material_values[i] *= volume
                 final_absorption_list[i] += floor_material_values[i]
 
+            #Obliczanie umeblowania
+            for i in range(len(plain_list)):
+                furniture_absorption_list = Material.query.filter_by(pkey=plain_list[i][1]).first()
+                furniture_absorption_value = [float(getattr(furniture_absorption_list,f)) for f in frequency_list]
+                furniture_name =getattr(furniture_absorption_list, 'name')
+                list_of_furniture.append((furniture_name, plain_list[i][0]))
+                for j in range(len(furniture_absorption_value)):
+                    furniture_absorption_value[j] *= plain_list[i][0]
+                    final_absorption_list[j] += furniture_absorption_value[j]
+
+            print("Lista mebli: ", list_of_furniture)
             # Calculate absorption coefficient per square meter for the room
             for i in range(len(final_absorption_list)):
                 final_absorption_list[i] /= volume
