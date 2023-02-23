@@ -1,31 +1,20 @@
-{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
-%}
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
 
-<html >
-<table style="border: 2px solid black; margin: 0 auto;">
-  <tr>
-    <td style="border: 2px solid black; margin: 0 auto;">Kolumna 1, Wiersz 1</td>
-    <td style="border: 2px solid black; margin: 0 auto;">Kolumna 2, Wiersz 1</td>
-    <td style="border: 2px solid black; margin: 0 auto;">Kolumna 3, Wiersz 1</td>
-    <td style="border: 2px solid black; margin: 0 auto;">Kolumna 4, Wiersz 1</td>
-    <td style="border: 2px solid black; margin: 0 auto;">Kolumna 5, Wiersz 1</td>
-  </tr>
-  <tr>
-    <td style="border: 2px solid black; margin: 0 auto;">Kolumna 1, Wiersz 2</td>
-    <td style="border: 2px solid black; margin: 0 auto;">Kolumna 2, Wiersz 2</td>
-    <td style="border: 2px solid black; margin: 0 auto;">Kolumna 3, Wiersz 2</td>
-    <td style="border: 2px solid black; margin: 0 auto;">Kolumna 4, Wiersz 2</td>
-    <td style="border: 2px solid black; margin: 0 auto;">Kolumna 5, Wiersz 2</td>
-  </tr>
-  <tr>
-    <td style="border: 2px solid black; margin: 0 auto;">Kolumna 1, Wiersz 3</td>
-    <td style="border: 2px solid black; margin: 0 auto;">Kolumna 2, Wiersz 3</td>
-    <td style="border: 2px solid black; margin: 0 auto;">Kolumna 3, Wiersz 3</td>
-    <td style="border: 2px solid black; margin: 0 auto;">Kolumna 4, Wiersz 3</td>
-    <td style="border: 2px solid black; margin: 0 auto;">Kolumna 5, Wiersz 3</td>
-  </tr>
-</table>
+<button type="button" class="btn btn-secondary" onClick="location.href='/newproject'">New Project</button>
+<button type="button" class="btn btn-secondary" onClick="location.href='/myProjects'">My Projects</button>
 
-</html>
-
+<h1 align="center">Projects</h1>
+<div class="form-group">
+    <label for="norms">Wybierz projekt</label>
+    <select class="form-control" id="norms" name="projects">
+      {% for project in projects %}
+        {% if project.id == project_value %}
+          <option value="{{ project.id }}" selected>{{ project.name }}</option>
+        {% else %}
+          <option value="{{ project.id }}">{{ project.name }}</option>
+        {% endif %}
+      {% endfor %}
+    </select>
+  </div>
 {% endblock %}
+

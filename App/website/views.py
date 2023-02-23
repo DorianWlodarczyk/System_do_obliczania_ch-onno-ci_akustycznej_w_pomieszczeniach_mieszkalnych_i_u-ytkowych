@@ -194,8 +194,9 @@ def new_project():
 
 @views.route('/myProjects', methods=['GET', 'POST'])
 def my_Projects():
+    projects = Projects.query.filter_by(user_id=current_user.id).all()
     if request.method == 'POST':
-        note = request.form.get('note')
+
 
         if len(note) < 1:
             flash('Note is too short!', category='error')
@@ -204,7 +205,9 @@ def my_Projects():
             db.session.add(new_note)
             db.session.commit()
             flash('Note added!', category='success')
-    return render_template("myProjects.html", user=current_user)
+
+
+    return render_template("myProjects.html", user=current_user, projects=projects)
 
 
 @views.route('/', methods=['GET', 'POST'])
