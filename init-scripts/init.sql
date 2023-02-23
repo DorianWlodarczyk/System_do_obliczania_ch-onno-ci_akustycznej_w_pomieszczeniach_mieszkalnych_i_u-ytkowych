@@ -50,6 +50,30 @@ CREATE TABLE notes (
 );
 
 
+CREATE TABLE projects (
+    id serial PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id),
+    name varchar(255) UNIQUE not null,
+    norm_id INTEGER not null,
+    length decimal(22,2) not null,
+    width decimal(22,2) not null,
+    height decimal(22,2) not null,
+    floor decimal(22,2) not null,
+    sufit_id INTEGER not null,
+    wall1_id INTEGER not null,
+    wall2_id INTEGER not null,
+    wall3_id INTEGER not null,
+    wall4_id INTEGER not null,
+    furniture TEXT not null,
+    "_120"  decimal(22,2) not null,
+	"_250"  decimal(22,2) not null,
+	"_500"  decimal(22,2) not null,
+	"_1000" decimal(22,2) not null,
+	"_2000" decimal(22,2) not null,
+	"_4000" decimal(22,2) not null
+);
+
+
 insert into norms values
 (default,'Biura wielkoprzestrzenne, pomieszczenia biurowe typu "open space", sale operacyjne banków i urzędów, biura obsługi klienta oraz inne pomieszczenia o podobnym przeznaczeniu',1.1);
 

@@ -101,11 +101,11 @@ def new_project():
 
         print("Full List: ", material_json)
         plain_list = [(int(item['quantity']), item['material'].pkey) for item in material_json]
-        if int(length) <= 0 or int(width) <= 0 or int(height) <= 0:
+        if float(length) <= 0.0 or float(width) <= 0.0 or float(height) <= 0.0:
             flash('Wymiary pomieszczenia musza byc wieksze od zera!', category='error')
         else:
             # Calculate room volume
-            volume = int(length) * int(width) * int(height)
+            volume = float(length) * float(width) * float(height)
 
             # Define frequency list and reverb time list
             frequency_list = ['_120', '_250', '_500', '_1000', '_2000', '_4000']
@@ -116,7 +116,7 @@ def new_project():
             print("norm:", norm[0])
 
             #Obsluga bledow
-            if int(length) <= 0 or int(width) <= 0 or int(height) <= 0:
+            if float(length) <= 0.0 or float(width) <= 0.0 or float(height) <= 0.0:
                 flash('Wymiary pomieszczenia musza byc wieksze od zera!', category='error')
 
             # Initialize final absorption list
