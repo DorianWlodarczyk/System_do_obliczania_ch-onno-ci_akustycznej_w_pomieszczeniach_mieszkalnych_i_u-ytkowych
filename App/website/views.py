@@ -78,7 +78,11 @@ def new_project():
         wall3_id = request.form.get('wall3')
         wall4_id = request.form.get('wall4')
         floor = request.form.get('podloga')
-
+        # for x in [project_name, norm_id, length, width, height, sufit_id, wall1_id, wall2_id, wall3_id, wall4_id, floor]:
+        #     if x:
+        #         pass
+        #     else:
+        #         flash(f'Nie wypelniono: {x}', category='error')
         # Extract the data-material-id attribute from all li elements inside the ul with id="material-other-list"
         # Print quantity and pkey for every member of the list with quantity > 0
 
@@ -96,92 +100,69 @@ def new_project():
         # json_materials = json.dumps(material_json, cls=MaterialEncoder)
 
         print("Full List: ", material_json)
+        if int(length) <= 0 or int(width) <= 0 or int(height) <= 0:
+            flash('Wymiary pomieszczenia musza byc wieksze od zera!', category='error')
+        else:
+            # Calculate room volume
+            volume = int(length) * int(width) * int(height)
 
-        # Obliczenia
-        volume = int(length) * int(width) * int(height)
-        reverb_time = [0, 0, 0, 0, 0, 0]
-        frequency_list = ['_120', '_250', '_500', '_1000', '_2000', '_4000']
-        # Sufit
-        sufit_absorption_list = Material.query.filter_by(pkey=sufit_id).first()
-        sufit_absorption_values = [float(getattr(sufit_absorption_list, f)) for f in frequency_list]
-        print("sufit :", sufit_absorption_values)
-        # ściana 1
-        wall1_absorption_list = Material.query.filter_by(pkey=wall1_id).first()
-        wall1_absorption_values = [float(getattr(wall1_absorption_list, f)) for f in frequency_list]
-        print("1 sciana :", wall1_absorption_values)
-        # ściana 2
-        wall2_absorption_list = Material.query.filter_by(pkey=wall2_id).first()
-        wall2_absorption_values = [float(getattr(wall2_absorption_list, f)) for f in frequency_list]
-        print("2 sciana :", wall2_absorption_values)
-        # ściana 3
-        wall3_absorption_list = Material.query.filter_by(pkey=wall3_id).first()
-        wall3_absorption_values = [float(getattr(wall3_absorption_list, f)) for f in frequency_list]
-        print("3 sciana :", wall3_absorption_values)
-        # ściana 4
-        wall4_absorption_list = Material.query.filter_by(pkey=wall4_id).first()
-        wall4_absorption_values = [float(getattr(wall4_absorption_list, f)) for f in frequency_list]
-        print("4 sciana :", wall4_absorption_values)
-        # Podloga
-        floor_material_list = Material.query.filter_by(pkey=floor).first()
-        floor_material_values = [float(getattr(floor_material_list, f)) for f in frequency_list]
-        print("Podloga :", wall4_absorption_values)
-        # Mnozenie dla kazdego elementu listy przez wymiary
-        for i in range(len(sufit_absorption_values)):
-            sufit_absorption_values[i] *= int(length) * int(width)
-        print("Sufit po przemnozeniu: ", sufit_absorption_values)
+            # Define frequency list and reverb time list
+            frequency_list = ['_120', '_250', '_500', '_1000', '_2000', '_4000']
+            reverb_time = [0] * len(frequency_list)
+            # norm = Norms.query.filter_by(pkey=norm_id)
+            norm = Norms.query.filter_by(pkey=norm_id).with_entities(Norms.absorption_multiplayer).first()
+            print("norm:", norm[0])
 
-        for i in range(len(wall1_absorption_values)):
-            wall1_absorption_values[i] *= int(length) * int(height)
-        print("Sufit po przemnozeniu: ", wall1_absorption_values)
+            #Obsluga bledow
+            if int(length) <= 0 or int(width) <= 0 or int(height) <= 0:
+                flash('Wymiary pomieszczenia musza byc wieksze od zera!', category='error')
 
-        for i in range(len(wall2_absorption_values)):
-            wall2_absorption_values[i] *= int(length) * int(height)
-        print("Sufit po przemnozeniu: ", wall2_absorption_values)
+            # Initialize final absorption list
+            final_absorption_list = [0] * len(frequency_list)
 
-        for i in range(len(wall3_absorption_values)):
-            wall3_absorption_values[i] *= int(height) * int(width)
-        print("Sufit po przemnozeniu: ", wall3_absorption_values)
+            # Loop through surfaces and floor materials, calculate absorption values and add to final absorption list
+            for surface_id in [sufit_id, wall1_id, wall2_id, wall3_id, wall4_id]:
+                surface_absorption_list = Material.query.filter_by(pkey=surface_id).first()
+                surface_absorption_values = [float(getattr(surface_absorption_list, f)) for f in frequency_list]
+                for i in range(len(surface_absorption_values)):
+                    surface_absorption_values[i] *= volume
+                    final_absorption_list[i] += surface_absorption_values[i]
 
-        for i in range(len(wall4_absorption_values)):
-            wall4_absorption_values[i] *= int(height) * int(width)
-        print("Sufit po przemnozeniu: ", wall4_absorption_values)
+            floor_material_list = Material.query.filter_by(pkey=floor).first()
+            floor_material_values = [float(getattr(floor_material_list, f)) for f in frequency_list]
+            for i in range(len(floor_material_values)):
+                floor_material_values[i] *= volume
+                final_absorption_list[i] += floor_material_values[i]
 
-        for i in range(len(floor_material_values)):
-            floor_material_values[i] *= int(length) * int(width)
-        print("Sufit po przemnozeniu: ", floor_material_values)
+            # Calculate absorption coefficient per square meter for the room
+            for i in range(len(final_absorption_list)):
+                final_absorption_list[i] /= volume
 
-        # Sumowanie list
-        final_absorption_list = []
-        for i in range(len(sufit_absorption_values)):
-            sum = sufit_absorption_values[i] + wall1_absorption_values[i] + wall2_absorption_values[i] + \
-                  wall3_absorption_values[i] + wall4_absorption_values[i] + floor_material_values[i]
-            final_absorption_list.append(sum)
-        print("Dodane listy: ", final_absorption_list)
+            if (final_absorption_list[2] >= norm[0] and final_absorption_list[3] >= norm[0] and
+                    final_absorption_list[4] >= norm[0]):
+                flash('Podany projekt spelnia normy!', category='success')
+            else:
+                flash('Podany projekt nie spelnia wybranej normy!', category='error')
+            # Print final absorption list
+            print("Final absorption list:", final_absorption_list)
 
-        # Chlonnosc na 1m2
-        for i in range(len(final_absorption_list)):
-            final_absorption_list[i] /= (int(length) * int(width))
-        print("Odp :", final_absorption_list)
+            # Store the data in a session variable
+            session[project_name] = {
+                'project_name': project_name,
+                'norm_id': norm_id,
+                'length': length,
+                'width': width,
+                'height': height,
+                'sufit_id': sufit_id,
+                'wall1_id': wall1_id,
+                'wall2_id': wall2_id,
+                'wall3_id': wall3_id,
+                'wall4_id': wall4_id,
+                'floor': floor,
+                # 'material_list_quantity': material_json
+            }
+            return redirect(url_for('views.display_new_project', project_name=project_name))
 
-        # Store the data in a session variable
-        session[project_name] = {
-            'project_name': project_name,
-            'norm_id': norm_id,
-            'length': length,
-            'width': width,
-            'height': height,
-            'sufit_id': sufit_id,
-            'wall1_id': wall1_id,
-            'wall2_id': wall2_id,
-            'wall3_id': wall3_id,
-            'wall4_id': wall4_id,
-            'floor': floor,
-            # 'material_list_quantity': material_json
-        }
-
-
-        # Redirect to the page displaying the generated HTML file for the new project
-        return redirect(url_for('views.display_new_project', project_name=project_name))
 
     # Render the newproject.html page with the collected data
     norms = Norms.query.all()

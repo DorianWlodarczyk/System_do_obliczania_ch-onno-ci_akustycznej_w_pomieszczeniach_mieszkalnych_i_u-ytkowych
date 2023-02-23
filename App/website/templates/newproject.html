@@ -139,8 +139,8 @@
     <button type="button" class="btn btn-secondary" id="checker-button">Sprawdź czy pomieszczenie spełnia normy</button> 
 </form>
 <script>
-document.getElementById("submit-button").disabled = false;
-document.getElementById("checker-button").disabled = false;
+document.getElementById("submit-button").disabled = true;
+document.getElementById("checker-button").disabled = true;
 let sufit = document.getElementById("sufit");
 sufit.addEventListener("change", checkInputs);
 let wall_1 = document.getElementById("wall1");
@@ -160,8 +160,9 @@ function checkInputs() {
     document.getElementById("submit-button").disabled = false;
     document.getElementById("checker-button").disabled = false;
   } else {
-    document.getElementById("submit-button").disabled = false;
-    document.getElementById("checker-button").disabled = false;
+    document.getElementById("submit-button").disabled = true;
+    document.getElementById("checker-button").disabled = true;
+    {#podloga.setAttribute("style","background-color:red;");#}
   }
 }
 
