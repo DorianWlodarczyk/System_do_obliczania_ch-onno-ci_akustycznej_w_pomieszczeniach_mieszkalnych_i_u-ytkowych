@@ -13,18 +13,18 @@ from werkzeug.exceptions import BadRequest
 from .models import Notes, Norms, Material
 from . import db
 import json
-from bs4 import BeautifulSoup
+# from bs4 import BeautifulSoup
 
-class MaterialEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, Material):
-            return {'pkey': obj.pkey, 'name': obj.name, 'type': obj.type, '_120': float(obj._120), '_250': float(obj._250), '_500': float(obj._500), '_1000': float(obj._1000), '_2000': float(obj._2000), '_4000': float(obj._4000)}
-        return super().default(obj)
+# class MaterialEncoder(json.JSONEncoder):
+#     def default(self, obj):
+#         if isinstance(obj, Material):
+#             return {'pkey': obj.pkey, 'name': obj.name, 'type': obj.type, '_120': float(obj._120), '_250': float(obj._250), '_500': float(obj._500), '_1000': float(obj._1000), '_2000': float(obj._2000), '_4000': float(obj._4000)}
+#         return super().default(obj)
 
 views = Blueprint('views', __name__)
 app = Flask(__name__)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
-app.json_encoder = MaterialEncoder
+# app.json_encoder = MaterialEncoder
 
 
 @views.route('/newproject/display/<project_name>')
@@ -51,6 +51,7 @@ def display_new_project(project_name):
     length = new_project['length']
     width = new_project['width']
     height = new_project['height']
+
 
     # Render the template with the stored data
     template_name = "display_newproject.html"
@@ -92,9 +93,75 @@ def new_project():
             quantity = request.form.get(f"material_{material.pkey}", 0)
             if int(quantity) > 0:
                 material_json.append({'quantity': quantity, 'material': material})
-        json_materials = json.dumps(material_json, cls=MaterialEncoder)
+        # json_materials = json.dumps(material_json, cls=MaterialEncoder)
 
         print("Full List: ", material_json)
+
+        # Obliczenia
+        volume = int(length) * int(width) * int(height)
+        reverb_time = [0, 0, 0, 0, 0, 0]
+        frequency_list = ['_120', '_250', '_500', '_1000', '_2000', '_4000']
+        # Sufit
+        sufit_absorption_list = Material.query.filter_by(pkey=sufit_id).first()
+        sufit_absorption_values = [float(getattr(sufit_absorption_list, f)) for f in frequency_list]
+        print("sufit :", sufit_absorption_values)
+        # ściana 1
+        wall1_absorption_list = Material.query.filter_by(pkey=wall1_id).first()
+        wall1_absorption_values = [float(getattr(wall1_absorption_list, f)) for f in frequency_list]
+        print("1 sciana :", wall1_absorption_values)
+        # ściana 2
+        wall2_absorption_list = Material.query.filter_by(pkey=wall2_id).first()
+        wall2_absorption_values = [float(getattr(wall2_absorption_list, f)) for f in frequency_list]
+        print("2 sciana :", wall2_absorption_values)
+        # ściana 3
+        wall3_absorption_list = Material.query.filter_by(pkey=wall3_id).first()
+        wall3_absorption_values = [float(getattr(wall3_absorption_list, f)) for f in frequency_list]
+        print("3 sciana :", wall3_absorption_values)
+        # ściana 4
+        wall4_absorption_list = Material.query.filter_by(pkey=wall4_id).first()
+        wall4_absorption_values = [float(getattr(wall4_absorption_list, f)) for f in frequency_list]
+        print("4 sciana :", wall4_absorption_values)
+        # Podloga
+        floor_material_list = Material.query.filter_by(pkey=floor).first()
+        floor_material_values = [float(getattr(floor_material_list, f)) for f in frequency_list]
+        print("Podloga :", wall4_absorption_values)
+        # Mnozenie dla kazdego elementu listy przez wymiary
+        for i in range(len(sufit_absorption_values)):
+            sufit_absorption_values[i] *= int(length) * int(width)
+        print("Sufit po przemnozeniu: ", sufit_absorption_values)
+
+        for i in range(len(wall1_absorption_values)):
+            wall1_absorption_values[i] *= int(length) * int(height)
+        print("Sufit po przemnozeniu: ", wall1_absorption_values)
+
+        for i in range(len(wall2_absorption_values)):
+            wall2_absorption_values[i] *= int(length) * int(height)
+        print("Sufit po przemnozeniu: ", wall2_absorption_values)
+
+        for i in range(len(wall3_absorption_values)):
+            wall3_absorption_values[i] *= int(height) * int(width)
+        print("Sufit po przemnozeniu: ", wall3_absorption_values)
+
+        for i in range(len(wall4_absorption_values)):
+            wall4_absorption_values[i] *= int(height) * int(width)
+        print("Sufit po przemnozeniu: ", wall4_absorption_values)
+
+        for i in range(len(floor_material_values)):
+            floor_material_values[i] *= int(length) * int(width)
+        print("Sufit po przemnozeniu: ", floor_material_values)
+
+        # Sumowanie list
+        final_absorption_list = []
+        for i in range(len(sufit_absorption_values)):
+            sum = sufit_absorption_values[i] + wall1_absorption_values[i] + wall2_absorption_values[i] + \
+                  wall3_absorption_values[i] + wall4_absorption_values[i] + floor_material_values[i]
+            final_absorption_list.append(sum)
+        print("Dodane listy: ", final_absorption_list)
+
+        # Chlonnosc na 1m2
+        for i in range(len(final_absorption_list)):
+            final_absorption_list[i] /= (int(length) * int(width))
+        print("Odp :", final_absorption_list)
 
         # Store the data in a session variable
         session[project_name] = {
