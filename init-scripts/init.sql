@@ -55,6 +55,7 @@ CREATE TABLE projects (
     user_id INTEGER REFERENCES users(id),
     name varchar(255) UNIQUE not null,
     norm_id INTEGER not null,
+    up_to_norm varchar(3) not null,
     length decimal(22,2) not null,
     width decimal(22,2) not null,
     height decimal(22,2) not null,

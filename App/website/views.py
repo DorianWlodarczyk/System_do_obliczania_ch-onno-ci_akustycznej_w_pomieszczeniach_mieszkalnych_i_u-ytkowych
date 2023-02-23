@@ -40,11 +40,11 @@ def display_new_project(project_name):
     wall4_material = Material.query.get(new_project['wall4_id']).name
     floor_material = Material.query.get(new_project['floor']).name
     front_wall_material = Material.query.get(new_project['wall3_id']).name
+    for x in new_project:
+        print(x)
+    # Get the material list from the session variable
 
-     # Get the material list from the session variable
-    # material_list = [] 
-    # material_list = new_project['material_list_quantity']
-    # print("Full List: ", material_list)
+    # print("Full List: ", furniture)
 
 
     # Retrieve the project name, length, width, and height from the session variable
@@ -52,10 +52,12 @@ def display_new_project(project_name):
     width = new_project['width']
     height = new_project['height']
 
+    up_to_norm = new_project['up_to_norm']
+
 
     # Render the template with the stored data
     template_name = "display_newproject.html"
-    rendered_template = render_template(template_name, project_name=project_name, norm_id=norm, 
+    rendered_template = render_template(template_name, project_name=project_name, norm_id=norm, up_to_norm=up_to_norm,
             new_project=new_project, norm=norm, sufit=sufit, wall1_material=wall1_material, wall2_material=wall2_material, 
             front_wall_material=front_wall_material, height=height, length=length, width=width, back_wall_material = wall4_material, floor_material = floor_material)
 
@@ -151,33 +153,37 @@ def new_project():
             for i in range(len(final_absorption_list)):
                 final_absorption_list[i] /= volume
             list_of_furniture_json = json.dumps(list_of_furniture)
-            new_projekt = Projects(user_id=current_user.id,name=project_name,norm_id=norm_id, length=length, width=width,height=height,floor=floor,sufit_id=sufit_id,wall1_id=wall1_id,wall2_id=wall2_id,wall3_id=wall3_id,wall4_id=wall4_id,furniture=list_of_furniture_json,_120=final_absorption_list[0],_250=final_absorption_list[1],_500=final_absorption_list[2],_1000=final_absorption_list[3],_2000=final_absorption_list[4],_4000=final_absorption_list[5])
+            if (final_absorption_list[2] >= norm[0] and final_absorption_list[3] >= norm[0] and
+                    final_absorption_list[4] >= norm[0]):
+                up_to_norm = 'Tak'
+            else:
+                up_to_norm = 'Nie'
+
+            new_projekt = Projects(user_id=current_user.id,name=project_name,norm_id=norm_id, up_to_norm=up_to_norm,length=length, width=width,height=height,floor=floor,sufit_id=sufit_id,wall1_id=wall1_id,wall2_id=wall2_id,wall3_id=wall3_id,wall4_id=wall4_id,furniture=list_of_furniture_json,_120=final_absorption_list[0],_250=final_absorption_list[1],_500=final_absorption_list[2],_1000=final_absorption_list[3],_2000=final_absorption_list[4],_4000=final_absorption_list[5])
             db.session.add(new_projekt)
             db.session.commit()
 
-            if (final_absorption_list[2] >= norm[0] and final_absorption_list[3] >= norm[0] and
-                    final_absorption_list[4] >= norm[0]):
-                flash('Podany projekt spelnia normy!', category='success')
-                print("Final absorption list:", final_absorption_list)
 
-                # Store the data in a session variable
-                session[project_name] = {
-                    'project_name': project_name,
-                    'norm_id': norm_id,
-                    'length': length,
-                    'width': width,
-                    'height': height,
-                    'sufit_id': sufit_id,
-                    'wall1_id': wall1_id,
-                    'wall2_id': wall2_id,
-                    'wall3_id': wall3_id,
-                    'wall4_id': wall4_id,
-                    'floor': floor,
-                    # 'material_list_quantity': material_json
-                }
-                return redirect(url_for('views.display_new_project', project_name=project_name))
-            else:
-                flash('Podany projekt nie spelnia wybranej normy!', category='error')
+            # flash('Podany projekt spelnia normy!', category='success')
+            print("Final absorption list:", final_absorption_list)
+
+            # Store the data in a session variable
+            session[project_name] = {
+                'project_name': project_name,
+                'norm_id': norm_id,
+                'up_to_norm': up_to_norm,
+                'length': length,
+                'width': width,
+                'height': height,
+                'sufit_id': sufit_id,
+                'wall1_id': wall1_id,
+                'wall2_id': wall2_id,
+                'wall3_id': wall3_id,
+                'wall4_id': wall4_id,
+                'floor': floor,
+                # 'material_list_quantity': material_json
+            }
+            return redirect(url_for('views.display_new_project', project_name=project_name))
 
 
 

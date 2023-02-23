@@ -41,6 +41,7 @@ class Projects(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     name = db.Column(db.String(255), unique=True, nullable=False)
     norm_id = db.Column(db.Integer, nullable=False)
+    up_to_norm = db.Column(db.String(3), nullable=False)
     length = db.Column(db.Numeric(22,2), nullable=False)
     width = db.Column(db.Numeric(22,2), nullable=False)
     height = db.Column(db.Numeric(22,2), nullable=False)
