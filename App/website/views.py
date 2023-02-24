@@ -14,13 +14,6 @@ import os
 from .models import  Norms, Material, Projects
 from . import db
 import json
-from bs4 import BeautifulSoup
-
-# class MaterialEncoder(json.JSONEncoder):
-#     def default(self, obj):
-#         if isinstance(obj, Material):
-#             return {'pkey': obj.pkey, 'name': obj.name, 'type': obj.type, '_120': float(obj._120), '_250': float(obj._250), '_500': float(obj._500), '_1000': float(obj._1000), '_2000': float(obj._2000), '_4000': float(obj._4000)}
-#         return super().default(obj)
 
 views = Blueprint('views', __name__)
 app = Flask(__name__)
@@ -57,11 +50,7 @@ def download_pdf():
 
 def prepare_html(html):
 
-
     return html
-
-
-
 
 @views.route('/newproject/display/<project_name>')
 @login_required
@@ -96,7 +85,7 @@ def display_new_project(project_name):
 @login_required
 def edit_project(project_name=''):
     if request.method == 'POST':
-        # print(request.form)
+
         # Handle form submission
         project_name = request.form.get('projectName')
         norm_id = request.form.get('norms')
@@ -109,13 +98,6 @@ def edit_project(project_name=''):
         wall3_id = request.form.get('wall3')
         wall4_id = request.form.get('wall4')
         floor = request.form.get('podloga')
-        # for x in [project_name, norm_id, length, width, height, sufit_id, wall1_id, wall2_id, wall3_id, wall4_id, floor]:
-        #     if x:
-        #         pass
-        #     else:
-        #         flash(f'Nie wypelniono: {x}', category='error')
-        # Extract the data-material-id attribute from all li elements inside the ul with id="material-other-list"
-        # Print quantity and pkey for every member of the list with quantity > 0
 
         material_list_quantity = request.form.getlist('material-other-list')
 
@@ -188,12 +170,39 @@ def edit_project(project_name=''):
             else:
                 up_to_norm = 'Nie'
 
-            new_projekt = Projects(user_id=current_user.id,name=project_name,norm_id=norm_id, up_to_norm=up_to_norm,length=length, width=width,height=height,floor=floor,sufit_id=sufit_id,wall1_id=wall1_id,wall2_id=wall2_id,wall3_id=wall3_id,wall4_id=wall4_id,furniture=list_of_furniture_json,_120=final_absorption_list[0],_250=final_absorption_list[1],_500=final_absorption_list[2],_1000=final_absorption_list[3],_2000=final_absorption_list[4],_4000=final_absorption_list[5])
-            db.session.add(new_projekt)
-            db.session.commit()
+            existing_project = Projects.query.filter_by(name=project_name, user_id=current_user.id).first()
+
+            if existing_project:
+                # If the project already exists, update its attributes
+                existing_project.norm_id = norm_id
+                existing_project.up_to_norm = up_to_norm
+                existing_project.length = length
+                existing_project.width = width
+                existing_project.height = height
+                existing_project.floor = floor
+                existing_project.sufit_id = sufit_id
+                existing_project.wall1_id = wall1_id
+                existing_project.wall2_id = wall2_id
+                existing_project.wall3_id = wall3_id
+                existing_project.wall4_id = wall4_id
+                existing_project.furniture = list_of_furniture_json
+                existing_project._120 = final_absorption_list[0]
+                existing_project._250 = final_absorption_list[1]
+                existing_project._500 = final_absorption_list[2]
+                existing_project._1000 = final_absorption_list[3]
+                existing_project._2000 = final_absorption_list[4]
+                existing_project._4000 = final_absorption_list[5]
+                db.session.commit()
+                flash('Projekt został zaktualizowany!')
+            else:
+                # If the project does not exist, create a new one
+                new_projekt = Projects(user_id=current_user.id, name=project_name, norm_id=norm_id, up_to_norm=up_to_norm, length=length, width=width, height=height, floor=floor, sufit_id=sufit_id, wall1_id=wall1_id, wall2_id=wall2_id, wall3_id=wall3_id, wall4_id=wall4_id, furniture=list_of_furniture_json, _120=final_absorption_list[0], _250=final_absorption_list[1], _500=final_absorption_list[2], _1000=final_absorption_list[3], _2000=final_absorption_list[4], _4000=final_absorption_list[5])
+                db.session.add(new_projekt)
+                db.session.commit()
+                flash('Projekt został dodany!')
 
 
-            # flash('Podany projekt spelnia normy!', category='success')
+            flash('Podany projekt spelnia normy!', category='success')
             print("Final absorption list:", final_absorption_list)
 
             return redirect(url_for('views.display_new_project', project_name=project_name))
