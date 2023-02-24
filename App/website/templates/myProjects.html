@@ -35,13 +35,18 @@
   displayProjectForm.addEventListener("submit", function(event) {
     event.preventDefault();
     var selectedValue = document.getElementById("selected-project-input").value;
-    window.location.href = "/newproject/display/" + selectedValue;
+    if (selectedValue != 'None' && selectedValue != ""){
+      window.location.href = "/newproject/display/" + selectedValue;
+    }
+
   });
    var deleteProject = document.getElementById("delete_project");
   deleteProject.addEventListener("submit", function(event) {
     event.preventDefault();
     var selectedValue = document.getElementById("selected-project-input").value;
-    window.location.href = "/delete/" + selectedValue;
+    if (selectedValue != "None" && selectedValue != ""){
+        window.location.href = "/delete/" + selectedValue;
+     }
   });
 </script>
 
