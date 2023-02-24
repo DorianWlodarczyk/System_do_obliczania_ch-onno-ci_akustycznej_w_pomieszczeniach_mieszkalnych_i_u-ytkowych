@@ -41,16 +41,16 @@ def download_pdf():
         }
         temp = []
         for x in html.splitlines(keepends=True):
-            if x.find('<button type="submit">') > 0:
+            if x.find('<button') > 0:
                 continue
             else:
                 temp.append(x)
 
 
         # version for linux
-        # config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
+        config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
         # Windows
-        config = pdfkit.configuration(wkhtmltopdf='C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe')
+        # config = pdfkit.configuration(wkhtmltopdf='C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe')
         pdf = pdfkit.from_string(''.join(temp), options=pdfkit_options, configuration=config)
         response = make_response(pdf)
         response.headers["Content-Type"] = "application/pdf"
@@ -400,7 +400,7 @@ def home():
 
 
 
-@views.route('/delete/<project_name>', methods=['POST'])
+@views.route('/delete/<project_name>', methods=['POST','GET'])
 @login_required
 def delete_project(project_name):
     selected_project = request.form.get('project_name')

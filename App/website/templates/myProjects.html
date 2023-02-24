@@ -14,15 +14,15 @@
   </select>
 </div>
 
+
 <form id="display-project-form" method="post" action="{{ url_for('views.display_new_project', project_name=selected_project) }}">
-  <input type="hidden" name="selected_project" id="selected-project-input">
+  <input type="hidden" name="selected_project" id="selected-project-input" value="{{selected_project}}">
   <button type="submit" class="btn btn-secondary">Wyświetl projekt</button>
 </form>
 <form id="delete_project" method="post" action="{{ url_for('views.delete_project', project_name=selected_project) }}">
-  <input type="hidden" name="selected_project" id="selected-project-input" >
+  <input type="hidden" name="selected_project1" id="selected-project-input1" >
   <button type="submit">Usuń projekt</button>
 </form>
-
 
 <script>
  function updateSelectedProject() {
@@ -36,6 +36,15 @@
     var selectedValue = document.getElementById("selected-project-input").value;
     window.location.href = "/newproject/display/" + selectedValue;
   });
+   var deleteProject = document.getElementById("delete_project");
+  deleteProject.addEventListener("submit", function(event) {
+    event.preventDefault();
+    var selectedValue = document.getElementById("selected-project-input").value;
+    window.location.href = "/delete/" + selectedValue;
+  });
 
 </script>
+
+
+
 {% endblock %}
