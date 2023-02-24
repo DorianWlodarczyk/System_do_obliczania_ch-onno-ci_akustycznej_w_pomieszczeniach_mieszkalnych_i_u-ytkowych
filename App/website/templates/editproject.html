@@ -57,7 +57,7 @@
         ></input> 
     </div>
 
-      <button type="button" onclick="calculate_wall_area()" class="btn btn-primary">Oblicz wymiary pomieszczenia </button>
+      <button type="button" onclick="calculate_wall_area()" class="btn btn-secondary">Oblicz wymiary pomieszczenia </button>
       <div id="volume"></div>
       <div id="sufit_wymiar"></div>
       <div id="prawa"></div>
@@ -142,11 +142,9 @@
 </div>
   <br/>
     <button type="submit" class="btn btn-secondary" id="submit-button">Zapisz projekt</button>
-    <button type="button" class="btn btn-secondary" id="checker-button">Sprawdź czy pomieszczenie spełnia normy</button> 
 </form>
 <script>
 document.getElementById("submit-button").enabled = true;
-document.getElementById("checker-button").enabled = true;
 let sufit = document.getElementById("sufit");
 sufit.addEventListener("change", checkInputs);
 let wall_1 = document.getElementById("wall1");
@@ -165,11 +163,9 @@ podloga.addEventListener("change", checkInputs);
 function checkInputs() {
   if (wall_1.value !== "null" && wall_2.value !== "null" && wall_3.value !== "null" && wall_4.value !== "null" && sufit.value !=="null" && podloga.value !== "null") {
     document.getElementById("submit-button").enabled = true;
-    document.getElementById("checker-button").enabled = true;
+
   } else {
     document.getElementById("submit-button").enabled = true;
-    document.getElementById("checker-button").enabled = true;
-    {#podloga.setAttribute("style","background-color:red;");#}
   }
 }
 
