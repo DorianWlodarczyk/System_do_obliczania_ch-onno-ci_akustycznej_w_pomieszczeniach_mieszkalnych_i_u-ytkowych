@@ -28,6 +28,7 @@ app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 
 @views.route('/newproject/display/<project_name>')
+@login_required
 def display_new_project(project_name):
     # Get the project from the database based on the project_name parameter
     project = Projects.query.filter_by(name=project_name).first()
@@ -52,8 +53,17 @@ def display_new_project(project_name):
     # Return the rendered template as a response
     return rendered_template
 
+
+@views.route('/edit/<project_name>')
+@login_required
+def edit_project(project_name):
+    # project = Projects.query.filter_by(name=project_name).first()
+    return render_template('newproject.html', project_name=project_name)
+
+
 @views.route('/newproject', methods=['GET', 'POST'])
-def new_project():
+@login_required
+def new_project(project_name=''):
     if request.method == 'POST':
         # print(request.form)
         # Handle form submission
