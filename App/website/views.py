@@ -366,7 +366,7 @@ def my_Projects():
     projects = Projects.query.filter_by(user_id=current_user.id).all()
 
     if request.method == 'POST':
-
+        pass
 
     return render_template("myProjects.html", user=current_user, projects=projects)
 
@@ -374,16 +374,16 @@ def my_Projects():
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
-    if request.method == 'POST':
-        note = request.form.get('note')
-
-        if len(note) < 1:
-            flash('Note is too short!', category='error')
-        else:
-            new_note = Notes(data=note, user_id=current_user.id)
-            db.session.add(new_note)
-            db.session.commit()
-            flash('Note added!', category='success')
+    # if request.method == 'POST':
+    #     note = request.form.get('note')
+    #
+    #     if len(note) < 1:
+    #         flash('Note is too short!', category='error')
+    #     else:
+    #         new_note = Notes(data=note, user_id=current_user.id)
+    #         db.session.add(new_note)
+    #         db.session.commit()
+    #         flash('Note added!', category='success')
 
     return render_template("home.html", user=current_user)
 
