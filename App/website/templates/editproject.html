@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+{% block title %}Measurement Form{% endblock %}
+{% block content %}
+
+<form method="POST" >
+  <h3 align="center" style="font-size: 50px">Projekt pomieszczenia</h3>
+  <div class="form-group" >
+    <label style="font-size: 30px;  " for="projectName">Nazwa projektu:</label>
+    <input type="text" class="form-control" id="projectName" placeholder="Wpisz nazwę projektu" name="projectName" value="{{ value }}"> {{project_name}}</input>
+  </div>
+  <div class="form-group">
+    <label style="font-size: 20px" for="norms">Wybierz normę budowlaną</label>
+    <select class="form-control" id="norms" name="norms">
+      {% for norm in norms %}
+        {% if norm.id == norms_value %}
+          <option value="{{ norm.pkey }}" selected>{{ norm.name }}</option>
+        {% else %}
+          <option value="{{ norm.pkey }}">{{ norm.name }}</option>
+        {% endif %}
+      {% endfor %}
+    </select>
+  </div>
+    <div class="form-group">
+      <label style="font-size: 20px" for="length">Długość pomieszczenia</label>
+      <input
+        type="number"
+        step="0.01"
+        class="form-control"
+        id="length"
+        name="length"
+        placeholder="Wpisz długość pomieszczenia"
+      >{{length}}</input> 
+    </div>
+    <div class="form-group">
+      <label style="font-size: 20px" for="width">Szerokość pomieszczenia</label>
+      <input
+        type="number"
+        step="0.01"
+        class="form-control"
+        id="width"
+        name="width"
+        value=""
+        placeholder="Wpisz szerokość pomieszczenia"
+        >{{width}}</input> 
+    </div>
+    <div class="form-group">
+      <label style="font-size: 20px" for="height">Wysokość pomieszczenia</label>
+      <input
+        type="number"
+        step="0.01"
+        class="form-control"
+        id="height"
+        name="height"
+        value=""
+        placeholder="Wpisz wysokość pomieszczenia"
+        >{{width}}</input> 
+    </div>
+
+      <button type="button" onclick="calculate_wall_area()" class="btn btn-primary">Oblicz wymiary pomieszczenia </button>
+      <div id="volume"></div>
+      <div id="sufit_wymiar"></div>
+      <div id="prawa"></div>
+      <div id="lewa"></div>
+      <div id="na_wprost"></div>
+      <div id="tyl"></div>
+
+
+
+    <div class="form-group">
+      <label style="font-size: 20px" for="sufit">Wybierz materiał dla sufitu</label>
+      <select class="form-control" id="sufit" name="sufit" >
+          <option value="null" selected>------------</option>
+          {% for material_ceiling in materials_ceiling %}
+              <option value="{{ material_ceiling.pkey }}">{{ material_ceiling.name }}</option>
+          {% endfor %}
+      </select>
+    </div>
+    <div id="selected-items"></div>
+
+  <div class="form-group">
+      <label style="font-size: 20px" for="norms">Wybierz materiał ściany prawej</label>
+      <select class="form-control" id="wall1" name="wall1">
+      <option value="null" selected>------------</option>
+          {% for material_wall in materials_walls %}
+              <option value="{{ material_wall.pkey }}" >{{ material_wall.name }}</option>
+          {% endfor %}
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label style="font-size: 20px" for="norms">Wybierz materiał ściany lewej</label>
+      <select class="form-control" id="wall2" name="wall2">
+      <option value=null selected>------------</option>
+          {% for material_wall in materials_walls %}
+              <option value="{{ material_wall.pkey }}" >{{ material_wall.name }}</option>
+          {% endfor %}
+      </select>
+    </div>
+
+  <div class="form-group">
+      <label style="font-size: 20px" for="norms">Wybierz materiał ściany na wprost</label>
+      <select class="form-control" id="wall3" name="wall3">
+      <option value="null" selected>------------</option>
+          {% for material_wall in materials_walls %}
+              <option value="{{ material_wall.pkey }}" >{{ material_wall.name }}</option>
+          {% endfor %}
+      </select>
+    </div>
+
+  <div class="form-group">
+      <label style="font-size: 20px" for="norms">Wybierz materiał ściany z tyłu</label>
+      <select class="form-control" id="wall4" name="wall4">
+      <option value="null" selected>------------</option>
+          {% for material_wall in materials_walls %}
+              <option value="{{ material_wall.pkey }}" >{{ material_wall.name }}</option>
+          {% endfor %}
+      </select>
+    </div>
+
+  <div class="form-group">
+      <label style="font-size: 20px" for="flor">Wybierz materiał dla podłogi</label>
+      <select class="form-control" id="podloga" name="podloga">
+      <option value="null" selected>------------</option>
+          {% for material_floor in material_floor %}
+              <option value="{{ material_floor.pkey }}">{{ material_floor.name }}</option>
+          {% endfor %}
+      </select>
+  </div>
+
+  <div id="selected-materials">
+    <h4>Wybrane wyposażenie wnetrza:</h4>
+    <ul id="material-other-list"></ul>
+  <label style="font-size: 20px" for="Inne">Dodaj wyposażenie wnętrza:</label>
+  {% for material_other in material_other %}
+  <li id="material_li">
+      <input type="number" value="0" id="{{ material_other.pkey }}" name="material_{{ material_other.pkey }}" min="0" max="100">
+      {{ material_other.name }}
+  </li>
+  {% endfor %}
+  </select>
+</div>
+  <br/>
+    <button type="submit" class="btn btn-secondary" id="submit-button">Zapisz projekt</button>
+    <button type="button" class="btn btn-secondary" id="checker-button">Sprawdź czy pomieszczenie spełnia normy</button> 
+</form>
+<script>
+document.getElementById("submit-button").disabled = true;
+document.getElementById("checker-button").disabled = true;
+let sufit = document.getElementById("sufit");
+sufit.addEventListener("change", checkInputs);
+let wall_1 = document.getElementById("wall1");
+wall_1.addEventListener("change", checkInputs);
+let wall_2 = document.getElementById("wall2");
+wall_2.addEventListener("change", checkInputs);
+let wall_3 = document.getElementById("wall3");
+wall_3.addEventListener("change", checkInputs);
+const wall_4 = document.getElementById("wall4");
+wall_4.addEventListener("change", checkInputs);
+const podloga = document.getElementById("podloga");
+podloga.addEventListener("change", checkInputs);
+
+
+
+function checkInputs() {
+  if (wall_1.value !== "null" && wall_2.value !== "null" && wall_3.value !== "null" && wall_4.value !== "null" && sufit.value !=="null" && podloga.value !== "null") {
+    document.getElementById("submit-button").disabled = false;
+    document.getElementById("checker-button").disabled = false;
+  } else {
+    document.getElementById("submit-button").disabled = true;
+    document.getElementById("checker-button").disabled = true;
+    {#podloga.setAttribute("style","background-color:red;");#}
+  }
+}
+
+function calculate_wall_area() {
+        const length = document.getElementById("length").value;
+        const width = document.getElementById("width").value;
+        const height = document.getElementById("height").value;
+        const volume = length * height * width;
+        const prawa = length * height;
+        const lewa = length * height;
+        const na_wprost = width * height;
+        const tyl = width * height;
+        const sufit_wymiar = length * width;
+      document.getElementById("volume").innerHTML = "Objętość pomieszczenia: " + volume + "m³";
+      document.getElementById("prawa").innerHTML = "Wymiar ściany prawej: " + prawa + "m²";
+      document.getElementById("lewa").innerHTML = "Wymiar ściany lewej: " + lewa + "m²";
+      document.getElementById("na_wprost").innerHTML = "Wymiar ściany na wprost: " + na_wprost + "m²";
+      document.getElementById("tyl").innerHTML = "Wymiar ściany z tyłu: " + tyl + "m²";
+      document.getElementById("sufit_wymiar").innerHTML = "Pole powierzchni: " + sufit_wymiar + "m²";
+        }
+
+
+       function addMaterialOther(element) {
+        var materialId = element.value;
+        var materialName = element.text;
+        var selectedMaterials = document.getElementById("material-other-list");
+        var newMaterial = document.createElement("li");
+        var removeButton = document.createElement("button");
+        removeButton.innerHTML = "x";
+        removeButton.setAttribute("onclick", "removeMaterial(this)");
+        newMaterial.innerHTML = materialName;
+        newMaterial.setAttribute("name", "material_list")
+        newMaterial.setAttribute("data-material-id", materialId);
+        newMaterial.appendChild(removeButton);
+        selectedMaterials.appendChild(newMaterial);
+    }
+
+    function removeMaterial(element) {
+        element.parentNode.remove();
+    }
+
+  const normsSelector = document.getElementById('norms-selector');
+  normsSelector.addEventListener('change', (event) => {
+  const selectedNormId = event.target.value;
+  console.log(selectedNormId); // replace with your desired code
+});
+</script>
+
+{% endblock %}

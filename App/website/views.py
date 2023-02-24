@@ -57,8 +57,34 @@ def display_new_project(project_name):
 @views.route('/edit/<project_name>')
 @login_required
 def edit_project(project_name):
+
+    # Get the project from the database based on the project_name parameter
+    project = Projects.query.filter_by(name=project_name).first()
+
+    # Render the editproject.html page with the collected data
+    norms = Norms.query.all()
+    materials_ceiling = Material.query.filter_by(type='Sufit').all()
+    material_walls = Material.query.filter_by(type='Ściany').all()
+    material_floor = Material.query.filter_by(type='Podłogi').all()
+    material_other = Material.query.filter_by(type='Inne').all()
+
+    # Get the related objects from the database based on the stored IDs in the project
+    norm = Norms.query.get(project.norm_id).name
+    sufit = Material.query.get(project.sufit_id).name
+    wall1_material = Material.query.get(project.wall1_id).name
+    wall2_material = Material.query.get(project.wall2_id).name
+    wall4_material = Material.query.get(project.wall4_id).name
+    floor_material = Material.query.get(project.floor).name
+    front_wall_material = Material.query.get(project.wall3_id).name
+
     # project = Projects.query.filter_by(name=project_name).first()
-    return render_template('newproject.html', project_name=project_name)
+    template_name = "editproject.html"
+    rendered_template = render_template(template_name,user=current_user, project_name=project_name, norm_id=norm, up_to_norm=project.up_to_norm,
+            new_project=project, norm=norm, sufit=sufit, wall1_material=wall1_material, wall2_material=wall2_material,
+            front_wall_material=front_wall_material, height=project.height, length=project.length, width=project.width, back_wall_material = wall4_material, floor_material = floor_material, furniture=project.furniture, user=current_user, norms=norms, materials_ceiling=materials_ceiling,
+                           materials_walls=material_walls, material_floor=material_floor, material_other=material_other)
+    
+    return rendered_template
 
 
 @views.route('/newproject', methods=['GET', 'POST'])
