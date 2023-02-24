@@ -29,37 +29,26 @@ app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 @views.route('/newproject/display/<project_name>')
 def display_new_project(project_name):
-    # Get the stored data from the session variable for the given project name
-    new_project = session.get(project_name)
+    # Get the project from the database based on the project_name parameter
+    project = Projects.query.filter_by(name=project_name).first()
 
-    # Get the related objects from the database based on the stored IDs
-    norm = Norms.query.get(new_project['norm_id']).name
-    sufit = Material.query.get(new_project['sufit_id']).name
-    wall1_material = Material.query.get(new_project['wall1_id']).name
-    wall2_material = Material.query.get(new_project['wall2_id']).name
-    wall4_material = Material.query.get(new_project['wall4_id']).name
-    floor_material = Material.query.get(new_project['floor']).name
-    front_wall_material = Material.query.get(new_project['wall3_id']).name
-    for x in new_project:
-        print(x)
-    # Get the material list from the session variable
+    # Get the related objects from the database based on the stored IDs in the project
+    norm = Norms.query.get(project.norm_id).name
+    sufit = Material.query.get(project.sufit_id).name
+    wall1_material = Material.query.get(project.wall1_id).name
+    wall2_material = Material.query.get(project.wall2_id).name
+    wall4_material = Material.query.get(project.wall4_id).name
+    floor_material = Material.query.get(project.floor).name
+    front_wall_material = Material.query.get(project.wall3_id).name
 
-    # print("Full List: ", furniture)
-
-
-    # Retrieve the project name, length, width, and height from the session variable
-    length = new_project['length']
-    width = new_project['width']
-    height = new_project['height']
-
-    up_to_norm = new_project['up_to_norm']
 
 
     # Render the template with the stored data
     template_name = "display_newproject.html"
-    rendered_template = render_template(template_name, project_name=project_name, norm_id=norm, up_to_norm=up_to_norm,
-            new_project=new_project, norm=norm, sufit=sufit, wall1_material=wall1_material, wall2_material=wall2_material, 
-            front_wall_material=front_wall_material, height=height, length=length, width=width, back_wall_material = wall4_material, floor_material = floor_material)
+    rendered_template = render_template(template_name, project_name=project_name, norm_id=norm, up_to_norm=project.up_to_norm,
+            new_project=project, norm=norm, sufit=sufit, wall1_material=wall1_material, wall2_material=wall2_material,
+            front_wall_material=front_wall_material,
+            height=project.height, length=project.length, width=project.width, back_wall_material = wall4_material, floor_material = floor_material, furniture=project.furniture)
 
     # Return the rendered template as a response
     return rendered_template
