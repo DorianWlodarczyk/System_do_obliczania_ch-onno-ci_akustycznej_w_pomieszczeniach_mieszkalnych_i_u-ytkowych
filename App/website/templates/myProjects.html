@@ -2,7 +2,7 @@
 
 
 <div class="form-group">
-  <label for="norms">Wybierz normę budowlaną</label>
+  <label style="font-size: 30px" for="norms">Wybierz projekt</label>
   <select class="form-control" id="projects" name="selected_project" onchange="updateSelectedProject() ">
   <option value = "None">Wybierz opcje</option>
   {% for project in projects %}
@@ -22,7 +22,7 @@
 </form>
 <form id="delete_project" method="post" action="{{ url_for('views.delete_project', project_name=selected_project) }}">
   <input type="hidden" name="selected_project1" id="selected-project-input1" >
-  <button type="submit">Usuń projekt</button>
+  <button style="margin-top: 7px" type="submit" class="btn btn-secondary">Usuń projekt</button>
 </form>
 
 <script>
