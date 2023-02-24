@@ -10,7 +10,7 @@ import pdfkit
 from sqlalchemy.dialects.postgresql import psycopg2
 from werkzeug.exceptions import BadRequest
 
-from .models import Notes, Norms, Material, Projects
+from .models import  Norms, Material, Projects
 from . import db
 import json
 # from bs4 import BeautifulSoup
@@ -227,15 +227,6 @@ def my_Projects():
     if request.method == 'POST':
 
 
-        if len(note) < 1:
-            flash('Note is too short!', category='error')
-        else:
-            new_note = Notes(data=note, user_id=current_user.id)
-            db.session.add(new_note)
-            db.session.commit()
-            flash('Note added!', category='success')
-
-
     return render_template("myProjects.html", user=current_user, projects=projects)
 
 
@@ -256,17 +247,17 @@ def home():
     return render_template("home.html", user=current_user)
 
 
-@views.route('/delete-note', methods=['POST'])
-def delete_note():
-    note = json.loads(request.data)
-    noteId = note['noteId']
-    note = Notes.query.get(noteId)
-    if note:
-        if note.user_id == current_user.id:
-            db.session.delete(note)
-            db.session.commit()
-
-    return jsonify({})
+# @views.route('/delete-note', methods=['POST'])
+# def delete_note():
+#     note = json.loads(request.data)
+#     noteId = note['noteId']
+#     note = Notes.query.get(noteId)
+#     if note:
+#         if note.user_id == current_user.id:
+#             db.session.delete(note)
+#             db.session.commit()
+#
+#     return jsonify({})
 
 # To co poniżej przekopiowane ze starego projektu, trzeba zmodyfikować
 
