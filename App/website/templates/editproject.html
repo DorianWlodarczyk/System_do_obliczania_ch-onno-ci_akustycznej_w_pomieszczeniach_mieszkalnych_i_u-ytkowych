@@ -128,16 +128,16 @@
       </select>
   </div>
 
-  <div id="selected-materials">
+  <div id="selected_materials">
     <h4>Wybrane wyposażenie wnetrza:</h4>
     <ul id="material-other-list"></ul>
   <label style="font-size: 20px" for="Inne">Dodaj wyposażenie wnętrza:</label>
   {% for material_other in material_other %}
   <li id="material_li">
-      <input type="number" value={{ furniture_quantity }} id="{{ material_other.pkey }}" name="material_{{ material_other.pkey }}" min="0" max="100">
-      {{ material_other.name }}</input>
+      <input type="number" value="{{ furniture_dict.get(material_other.name, 0) }}" id="{{ material_other.pkey }}" name="material_{{ material_other.pkey }}" min="0" max="100" class="material_input" oninput="updateFurniture(this.id, this.value)">
+      {{ material_other.name }}
   </li>
-  {% endfor %}
+{% endfor %}
   </select>
 </div>
   <br/>
@@ -171,6 +171,14 @@ function checkInputs() {
     document.getElementById("checker-button").enabled = true;
     {#podloga.setAttribute("style","background-color:red;");#}
   }
+}
+
+function updateFurniture(material_id, quantity) {
+    // Update furniture_dict with the new value
+    furniture_dict[material_id] = parseInt(quantity);
+
+    // Log the updated dictionary to the console (for testing purposes)
+    console.log(furniture_dict);
 }
 
 function calculate_wall_area() {
