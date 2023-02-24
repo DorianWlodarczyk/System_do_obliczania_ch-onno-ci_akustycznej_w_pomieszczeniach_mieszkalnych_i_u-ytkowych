@@ -42,13 +42,6 @@ CREATE TABLE users (
 
 
 
-CREATE TABLE notes (
-    id SERIAL PRIMARY KEY,
-    data VARCHAR(10000),
-    date TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    user_id INTEGER REFERENCES users(id)
-);
-
 
 CREATE TABLE projects (
     id serial PRIMARY KEY,

@@ -12,8 +12,8 @@ def create_app():
     with app.app_context():
         app.config['SECRET_KEY'] = 'hjshjhdjah kjshkjdhjs'
         #app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:12345@localhost:5432/app_akustyka'
-        # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@db:5432/app_akustyka'
+        #app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:12345@localhost:5432/app_akustyka'
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@db:5432/app_akustyka'
         db.init_app(app)
 
         from .views import views
