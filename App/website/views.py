@@ -140,7 +140,7 @@ def new_project():
             # Calculate absorption coefficient per square meter for the room
             for i in range(len(final_absorption_list)):
                 final_absorption_list[i] /= volume
-            list_of_furniture_json = json.dumps(list_of_furniture)
+            list_of_furniture_json = json.dumps(list_of_furniture, ensure_ascii=False)
             if (final_absorption_list[2] >= norm[0] and final_absorption_list[3] >= norm[0] and
                     final_absorption_list[4] >= norm[0]):
                 up_to_norm = 'Tak'
