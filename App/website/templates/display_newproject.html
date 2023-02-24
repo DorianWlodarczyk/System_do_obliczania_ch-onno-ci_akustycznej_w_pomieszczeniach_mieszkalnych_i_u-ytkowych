@@ -6,6 +6,8 @@
   <body>
     <h1>Project Data</h1>
     <ul>
+      <li>Norma: {{ norm }}</li>
+      <li>Spełnia normę: {{ up_to_norm }}</li>
       <li>Wysokość: {{ height }}</li>
       <li>Długość: {{ length }}</li>
       <li>Szerokość: {{ width }}</li>
@@ -23,5 +25,7 @@
         {% endfor %}
       </ul>
     </ul>
+
+  <button type="button"> Get PDF</button>
   </body>
 </html>
