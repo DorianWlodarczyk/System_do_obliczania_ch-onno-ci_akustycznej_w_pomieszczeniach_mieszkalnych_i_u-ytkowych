@@ -6,7 +6,7 @@
   <h3 align="center" style="font-size: 50px">Projekt pomieszczenia</h3>
   <div class="form-group" >
     <label style="font-size: 30px;  " for="projectName">Nazwa projektu:</label>
-    <input type="text" class="form-control" id="projectName" placeholder="Wpisz nazwę projektu" name="projectName" value="{{ value }}"> {{project_name}}</input>
+    <input type="text" class="form-control" id="projectName" placeholder="Wpisz nazwę projektu" name="projectName" value= {{project_name}}></input>
   </div>
   <div class="form-group">
     <label style="font-size: 20px" for="norms">Wybierz normę budowlaną</label>
@@ -28,8 +28,9 @@
         class="form-control"
         id="length"
         name="length"
+        value= {{length}}
         placeholder="Wpisz długość pomieszczenia"
-      >{{length}}</input> 
+      ></input> 
     </div>
     <div class="form-group">
       <label style="font-size: 20px" for="width">Szerokość pomieszczenia</label>
@@ -39,9 +40,9 @@
         class="form-control"
         id="width"
         name="width"
-        value=""
+        value= {{width}}
         placeholder="Wpisz szerokość pomieszczenia"
-        >{{width}}</input> 
+        ></input> 
     </div>
     <div class="form-group">
       <label style="font-size: 20px" for="height">Wysokość pomieszczenia</label>
@@ -51,9 +52,9 @@
         class="form-control"
         id="height"
         name="height"
-        value=""
+        value= {{width}}
         placeholder="Wpisz wysokość pomieszczenia"
-        >{{width}}</input> 
+        ></input> 
     </div>
 
       <button type="button" onclick="calculate_wall_area()" class="btn btn-primary">Oblicz wymiary pomieszczenia </button>
@@ -68,8 +69,8 @@
 
     <div class="form-group">
       <label style="font-size: 20px" for="sufit">Wybierz materiał dla sufitu</label>
-      <select class="form-control" id="sufit" name="sufit" >
-          <option value="null" selected>------------</option>
+      <select class="form-control" id="sufit" name="sufit">
+          <option value="null" selected>{{ sufit }}</option>
           {% for material_ceiling in materials_ceiling %}
               <option value="{{ material_ceiling.pkey }}">{{ material_ceiling.name }}</option>
           {% endfor %}
@@ -80,7 +81,7 @@
   <div class="form-group">
       <label style="font-size: 20px" for="norms">Wybierz materiał ściany prawej</label>
       <select class="form-control" id="wall1" name="wall1">
-      <option value="null" selected>------------</option>
+      <option value="null" selected>{{ wall1_material }}</option>
           {% for material_wall in materials_walls %}
               <option value="{{ material_wall.pkey }}" >{{ material_wall.name }}</option>
           {% endfor %}
@@ -90,7 +91,7 @@
     <div class="form-group">
       <label style="font-size: 20px" for="norms">Wybierz materiał ściany lewej</label>
       <select class="form-control" id="wall2" name="wall2">
-      <option value=null selected>------------</option>
+      <option value=null selected>{{ wall2_material }}</option>
           {% for material_wall in materials_walls %}
               <option value="{{ material_wall.pkey }}" >{{ material_wall.name }}</option>
           {% endfor %}
@@ -100,7 +101,7 @@
   <div class="form-group">
       <label style="font-size: 20px" for="norms">Wybierz materiał ściany na wprost</label>
       <select class="form-control" id="wall3" name="wall3">
-      <option value="null" selected>------------</option>
+      <option value="null" selected>{{ front_wall_material }}</option>
           {% for material_wall in materials_walls %}
               <option value="{{ material_wall.pkey }}" >{{ material_wall.name }}</option>
           {% endfor %}
@@ -110,7 +111,7 @@
   <div class="form-group">
       <label style="font-size: 20px" for="norms">Wybierz materiał ściany z tyłu</label>
       <select class="form-control" id="wall4" name="wall4">
-      <option value="null" selected>------------</option>
+      <option value="null" selected>{{ back_wall_material }}</option>
           {% for material_wall in materials_walls %}
               <option value="{{ material_wall.pkey }}" >{{ material_wall.name }}</option>
           {% endfor %}
@@ -120,7 +121,7 @@
   <div class="form-group">
       <label style="font-size: 20px" for="flor">Wybierz materiał dla podłogi</label>
       <select class="form-control" id="podloga" name="podloga">
-      <option value="null" selected>------------</option>
+      <option value="null" selected>{{ floor_material }}</option>
           {% for material_floor in material_floor %}
               <option value="{{ material_floor.pkey }}">{{ material_floor.name }}</option>
           {% endfor %}

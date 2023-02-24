@@ -81,7 +81,7 @@ def edit_project(project_name):
     template_name = "editproject.html"
     rendered_template = render_template(template_name,user=current_user, project_name=project_name, norm_id=norm, up_to_norm=project.up_to_norm,
             new_project=project, norm=norm, sufit=sufit, wall1_material=wall1_material, wall2_material=wall2_material,
-            front_wall_material=front_wall_material, height=project.height, length=project.length, width=project.width, back_wall_material = wall4_material, floor_material = floor_material, furniture=project.furniture, user=current_user, norms=norms, materials_ceiling=materials_ceiling,
+            front_wall_material=front_wall_material, height=project.height, length=project.length, width=project.width, back_wall_material = wall4_material, floor_material = floor_material, furniture=project.furniture, norms=norms, materials_ceiling=materials_ceiling,
                            materials_walls=material_walls, material_floor=material_floor, material_other=material_other)
     
     return rendered_template
