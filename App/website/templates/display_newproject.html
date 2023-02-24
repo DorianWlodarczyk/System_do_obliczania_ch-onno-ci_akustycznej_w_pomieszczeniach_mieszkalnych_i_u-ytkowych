@@ -21,6 +21,11 @@
       <li>Wyposażenie: {{ furniture }}</li>
     </ul>
 
-  <button type="button" class="btn btn-secondary"> Get PDF</button>
+    <form action="/download_pdf/{{ project_name }}">
+    <button type="submit" >Pobierz PDF</button>
+  </form>
+
+
+
   </body>
 </html>

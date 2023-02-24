@@ -2,7 +2,7 @@ from datetime import date
 from statistics import mean
 from flask.json import JSONEncoder
 
-from flask import Blueprint, render_template, request, flash, jsonify, Response, Flask, session, redirect, url_for
+from flask import Blueprint, render_template, request, flash, jsonify, Response, Flask, session, redirect, url_for, make_response
 from flask_cors import CORS
 from flask_login import login_required, current_user
 from markupsafe import Markup
@@ -10,9 +10,12 @@ from pdfkit import pdfkit
 from sqlalchemy.dialects.postgresql import psycopg2
 from werkzeug.exceptions import BadRequest
 
+
+
 from .models import Notes, Norms, Material, Projects
 from . import db
 import json
+
 # from bs4 import BeautifulSoup
 
 # class MaterialEncoder(json.JSONEncoder):
@@ -26,6 +29,16 @@ app = Flask(__name__)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 # app.json_encoder = MaterialEncoder
 
+
+@app.route('/download_pdf/')
+def generate_pdf(project_name):
+    html = display_new_project(project_name)
+
+    pdf = pdfkit.from_string(html, False)
+    response = make_response(pdf)
+    response.headers["Content-Type"] = "application/pdf"
+    response.headers["Content-Disposition"] = "inline; filename=output.pdf"
+    return response
 
 @views.route('/newproject/display/<project_name>')
 def display_new_project(project_name):
@@ -41,15 +54,19 @@ def display_new_project(project_name):
     floor_material = Material.query.get(project.floor).name
     front_wall_material = Material.query.get(project.wall3_id).name
 
-
-
     # Render the template with the stored data
     template_name = "display_newproject.html"
-    rendered_template = render_template(template_name, project_name=project_name, norm_id=norm, up_to_norm=project.up_to_norm,
-            new_project=project, norm=norm, sufit=sufit, wall1_material=wall1_material, wall2_material=wall2_material,
-            front_wall_material=front_wall_material, height=project.height, length=project.length, width=project.width, back_wall_material = wall4_material, floor_material = floor_material, furniture=project.furniture)
+    rendered_template = render_template(template_name, project_name=project_name, norm_id=norm,
+                                        up_to_norm=project.up_to_norm,
+                                        new_project=project, norm=norm, sufit=sufit, wall1_material=wall1_material,
+                                        wall2_material=wall2_material,
+                                        front_wall_material=front_wall_material, height=project.height,
+                                        length=project.length, width=project.width, back_wall_material=wall4_material,
+                                        floor_material=floor_material, furniture=project.furniture)
 
-    # Return the rendered template as a response
+
+
+
     return rendered_template
 
 @views.route('/newproject', methods=['GET', 'POST'])
