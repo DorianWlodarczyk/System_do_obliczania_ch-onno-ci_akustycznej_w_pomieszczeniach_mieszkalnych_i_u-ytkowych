@@ -23,7 +23,9 @@
     <form method="post" action="{{ url_for('views.download_pdf') }}">
   <input type="hidden" name="project_name" value="{{ project_name }}">
   <button type="submit">Pobierz PDF</button>
-</form>
+  </form>
+  <form action="/edit/{{ project_name }}">
+    <button type="submit" >Edit</button>
   </form>
   </body>
 </html>
