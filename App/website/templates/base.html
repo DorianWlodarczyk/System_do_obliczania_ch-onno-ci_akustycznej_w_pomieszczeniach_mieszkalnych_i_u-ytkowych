@@ -30,15 +30,15 @@
       <div class="collapse navbar-collapse" id="navbar">
         <div class="navbar-nav">
           {% if user.is_authenticated %}
-          <a class="nav-item nav-link" id="home" href="/">Home</a>
-          <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
-              <a type="button" class="nav-item nav-link" onClick="location.href='/newproject'">New Project</a>
-                <a type="button" class="nav-item nav-link" onClick="location.href='/myProjects'">My Projects</a>
+          <a class="nav-item nav-link" id="logout" href="/logout">Wyloguj</a>
+              <a class="nav-item nav-link" id="home" href="/">Strona główna</a>
+              <a type="button" class="nav-item nav-link" onClick="location.href='/newproject'">Nowy Projekt</a>
+                <a type="button" class="nav-item nav-link" onClick="location.href='/myProjects'">Moje Projekty</a>
               <h1 style="margin-left: 50px;color: white ; display: flex;align-items: center;justify-content: center;"  id="kalkulator">Kalkulator czasu pogłosu
                </h1>
           {% else %}
-          <a class="nav-item nav-link" id="login" href="/login">Login</a>
-          <a class="nav-item nav-link" id="signUp" href="/sign-up">Sign Up</a>
+          <a class="nav-item nav-link" id="login" href="/login">Zaloguj</a>
+          <a class="nav-item nav-link" id="signUp" href="/sign-up">Zarejestruj się</a>
               <h1 style="margin-left: 50px;color: white ; display: flex;align-items: center;justify-content: center;"  id="kalkulator">Kalkulator czasu pogłosu
                </h1>
           {% endif %}
