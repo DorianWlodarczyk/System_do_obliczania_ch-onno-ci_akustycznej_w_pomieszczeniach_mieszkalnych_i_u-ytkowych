@@ -2,18 +2,8 @@ CREATE DATABASE app_akustyka;
 
 \c app_akustyka;
 
-CREATE SEQUENCE public.materials_pkey_seq
-	INCREMENT BY 1
-	MINVALUE 1
-	MAXVALUE 2147483647
-	START 1
-	CACHE 1
-	NO CYCLE;
-
-
-
 create table materials(
-	pkey serial,
+	pkey serial PRIMARY KEY,
 	"type" varchar(100) not null,
 	name varchar(100) not null,
 	"_120"  decimal(22,2) not null,
@@ -27,7 +17,7 @@ create table materials(
 
 
 create table norms(
-	pkey serial,
+	pkey serial PRIMARY KEY,
 	name varchar(255) not null,
 	absorption_multiplayer decimal(22,2) not null
 );

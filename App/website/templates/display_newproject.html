@@ -1,10 +1,12 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+%}
 <html>
   <head>
     <meta charset="utf-8">
     <title>Project Data</title>
   </head>
   <body>
-    <h1>Project Data</h1>
+    <h1 style="margin-bottom: 20px">Project Data</h1>
     <ul>
       <li style="margin-bottom: 7px" >Nazwa projektu: {{ project_name }}</li>
       <li style="margin-bottom: 7px">Norma: {{ norm }}</li>
@@ -25,8 +27,6 @@
   <button type="submit">Pobierz PDF</button>
 </form>
   </form>
-
-
-
   </body>
 </html>
+{% endblock %}

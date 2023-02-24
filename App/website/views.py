@@ -10,11 +10,9 @@ import pdfkit
 from sqlalchemy.dialects.postgresql import psycopg2
 from werkzeug.exceptions import BadRequest
 
-
 from .models import Notes, Norms, Material, Projects
 from . import db
 import json
-
 # from bs4 import BeautifulSoup
 
 # class MaterialEncoder(json.JSONEncoder):
@@ -65,6 +63,7 @@ def prepare_html(html):
 
 
 @views.route('/newproject/display/<project_name>')
+@login_required
 def display_new_project(project_name):
     # Get the project from the database based on the project_name parameter
     project = Projects.query.filter_by(name=project_name).first()
@@ -78,9 +77,11 @@ def display_new_project(project_name):
     floor_material = Material.query.get(project.floor).name
     front_wall_material = Material.query.get(project.wall3_id).name
 
+
+
     # Render the template with the stored data
     template_name = "display_newproject.html"
-    rendered_template = render_template(template_name, project_name=project_name, norm_id=norm,
+    rendered_template = render_template(template_name,user=current_user, project_name=project_name, norm_id=norm,
                                         up_to_norm=project.up_to_norm,
                                         new_project=project, norm=norm, sufit=sufit, wall1_material=wall1_material,
                                         wall2_material=wall2_material,
@@ -88,13 +89,20 @@ def display_new_project(project_name):
                                         length=project.length, width=project.width, back_wall_material=wall4_material,
                                         floor_material=floor_material, furniture=project.furniture)
 
-
-
-
+    # Return the rendered template as a response
     return rendered_template
 
+
+@views.route('/edit/<project_name>')
+@login_required
+def edit_project(project_name):
+    # project = Projects.query.filter_by(name=project_name).first()
+    return render_template('newproject.html', project_name=project_name)
+
+
 @views.route('/newproject', methods=['GET', 'POST'])
-def new_project():
+@login_required
+def new_project(project_name=''):
     if request.method == 'POST':
         # print(request.form)
         # Handle form submission
@@ -181,7 +189,7 @@ def new_project():
             # Calculate absorption coefficient per square meter for the room
             for i in range(len(final_absorption_list)):
                 final_absorption_list[i] /= volume
-            list_of_furniture_json = json.dumps(list_of_furniture)
+            list_of_furniture_json = json.dumps(list_of_furniture, ensure_ascii=False)
             if (final_absorption_list[2] >= norm[0] and final_absorption_list[3] >= norm[0] and
                     final_absorption_list[4] >= norm[0]):
                 up_to_norm = 'Tak'
