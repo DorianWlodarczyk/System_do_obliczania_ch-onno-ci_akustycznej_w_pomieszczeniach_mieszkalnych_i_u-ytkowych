@@ -20,6 +20,51 @@
       <li style="margin-bottom: 7px">Materiał Podłogi: {{ floor_material }}</li>
       <li style="margin-bottom: 7px">Wyposażenie: {{ furniture }}</li>
     </ul>
+    <style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-1wig{font-weight:bold;text-align:left;vertical-align:top}
+.tg .tg-0lax{text-align:left;vertical-align:top}
+</style>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-1wig">Częstotliowść</th>
+    <th class="tg-0lax">_120</th>
+    <th class="tg-0lax">_250</th>
+    <th class="tg-0lax">_500</th>
+    <th class="tg-0lax">_1000</th>
+    <th class="tg-0lax">_2000</th>
+    <th class="tg-0lax">_4000</th>
+    <th class="tg-0lax">Jednostka</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+      <td class="tg-0lax"><span style="font-weight:bold">Wartość</span></td>
+    <td class="tg-0lax">{{_120_absorption}}</td>
+    <td class="tg-0lax">{{_250_absorption}}</td>
+    <td class="tg-0lax">{{_500_absorption}}</td>
+    <td class="tg-0lax">{{_1000_absorption}}</td>
+    <td class="tg-0lax">{{_2000_absorption}}</td>
+    <td class="tg-0lax">{{_4000_absorption}}</td>
+      <th class="tg-0lax">Na 1m2</th>
+  </tr>
+    <tr>
+      <td class="tg-0lax"><span style="font-weight:bold">Próg</span></td>
+    <td class="tg-0lax">{{norm_value}}</td>
+    <td class="tg-0lax">{{norm_value}}</td>
+    <td class="tg-0lax">{{norm_value}}</td>
+    <td class="tg-0lax">{{norm_value}}</td>
+    <td class="tg-0lax">{{norm_value}}</td>
+    <td class="tg-0lax">{{norm_value}}</td>
+      <th class="tg-0lax">Na 1m2</th>
+  </tr>
+</tbody>
+</table>
     <form method="post" action="{{ url_for('views.download_pdf') }}">
   <input type="hidden" name="project_name" value="{{ project_name }}">
   <button type="submit" class="btn btn-secondary">Pobierz PDF</button>
