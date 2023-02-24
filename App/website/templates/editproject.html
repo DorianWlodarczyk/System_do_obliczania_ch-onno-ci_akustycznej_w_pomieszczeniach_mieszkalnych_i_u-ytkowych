@@ -134,8 +134,8 @@
   <label style="font-size: 20px" for="Inne">Dodaj wyposażenie wnętrza:</label>
   {% for material_other in material_other %}
   <li id="material_li">
-      <input type="number" value="0" id="{{ material_other.pkey }}" name="material_{{ material_other.pkey }}" min="0" max="100">
-      {{ material_other.name }}
+      <input type="number" value={{ furniture_quantity }} id="{{ material_other.pkey }}" name="material_{{ material_other.pkey }}" min="0" max="100">
+      {{ material_other.name }}</input>
   </li>
   {% endfor %}
   </select>

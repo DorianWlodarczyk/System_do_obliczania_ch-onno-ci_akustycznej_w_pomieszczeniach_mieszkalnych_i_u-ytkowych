@@ -190,7 +190,7 @@ def edit_project(project_name=''):
     floor_material = Material.query.get(project.floor).name
     floor_material_id = Material.query.get(project.floor).pkey
 
-
+    furniture_quantity = 0   #Material.query.get(project.furniture) ## tzreba dorobic do ilosci wyposazenia
 
     project = Projects.query.filter_by(name=project_name).first()
 
@@ -199,7 +199,7 @@ def edit_project(project_name=''):
             new_project=project, norm=norm, sufit=sufit, wall1_material=wall1_material, wall2_material=wall2_material,
             front_wall_material=front_wall_material, height=project.height, length=project.length, width=project.width, floor_material = floor_material, furniture=project.furniture, norms=norms, materials_ceiling=materials_ceiling,
                            materials_walls=material_walls, material_floor=material_floor, material_other=material_other,
-                           wall1_material_id = wall1_material_id, wall2_material_id = wall2_material_id, back_wall_material = back_wall_material, floor_material_id = floor_material_id, front_wall_material_id = front_wall_material_id, sufit_id = sufit_id, back_wall_material_id = back_wall_material_id )
+                           wall1_material_id = wall1_material_id, wall2_material_id = wall2_material_id, back_wall_material = back_wall_material, floor_material_id = floor_material_id, front_wall_material_id = front_wall_material_id, sufit_id = sufit_id, back_wall_material_id = back_wall_material_id, furniture_quantity=furniture_quantity)
     
     return rendered_template
 
