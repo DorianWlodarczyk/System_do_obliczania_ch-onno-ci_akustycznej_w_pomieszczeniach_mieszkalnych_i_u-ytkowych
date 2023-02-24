@@ -1,8 +1,7 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
 %}
 
-   <button type="button" class="btn btn-secondary" onClick="location.href='/newproject'">New Project</button>
-    <button type="button" class="btn btn-secondary" onClick="location.href='/myProjects'">My Projects</button>
+
 <h1 align="center">Notes</h1>
 <ul class="list-group list-group-flush" id="notes">
   {% for note in user.notes %}
@@ -22,4 +21,8 @@
     <button type="submit" class="btn btn-primary">Add Note</button>
   </div>
 </form>
+
 {% endblock %}
+
+
+

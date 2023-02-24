@@ -1,6 +1,7 @@
-<!DOCTYPE html>
-<html>
-  <head>
+<!DOCTYPE html >
+<div style="background-image: url('{{ url_for('static', filename='s1F442B0u0j0H1j5Z953F5y1o119w1w2.jpg') }}'); background-size: cover; height: 2000px;" >
+<html >
+  <head >
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
@@ -32,11 +33,15 @@
           {% if user.is_authenticated %}
           <a class="nav-item nav-link" id="home" href="/">Home</a>
           <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
-              <h1 style="color: white ; display: flex;align-items: center;justify-content: center;"  id="kalkulator">Kalkulator czasu pogłosu
+              <a type="button" class="nav-item nav-link" onClick="location.href='/newproject'">New Project</a>
+                <a type="button" class="nav-item nav-link" onClick="location.href='/myProjects'">My Projects</a>
+              <h1 style="margin-left: 50px;color: white ; display: flex;align-items: center;justify-content: center;"  id="kalkulator">Kalkulator czasu pogłosu
                </h1>
           {% else %}
           <a class="nav-item nav-link" id="login" href="/login">Login</a>
           <a class="nav-item nav-link" id="signUp" href="/sign-up">Sign Up</a>
+              <h1 style="margin-left: 50px;color: white ; display: flex;align-items: center;justify-content: center;"  id="kalkulator">Kalkulator czasu pogłosu
+               </h1>
           {% endif %}
         </div>
       </div>
@@ -83,3 +88,4 @@
     ></script>
   </body>
 </html>
+</div>
