@@ -4,7 +4,7 @@
     <title>Project Data</title>
   </head>
   <body>
-    <h1 style="margin-bottom: 20px">Project Data</h1>
+    <h1 style="margin-bottom: 20px">Dane projektu</h1>
     <ul>
       <li style="margin-bottom: 7px" >Nazwa projektu: {{ project_name }}</li>
       <li style="margin-bottom: 7px">Norma: {{ norm }}</li>
@@ -22,10 +22,10 @@
     </ul>
     <form method="post" action="{{ url_for('views.download_pdf') }}">
   <input type="hidden" name="project_name" value="{{ project_name }}">
-  <button type="submit">Pobierz PDF</button>
+  <button type="submit" class="btn btn-secondary">Pobierz PDF</button>
   </form>
   <form action="/edit/{{ project_name }}">
-    <button type="submit" >Edytuj projekt</button>
+    <button type="submit" class="btn btn-secondary" style="margin-top: 7px">Edytuj projekt</button>
   </form>
   </body>
 </html>
