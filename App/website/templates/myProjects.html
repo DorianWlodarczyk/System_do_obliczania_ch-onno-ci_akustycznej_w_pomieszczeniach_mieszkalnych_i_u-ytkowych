@@ -1,20 +1,36 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
 
 
-<div >
-<h1 align="center">Moje projekty</h1>
 <div class="form-group">
-    <label style="font-size: 20px" for="norms">Wybierz projekt</label>
-    <select class="form-control" id="norms" name="projects">
-      {% for project in projects %}
-        {% if project.id == project_value %}
-          <option value="{{ project.id }}" selected>{{ project.name }}</option>
-        {% else %}
-          <option value="{{ project.id }}">{{ project.name }}</option>
-        {% endif %}
-      {% endfor %}
-    </select>
-  </div>
+  <label for="norms">Wybierz normę budowlaną</label>
+  <select class="form-control" id="projects" name="projects" onchange="updateSelectedProject()">
+  {% for project in projects %}
+  {% if project.id == project_value %}
+    <option value="{{ project.name }}" selected>{{ project.name }}</option>
+  {% else %}
+    <option value="{{ project.name }}">{{ project.name }}</option>
+  {% endif %}
+{% endfor %}
+  </select>
 </div>
-{% endblock %}
 
+<form id="display-project-form" method="post" action="{{ url_for('views.display_new_project', project_name=selected_project) }}">
+  <input type="hidden" name="selected_project" id="selected-project-input">
+  <button type="submit">Wyświetl projekt</button>
+</form>
+
+<script>
+  function updateSelectedProject() {
+    var selectElement = document.getElementById("projects");
+    var selectedValue = selectElement.value;
+    document.getElementById("selected-project-input").value = selectedValue;
+  }
+
+  var displayProjectForm = document.getElementById("display-project-form");
+  displayProjectForm.addEventListener("submit", function(event) {
+    event.preventDefault();
+    var selectedValue = document.getElementById("selected-project-input").value;
+    window.location.href = "/newproject/display/" + selectedValue;
+  });
+</script>
+{% endblock %}
