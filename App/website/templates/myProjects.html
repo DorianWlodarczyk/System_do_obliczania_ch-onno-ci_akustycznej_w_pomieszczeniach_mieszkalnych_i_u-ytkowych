@@ -4,6 +4,7 @@
 <div class="form-group">
   <label for="norms">Wybierz normę budowlaną</label>
   <select class="form-control" id="projects" name="selected_project" onchange="updateSelectedProject() ">
+  <option value = "None">Wybierz opcje</option>
   {% for project in projects %}
   {% if project.id == project_value %}
     <option value="{{ project.name }}" selected>{{ project.name }}</option>
@@ -42,7 +43,6 @@
     var selectedValue = document.getElementById("selected-project-input").value;
     window.location.href = "/delete/" + selectedValue;
   });
-
 </script>
 
 

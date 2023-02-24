@@ -48,9 +48,9 @@ def download_pdf():
 
 
         # version for linux
-        config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
+        # config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
         # Windows
-        # config = pdfkit.configuration(wkhtmltopdf='C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe')
+        config = pdfkit.configuration(wkhtmltopdf='C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe')
         pdf = pdfkit.from_string(''.join(temp), options=pdfkit_options, configuration=config)
         response = make_response(pdf)
         response.headers["Content-Type"] = "application/pdf"
@@ -400,13 +400,13 @@ def home():
 
 
 
-@views.route('/delete/<project_name>', methods=['POST','GET'])
+@views.route('/delete/<project_name>', methods=['POST', 'GET'])
 @login_required
 def delete_project(project_name):
     selected_project = request.form.get('project_name')
-    print(request.form)
-    print("test")
-    project = Projects.query.filter_by(name=selected_project).first()
+    print(selected_project)
+    print(project_name)
+    project = Projects.query.filter_by(name=project_name).first()
     if project:
         db.session.delete(project)
         db.session.commit()
