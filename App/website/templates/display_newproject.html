@@ -4,27 +4,28 @@
     <title>Project Data</title>
   </head>
   <body>
-  <form action="{{ url_for('views.download_pdf')}}">
-    <h1 style="margin-bottom: 20px">Project Data</h1>
+    <h1>Project Data</h1>
     <ul>
-      <li style="margin-bottom: 7px" ><input type="submit" name="project_name">Nazwa projektu: {{ project_name }}</li>
-      <li style="margin-bottom: 7px">Norma: {{ norm }}</li>
-      <li style="margin-bottom: 7px">Spełnia normę: {{ up_to_norm }}</li>
-      <li style="margin-bottom: 7px">Wysokość: {{ height }}</li>
-      <li style="margin-bottom: 7px">Długość: {{ length }}</li>
-      <li style="margin-bottom: 7px">Szerokość: {{ width }}</li>
-      <li style="margin-bottom: 7px">Materiał Sufitu: {{ sufit }}</li>
-      <li style="margin-bottom: 7px">Materiał Ściany Lewej: {{ wall1_material }}</li>
-      <li style="margin-bottom: 7px">Materiał Ściany Prawej: {{ wall2_material }}</li>
-      <li style="margin-bottom: 7px">Materiał Ściany Frontowej: {{ front_wall_material }}</li>
-      <li style="margin-bottom: 7px">Materiał Ściany Tylnej: {{ back_wall_material }}</li>
-      <li style="margin-bottom: 7px">Materiał Podłogi: {{ floor_material }}</li>
-      <li style="margin-bottom: 7px">Wyposażenie: {{ furniture }}</li>
+      <li>Nazwa projektu: {{ project_name }}</li>
+      <li>Norma: {{ norm }}</li>
+      <li>Spełnia normę: {{ up_to_norm }}</li>
+      <li>Wysokość: {{ height }}</li>
+      <li>Długość: {{ length }}</li>
+      <li>Szerokość: {{ width }}</li>
+      <li>Materiał Sufitu: {{ sufit }}</li>
+      <li>Materiał Ściany Lewej: {{ wall1_material }}</li>
+      <li>Materiał Ściany Prawej: {{ wall2_material }}</li>
+      <li>Materiał Ściany Frontowej: {{ front_wall_material }}</li>
+      <li>Materiał Ściany Tylnej: {{ back_wall_material }}</li>
+      <li>Materiał Podłogi: {{ floor_material }}</li>
+      <li>Wyposażenie: {{ furniture }}</li>
     </ul>
 
 
-    <button type="submit" >Pobierz PDF</button>
-    <button type="button" >Pobierz PDF2</button>
+    <form method="post" action="{{ url_for('views.download_pdf') }}">
+  <input type="hidden" name="project_name" value="{{ project_name }}">
+  <button type="submit">Pobierz PDF</button>
+</form>
   </form>
 
 

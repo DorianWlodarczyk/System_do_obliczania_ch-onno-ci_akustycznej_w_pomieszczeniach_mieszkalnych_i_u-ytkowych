@@ -6,10 +6,10 @@ from flask import Blueprint, render_template, request, flash, jsonify, Response,
 from flask_cors import CORS
 from flask_login import login_required, current_user
 from markupsafe import Markup
-from pdfkit import pdfkit
+import pdfkit
 from sqlalchemy.dialects.postgresql import psycopg2
 from werkzeug.exceptions import BadRequest
-
+import tempfile
 
 
 from .models import Notes, Norms, Material, Projects
@@ -29,17 +29,25 @@ app = Flask(__name__)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 # app.json_encoder = MaterialEncoder
 
-@views.route('/download_pdf')
+@views.route('/download_pdf', methods=['POST'])
 def download_pdf():
-    project_name = request.form.get('project_name')
-    print(f'test {project_name}')
-    html = display_new_project(project_name)
+        project_name = request.form.get('project_name')
+        html = display_new_project(project_name)
+        print(html)
+        pdfkit_options = {
+            'page-size': 'A4',
+            'margin-top': '0mm',
+            'margin-right': '0mm',
+            'margin-bottom': '0mm',
+            'margin-left': '0mm',
+        }
 
-    pdf = pdfkit.from_string(html, False)
-    response = make_response(pdf)
-    response.headers["Content-Type"] = "application/pdf"
-    response.headers["Content-Disposition"] = "inline; filename=output.pdf"
-    return response
+        config = pdfkit.configuration(wkhtmltopdf='C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe')
+        pdf = pdfkit.from_string(html, options=pdfkit_options, configuration=config)
+        response = make_response(pdf)
+        response.headers["Content-Type"] = "application/pdf"
+        response.headers["Content-Disposition"] = "inline; filename=output.pdf"
+        return response
 
 @views.route('/newproject/display/<project_name>')
 def display_new_project(project_name):
@@ -483,6 +491,3 @@ def raport(name=None):
 
     # wysylamy na frontend plik pdf
     return Response(pdf, mimetype="application/pdf")
-
-
-
