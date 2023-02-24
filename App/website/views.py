@@ -9,6 +9,7 @@ from markupsafe import Markup
 import pdfkit
 from sqlalchemy.dialects.postgresql import psycopg2
 from werkzeug.exceptions import BadRequest
+import tempfile
 
 import os
 from .models import  Norms, Material, Projects
@@ -34,7 +35,7 @@ def download_pdf():
         }
         temp = []
         for x in html.splitlines(keepends=True):
-            if x.find('<button type="submit">') > 0:
+            if x.find('<button') > 0:
                 continue
             else:
                 temp.append(x)
@@ -42,6 +43,8 @@ def download_pdf():
 
         # version for linux
         config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
+        # Windows
+        # config = pdfkit.configuration(wkhtmltopdf='C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe')
         pdf = pdfkit.from_string(''.join(temp), options=pdfkit_options, configuration=config)
         response = make_response(pdf)
         response.headers["Content-Type"] = "application/pdf"
@@ -60,22 +63,30 @@ def display_new_project(project_name):
 
     # Get the related objects from the database based on the stored IDs in the project
     norm = Norms.query.get(project.norm_id).name
+    norm_value = Norms.query.get(project.norm_id).absorption_multiplayer
     sufit = Material.query.get(project.sufit_id).name
     wall1_material = Material.query.get(project.wall1_id).name
     wall2_material = Material.query.get(project.wall2_id).name
     wall4_material = Material.query.get(project.wall4_id).name
     floor_material = Material.query.get(project.floor).name
     front_wall_material = Material.query.get(project.wall3_id).name
-
+    _120_absorption = project._120
+    _250_absorption = project._250
+    _500_absorption = project._500
+    _1000_absorption = project._1000
+    _2000_absorption = project._2000
+    _4000_absorption = project._4000
+    print(_120_absorption)
     # Render the template with the stored data
     template_name = "display_newproject.html"
     rendered_template = render_template(template_name,user=current_user, project_name=project_name, norm_id=norm,
                                         up_to_norm=project.up_to_norm,
                                         new_project=project, norm=norm, sufit=sufit, wall1_material=wall1_material,
-                                        wall2_material=wall2_material,
+                                        wall2_material=wall2_material,norm_value=norm_value,
                                         front_wall_material=front_wall_material, height=project.height,
                                         length=project.length, width=project.width, back_wall_material=wall4_material,
-                                        floor_material=floor_material, furniture=project.furniture)
+                                        floor_material=floor_material, furniture=project.furniture, _120_absorption=_120_absorption,_250_absorption=_250_absorption,
+                                        _500_absorption=_500_absorption,_1000_absorption=_1000_absorption,_2000_absorption=_2000_absorption,_4000_absorption=_4000_absorption)
 
     # Return the rendered template as a response
     return rendered_template
@@ -378,10 +389,10 @@ def new_project(project_name=''):
 @login_required
 def my_Projects():
     projects = Projects.query.filter_by(user_id=current_user.id).all()
-
     if request.method == 'POST':
-        pass
-
+        selected_project = request.form.get('selected_project')
+        project = Projects.query.get(selected_project).name
+        return redirect(url_for('views.display_new_project', project_name=project))
     return render_template("myProjects.html", user=current_user, projects=projects)
 
 
@@ -402,18 +413,20 @@ def home():
     return render_template("home.html", user=current_user)
 
 
-# @views.route('/delete-note', methods=['POST'])
-# def delete_note():
-#     note = json.loads(request.data)
-#     noteId = note['noteId']
-#     note = Notes.query.get(noteId)
-#     if note:
-#         if note.user_id == current_user.id:
-#             db.session.delete(note)
-#             db.session.commit()
-#
-#     return jsonify({})
 
+@views.route('/delete/<project_name>', methods=['POST', 'GET'])
+@login_required
+def delete_project(project_name):
+    if project_name:
+        selected_project = request.form.get('project_name')
+        print(selected_project)
+        print(project_name)
+        project = Projects.query.filter_by(name=project_name).first()
+        db.session.delete(project)
+        db.session.commit()
+    else:
+        flash("Wybrano nieprawidłową opcję",category="error")
+    return redirect(url_for('views.my_Projects'))
 # To co poniżej przekopiowane ze starego projektu, trzeba zmodyfikować
 
 
