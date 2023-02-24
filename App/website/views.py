@@ -45,7 +45,7 @@ def display_new_project(project_name):
 
     # Render the template with the stored data
     template_name = "display_newproject.html"
-    rendered_template = render_template(template_name, project_name=project_name, norm_id=norm, up_to_norm=project.up_to_norm,
+    rendered_template = render_template(template_name,user=current_user, project_name=project_name, norm_id=norm, up_to_norm=project.up_to_norm,
             new_project=project, norm=norm, sufit=sufit, wall1_material=wall1_material, wall2_material=wall2_material,
             front_wall_material=front_wall_material, height=project.height, length=project.length, width=project.width, back_wall_material = wall4_material, floor_material = floor_material, furniture=project.furniture)
 
