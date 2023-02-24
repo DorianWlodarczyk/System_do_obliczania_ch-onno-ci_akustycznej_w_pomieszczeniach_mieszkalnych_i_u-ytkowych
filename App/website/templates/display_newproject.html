@@ -15,26 +15,27 @@
 
 
 <html  style="margin-left: 100px; margin-top: 50px; ">
+<html>
   <head>
     <meta charset="utf-8">
     <title>Project Data</title>
   </head>
   <body>
-    <h1 style="margin-bottom: 20px; font-size: 40px">Dane projektu</h1>
+    <h1 style="margin-bottom: 20px">Dane projektu</h1>
     <ul>
-      <li style="margin-bottom: 7px; font-size: 25px" >Nazwa projektu: {{ project_name }}</li>
-      <li style="margin-bottom: 7px; font-size: 25px">Norma: {{ norm }}</li>
-      <li style="margin-bottom: 7px; font-size: 25px">Spełnia normę: {{ up_to_norm }}</li>
-      <li style="margin-bottom: 7px; font-size: 25px">Wysokość: {{ height }}</li>
-      <li style="margin-bottom: 7px; font-size: 25px">Długość: {{ length }}</li>
-      <li style="margin-bottom: 7px; font-size: 25px">Szerokość: {{ width }}</li>
-      <li style="margin-bottom: 7px; font-size: 25px">Materiał Sufitu: {{ sufit }}</li>
-      <li style="margin-bottom: 7px; font-size: 25px">Materiał Ściany Lewej: {{ wall1_material }}</li>
-      <li style="margin-bottom: 7px; font-size: 25px">Materiał Ściany Prawej: {{ wall2_material }}</li>
-      <li style="margin-bottom: 7px; font-size: 25px">Materiał Ściany Frontowej: {{ front_wall_material }}</li>
-      <li style="margin-bottom: 7px; font-size: 25px">Materiał Ściany Tylnej: {{ back_wall_material }}</li>
-      <li style="margin-bottom: 7px; font-size: 25px">Materiał Podłogi: {{ floor_material }}</li>
-      <li style="margin-bottom: 7px; font-size: 25px">Wyposażenie: {{ furniture }}</li>
+      <li style="margin-bottom: 7px" >Nazwa projektu: {{ project_name }}</li>
+      <li style="margin-bottom: 7px">Norma: {{ norm }}</li>
+      <li style="margin-bottom: 7px">Spełnia normę: {{ up_to_norm }}</li>
+      <li style="margin-bottom: 7px">Wysokość: {{ height }}</li>
+      <li style="margin-bottom: 7px">Długość: {{ length }}</li>
+      <li style="margin-bottom: 7px">Szerokość: {{ width }}</li>
+      <li style="margin-bottom: 7px">Materiał Sufitu: {{ sufit }}</li>
+      <li style="margin-bottom: 7px">Materiał Ściany Lewej: {{ wall1_material }}</li>
+      <li style="margin-bottom: 7px">Materiał Ściany Prawej: {{ wall2_material }}</li>
+      <li style="margin-bottom: 7px">Materiał Ściany Frontowej: {{ front_wall_material }}</li>
+      <li style="margin-bottom: 7px">Materiał Ściany Tylnej: {{ back_wall_material }}</li>
+      <li style="margin-bottom: 7px">Materiał Podłogi: {{ floor_material }}</li>
+      <li style="margin-bottom: 7px">Wyposażenie: {{ furniture }}</li>
     </ul>
 
     <form method="post" action="{{ url_for('views.download_pdf') }}">
@@ -43,6 +44,7 @@
   </form>
   <form action="/edit/{{ project_name }}">
     <button style="background-color: #a9a7a7; border-radius: 8px; font-size: 25px" type="submit" class="btn btn-secondary" style="margin-top: 7px">Edytuj</button>
+    <button type="submit" class="btn btn-secondary" style="margin-top: 7px">Edytuj projekt</button>
   </form>
 
   </body>
