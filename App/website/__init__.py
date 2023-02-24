@@ -13,8 +13,8 @@ def create_app():
         app.config['SECRET_KEY'] = 'hjshjhdjah kjshkjdhjs'
         #app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
         # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:12345@localhost:5432/app_akustyka'
-        #app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@db:5432/app_akustyka'
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:1234@localhost:5432/postgres'
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@db:5432/app_akustyka'
+        # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:12345@localhost:5432/postgres'
         db.init_app(app)
 
         from .views import views
@@ -23,7 +23,7 @@ def create_app():
         app.register_blueprint(views, url_prefix='/')
         app.register_blueprint(auth, url_prefix='/')
 
-        from .models import Users, Notes
+        from .models import Users
 
         #create_database(app)
 

@@ -2,15 +2,15 @@ from datetime import date
 from statistics import mean
 from flask.json import JSONEncoder
 
-from flask import Blueprint, render_template, request, flash, jsonify, Response, Flask, session, redirect, url_for
+from flask import Blueprint, render_template, request, flash, jsonify, Response, Flask, session, redirect, url_for, make_response
 from flask_cors import CORS
 from flask_login import login_required, current_user
 from markupsafe import Markup
-from pdfkit import pdfkit
+import pdfkit
 from sqlalchemy.dialects.postgresql import psycopg2
 from werkzeug.exceptions import BadRequest
 
-from .models import Notes, Norms, Material, Projects
+from .models import  Norms, Material, Projects
 from . import db
 import json
 # from bs4 import BeautifulSoup
@@ -25,6 +25,41 @@ views = Blueprint('views', __name__)
 app = Flask(__name__)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 # app.json_encoder = MaterialEncoder
+
+@views.route('/download_pdf', methods=['POST'])
+def download_pdf():
+        project_name = request.form.get('project_name')
+        html = display_new_project(project_name)
+        print(html)
+        pdfkit_options = {
+            'page-size': 'A4',
+            'margin-top': '0mm',
+            'margin-right': '0mm',
+            'margin-bottom': '0mm',
+            'margin-left': '0mm',
+        }
+        temp = []
+        for x in html.splitlines(keepends=True):
+            if x.find('<button type="submit">') > 0:
+                continue
+            else:
+                temp.append(x)
+
+
+        # version for linux
+        config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
+        pdf = pdfkit.from_string(''.join(temp), options=pdfkit_options, configuration=config)
+        response = make_response(pdf)
+        response.headers["Content-Type"] = "application/pdf"
+        response.headers["Content-Disposition"] = "inline; filename=output.pdf"
+        return response
+
+def prepare_html(html):
+
+
+    return html
+
+
 
 
 @views.route('/newproject/display/<project_name>')
@@ -44,9 +79,13 @@ def display_new_project(project_name):
 
     # Render the template with the stored data
     template_name = "display_newproject.html"
-    rendered_template = render_template(template_name,user=current_user, project_name=project_name, norm_id=norm, up_to_norm=project.up_to_norm,
-            new_project=project, norm=norm, sufit=sufit, wall1_material=wall1_material, wall2_material=wall2_material,
-            front_wall_material=front_wall_material, height=project.height, length=project.length, width=project.width, back_wall_material = wall4_material, floor_material = floor_material, furniture=project.furniture)
+    rendered_template = render_template(template_name,user=current_user, project_name=project_name, norm_id=norm,
+                                        up_to_norm=project.up_to_norm,
+                                        new_project=project, norm=norm, sufit=sufit, wall1_material=wall1_material,
+                                        wall2_material=wall2_material,
+                                        front_wall_material=front_wall_material, height=project.height,
+                                        length=project.length, width=project.width, back_wall_material=wall4_material,
+                                        floor_material=floor_material, furniture=project.furniture)
 
     # Return the rendered template as a response
     return rendered_template
@@ -329,15 +368,6 @@ def my_Projects():
     if request.method == 'POST':
 
 
-        if len(note) < 1:
-            flash('Note is too short!', category='error')
-        else:
-            new_note = Notes(data=note, user_id=current_user.id)
-            db.session.add(new_note)
-            db.session.commit()
-            flash('Note added!', category='success')
-
-
     return render_template("myProjects.html", user=current_user, projects=projects)
 
 
@@ -358,17 +388,17 @@ def home():
     return render_template("home.html", user=current_user)
 
 
-@views.route('/delete-note', methods=['POST'])
-def delete_note():
-    note = json.loads(request.data)
-    noteId = note['noteId']
-    note = Notes.query.get(noteId)
-    if note:
-        if note.user_id == current_user.id:
-            db.session.delete(note)
-            db.session.commit()
-
-    return jsonify({})
+# @views.route('/delete-note', methods=['POST'])
+# def delete_note():
+#     note = json.loads(request.data)
+#     noteId = note['noteId']
+#     note = Notes.query.get(noteId)
+#     if note:
+#         if note.user_id == current_user.id:
+#             db.session.delete(note)
+#             db.session.commit()
+#
+#     return jsonify({})
 
 # To co poniżej przekopiowane ze starego projektu, trzeba zmodyfikować
 

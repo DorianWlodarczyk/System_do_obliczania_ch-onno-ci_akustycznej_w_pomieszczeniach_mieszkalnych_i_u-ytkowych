@@ -1,5 +1,3 @@
-{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
-%}
 <html>
   <head>
     <meta charset="utf-8">
@@ -8,7 +6,7 @@
   <body>
     <h1 style="margin-bottom: 20px">Project Data</h1>
     <ul>
-      <li style="margin-bottom: 7px">Nazwa projektu: {{ project_name }}</li>
+      <li style="margin-bottom: 7px" >Nazwa projektu: {{ project_name }}</li>
       <li style="margin-bottom: 7px">Norma: {{ norm }}</li>
       <li style="margin-bottom: 7px">Spełnia normę: {{ up_to_norm }}</li>
       <li style="margin-bottom: 7px">Wysokość: {{ height }}</li>
@@ -22,13 +20,10 @@
       <li style="margin-bottom: 7px">Materiał Podłogi: {{ floor_material }}</li>
       <li style="margin-bottom: 7px">Wyposażenie: {{ furniture }}</li>
     </ul>
-
-  <button style="padding-left: 20px; padding-right: 20px; margin-top: 15px" type="button" class="btn btn-secondary"> Get PDF</button>
-  <form action="/edit/{{ project_name }}">
-    <button type="submit" >Edit</button>
+    <form method="post" action="{{ url_for('views.download_pdf') }}">
+  <input type="hidden" name="project_name" value="{{ project_name }}">
+  <button type="submit">Pobierz PDF</button>
+</form>
   </form>
-
-
   </body>
 </html>
-{% endblock %}
