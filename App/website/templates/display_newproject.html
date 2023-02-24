@@ -6,6 +6,7 @@
   <body>
     <h1>Project Data</h1>
     <ul>
+      <li>Nazwa projektu: {{ project_name }}</li>
       <li>Norma: {{ norm }}</li>
       <li>Spełnia normę: {{ up_to_norm }}</li>
       <li>Wysokość: {{ height }}</li>
@@ -17,9 +18,9 @@
       <li>Materiał Ściany Frontowej: {{ front_wall_material }}</li>
       <li>Materiał Ściany Tylnej: {{ back_wall_material }}</li>
       <li>Materiał Podłogi: {{ floor_material }}</li>
-      <li>Materiały:{{ furniture }}</li>
+      <li>Wyposażenie: {{ furniture }}</li>
     </ul>
 
-  <button type="button"> Get PDF</button>
+  <button type="button" class="btn btn-secondary"> Get PDF</button>
   </body>
 </html>

@@ -56,16 +56,18 @@
       />
     </div>
 
-      <button type="button" onclick="calculate_wall_area()" class="btn btn-primary">Oblicz wymiary pomieszcenia </button>
+      <button type="button" onclick="calculate_wall_area()" class="btn btn-primary">Oblicz wymiary pomieszczenia </button>
       <div id="volume"></div>
+      <div id="sufit_wymiar"></div>
       <div id="prawa"></div>
       <div id="lewa"></div>
       <div id="na_wprost"></div>
       <div id="tyl"></div>
 
 
+
     <div class="form-group">
-      <label style="font-size: 20px" for="sufit">Wybierz materjał dla sufitu</label>
+      <label style="font-size: 20px" for="sufit">Wybierz materiał dla sufitu</label>
       <select class="form-control" id="sufit" name="sufit" >
           <option value="null" selected>------------</option>
           {% for material_ceiling in materials_ceiling %}
@@ -76,7 +78,7 @@
     <div id="selected-items"></div>
 
   <div class="form-group">
-      <label style="font-size: 20px" for="norms">Wybierz materjał ściany prawej</label>
+      <label style="font-size: 20px" for="norms">Wybierz materiał ściany prawej</label>
       <select class="form-control" id="wall1" name="wall1">
       <option value="null" selected>------------</option>
           {% for material_wall in materials_walls %}
@@ -86,7 +88,7 @@
     </div>
 
     <div class="form-group">
-      <label style="font-size: 20px" for="norms">Wybierz materjał ściany lewej</label>
+      <label style="font-size: 20px" for="norms">Wybierz materiał ściany lewej</label>
       <select class="form-control" id="wall2" name="wall2">
       <option value=null selected>------------</option>
           {% for material_wall in materials_walls %}
@@ -96,7 +98,7 @@
     </div>
 
   <div class="form-group">
-      <label style="font-size: 20px" for="norms">Wybierz materjał ściany na wprost</label>
+      <label style="font-size: 20px" for="norms">Wybierz materiał ściany na wprost</label>
       <select class="form-control" id="wall3" name="wall3">
       <option value="null" selected>------------</option>
           {% for material_wall in materials_walls %}
@@ -106,7 +108,7 @@
     </div>
 
   <div class="form-group">
-      <label style="font-size: 20px" for="norms">Wybierz materjał ściany z tyłu</label>
+      <label style="font-size: 20px" for="norms">Wybierz materiał ściany z tyłu</label>
       <select class="form-control" id="wall4" name="wall4">
       <option value="null" selected>------------</option>
           {% for material_wall in materials_walls %}
@@ -116,7 +118,7 @@
     </div>
 
   <div class="form-group">
-      <label style="font-size: 20px" for="flor">Wybierz materjał dla podłogi</label>
+      <label style="font-size: 20px" for="flor">Wybierz materiał dla podłogi</label>
       <select class="form-control" id="podloga" name="podloga">
       <option value="null" selected>------------</option>
           {% for material_floor in material_floor %}
@@ -158,6 +160,7 @@ const podloga = document.getElementById("podloga");
 podloga.addEventListener("change", checkInputs);
 
 
+
 function checkInputs() {
   if (wall_1.value !== "null" && wall_2.value !== "null" && wall_3.value !== "null" && wall_4.value !== "null" && sufit.value !=="null" && podloga.value !== "null") {
     document.getElementById("submit-button").disabled = false;
@@ -179,14 +182,12 @@ function calculate_wall_area() {
         const na_wprost = width * height;
         const tyl = width * height;
         const sufit_wymiar = length * width;
-        const podloga = sufit
-        document.getElementById("volume").innerHTML = "Obietość pomieszcenia: " + volume + "m³";
-      document.getElementById("prawa").innerHTML = "Wymiar ściny prawej: " + prawa + "m²";
+      document.getElementById("volume").innerHTML = "Objętość pomieszczenia: " + volume + "m³";
+      document.getElementById("prawa").innerHTML = "Wymiar ściany prawej: " + prawa + "m²";
       document.getElementById("lewa").innerHTML = "Wymiar ściany lewej: " + lewa + "m²";
       document.getElementById("na_wprost").innerHTML = "Wymiar ściany na wprost: " + na_wprost + "m²";
       document.getElementById("tyl").innerHTML = "Wymiar ściany z tyłu: " + tyl + "m²";
-      document.getElementById("sufit_wymiar").innerHTML = "Wymiar sufitu: " + sufit_wymiar + "m²";
-      document.getElementById("podloga").innerHTML = "Wymiar podłogi: " + podloga + "m²";
+      document.getElementById("sufit_wymiar").innerHTML = "Pole powierzchni: " + sufit_wymiar + "m²";
         }
 
 
