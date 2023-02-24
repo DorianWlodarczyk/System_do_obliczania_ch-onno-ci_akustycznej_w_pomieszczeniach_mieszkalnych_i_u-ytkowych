@@ -9,6 +9,7 @@ from markupsafe import Markup
 import pdfkit
 from sqlalchemy.dialects.postgresql import psycopg2
 from werkzeug.exceptions import BadRequest
+import tempfile
 
 from .models import  Norms, Material, Projects
 from . import db
@@ -47,7 +48,9 @@ def download_pdf():
 
 
         # version for linux
-        config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
+        # config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
+        # Windows
+        config = pdfkit.configuration(wkhtmltopdf='C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe')
         pdf = pdfkit.from_string(''.join(temp), options=pdfkit_options, configuration=config)
         response = make_response(pdf)
         response.headers["Content-Type"] = "application/pdf"
@@ -364,10 +367,10 @@ def new_project(project_name=''):
 @login_required
 def my_Projects():
     projects = Projects.query.filter_by(user_id=current_user.id).all()
-
     if request.method == 'POST':
-        pass
-
+        selected_project = request.form.get('selected_project')
+        project = Projects.query.get(selected_project).name
+        return redirect(url_for('views.display_new_project', project_name=project))
     return render_template("myProjects.html", user=current_user, projects=projects)
 
 
