@@ -165,13 +165,15 @@ const wall_4 = document.getElementById("wall4");
 wall_4.addEventListener("change", checkInputs);
 const podloga = document.getElementById("podloga");
 podloga.addEventListener("change", checkInputs);
+const porojectName = document.getElementById("projectName");
+projectName.addEventListener("change", checkInputs);
 
 
 
 function checkInputs() {
   if (wall_1.value !== "null" && wall_2.value !== "null" &&
       wall_3.value !== "null" && wall_4.value !== "null" &&
-      sufit.value !=="null" && podloga.value !== "null") {
+      sufit.value !=="null" && podloga.value !== "null" && projectName !== '' && projectName !== "null" && projectName.value !== '' && projectName.value !== "null") {
     document.getElementById("submit-button").disabled = false;
 
   } else {
