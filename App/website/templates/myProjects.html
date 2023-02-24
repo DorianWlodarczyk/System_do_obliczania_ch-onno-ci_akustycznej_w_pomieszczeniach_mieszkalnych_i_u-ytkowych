@@ -3,7 +3,7 @@
 
 <div class="form-group">
   <label for="norms">Wybierz normę budowlaną</label>
-  <select class="form-control" id="projects" name="projects" onchange="updateSelectedProject()">
+  <select class="form-control" id="projects" name="selected_project" onchange="updateSelectedProject() ">
   {% for project in projects %}
   {% if project.id == project_value %}
     <option value="{{ project.name }}" selected>{{ project.name }}</option>
@@ -18,13 +18,17 @@
   <input type="hidden" name="selected_project" id="selected-project-input">
   <button type="submit">Wyświetl projekt</button>
 </form>
+<form id="delete_project" method="post" action="{{ url_for('views.delete_project', project_name=selected_project) }}">
+  <input type="hidden" name="selected_project" id="selected-project-input" >
+  <button type="submit">Usuń projekt</button>
+</form>
+
 
 <script>
-  function updateSelectedProject() {
-    var selectElement = document.getElementById("projects");
-    var selectedValue = selectElement.value;
-    document.getElementById("selected-project-input").value = selectedValue;
-  }
+ function updateSelectedProject() {
+  var selected_project = document.getElementById("projects").value;
+  document.getElementById("selected-project-input").value = selected_project;
+}
 
   var displayProjectForm = document.getElementById("display-project-form");
   displayProjectForm.addEventListener("submit", function(event) {
@@ -32,5 +36,6 @@
     var selectedValue = document.getElementById("selected-project-input").value;
     window.location.href = "/newproject/display/" + selectedValue;
   });
+
 </script>
 {% endblock %}

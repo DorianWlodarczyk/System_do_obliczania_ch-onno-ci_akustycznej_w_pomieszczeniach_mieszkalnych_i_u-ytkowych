@@ -399,18 +399,18 @@ def home():
     return render_template("home.html", user=current_user)
 
 
-# @views.route('/delete-note', methods=['POST'])
-# def delete_note():
-#     note = json.loads(request.data)
-#     noteId = note['noteId']
-#     note = Notes.query.get(noteId)
-#     if note:
-#         if note.user_id == current_user.id:
-#             db.session.delete(note)
-#             db.session.commit()
-#
-#     return jsonify({})
 
+@views.route('/delete/<project_name>', methods=['POST'])
+@login_required
+def delete_project(project_name):
+    selected_project = request.form.get('project_name')
+    print(request.form)
+    print("test")
+    project = Projects.query.filter_by(name=selected_project).first()
+    if project:
+        db.session.delete(project)
+        db.session.commit()
+    return redirect(url_for('views.my_Projects'))
 # To co poniżej przekopiowane ze starego projektu, trzeba zmodyfikować
 
 
