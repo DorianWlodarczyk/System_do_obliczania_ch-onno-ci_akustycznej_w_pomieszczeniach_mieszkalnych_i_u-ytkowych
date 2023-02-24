@@ -46,7 +46,7 @@ def display_new_project(project_name):
 
     # Render the template with the stored data
     template_name = "display_newproject.html"
-    rendered_template = render_template(template_name, project_name=project_name, norm_id=norm, up_to_norm=project.up_to_norm,
+    rendered_template = render_template(template_name,user=current_user, project_name=project_name, norm_id=norm, up_to_norm=project.up_to_norm,
             new_project=project, norm=norm, sufit=sufit, wall1_material=wall1_material, wall2_material=wall2_material,
             front_wall_material=front_wall_material, height=project.height, length=project.length, width=project.width, back_wall_material = wall4_material, floor_material = floor_material, furniture=project.furniture)
 
@@ -150,7 +150,7 @@ def new_project(project_name=''):
             # Calculate absorption coefficient per square meter for the room
             for i in range(len(final_absorption_list)):
                 final_absorption_list[i] /= volume
-            list_of_furniture_json = json.dumps(list_of_furniture)
+            list_of_furniture_json = json.dumps(list_of_furniture, ensure_ascii=False)
             if (final_absorption_list[2] >= norm[0] and final_absorption_list[3] >= norm[0] and
                     final_absorption_list[4] >= norm[0]):
                 up_to_norm = 'Tak'
