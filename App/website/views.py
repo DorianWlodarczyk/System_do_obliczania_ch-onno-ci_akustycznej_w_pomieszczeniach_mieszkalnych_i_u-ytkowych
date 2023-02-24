@@ -29,9 +29,10 @@ app = Flask(__name__)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 # app.json_encoder = MaterialEncoder
 
-
-@app.route('/download_pdf/')
-def generate_pdf(project_name):
+@views.route('/download_pdf')
+def download_pdf():
+    project_name = request.form.get('project_name')
+    print(f'test {project_name}')
     html = display_new_project(project_name)
 
     pdf = pdfkit.from_string(html, False)
@@ -482,3 +483,6 @@ def raport(name=None):
 
     # wysylamy na frontend plik pdf
     return Response(pdf, mimetype="application/pdf")
+
+
+
