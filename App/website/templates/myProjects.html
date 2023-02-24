@@ -16,7 +16,7 @@
 
 <form id="display-project-form" method="post" action="{{ url_for('views.display_new_project', project_name=selected_project) }}">
   <input type="hidden" name="selected_project" id="selected-project-input">
-  <button type="submit">Wyświetl projekt</button>
+  <button type="submit" class="btn btn-secondary">Wyświetl projekt</button>
 </form>
 <form id="delete_project" method="post" action="{{ url_for('views.delete_project', project_name=selected_project) }}">
   <input type="hidden" name="selected_project" id="selected-project-input" >

@@ -1,10 +1,27 @@
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      crossorigin="anonymous"
+    />
+
+
+<html  style="margin-left: 100px; margin-top: 50px; ">
 <html>
   <head>
     <meta charset="utf-8">
     <title>Project Data</title>
   </head>
   <body>
-    <h1 style="margin-bottom: 20px">Project Data</h1>
+    <h1 style="margin-bottom: 20px">Dane projektu</h1>
     <ul>
       <li style="margin-bottom: 7px" >Nazwa projektu: {{ project_name }}</li>
       <li style="margin-bottom: 7px">Norma: {{ norm }}</li>
@@ -67,10 +84,10 @@
 </table>
     <form method="post" action="{{ url_for('views.download_pdf') }}">
   <input type="hidden" name="project_name" value="{{ project_name }}">
-  <button type="submit">Pobierz PDF</button>
+  <button style="background-color: #a9a7a7; border-radius: 8px; font-size: 25px" type="submit" class="btn btn-secondary">Pobierz PDF</button>
   </form>
   <form action="/edit/{{ project_name }}">
-    <button type="submit" >Edit</button>
+    <button style="background-color: #a9a7a7; border-radius: 8px; font-size: 25px" type="submit" class="btn btn-secondary" style="margin-top: 7px">Edytuj</button>
   </form>
   </body>
 </html>
