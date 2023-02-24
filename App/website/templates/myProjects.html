@@ -1,11 +1,10 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
 
-<button type="button" class="btn btn-secondary" onClick="location.href='/newproject'">New Project</button>
-<button type="button" class="btn btn-secondary" onClick="location.href='/'">New Project</button>
 
-<h1 align="center">Projects</h1>
+<div >
+<h1 align="center">Moje projekty</h1>
 <div class="form-group">
-    <label for="norms">Wybierz projekt</label>
+    <label style="font-size: 20px" for="norms">Wybierz projekt</label>
     <select class="form-control" id="norms" name="projects">
       {% for project in projects %}
         {% if project.id == project_value %}
@@ -16,5 +15,6 @@
       {% endfor %}
     </select>
   </div>
+</div>
 {% endblock %}
 
