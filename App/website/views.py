@@ -29,35 +29,25 @@ app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 @views.route('/newproject/display/<project_name>')
 def display_new_project(project_name):
-    # Get the stored data from the session variable for the given project name
-    new_project = session.get(project_name)
+    # Get the project from the database based on the project_name parameter
+    project = Projects.query.filter_by(name=project_name).first()
 
-    # Get the related objects from the database based on the stored IDs
-    norm = Norms.query.get(new_project['norm_id']).name
-    sufit = Material.query.get(new_project['sufit_id']).name
-    wall1_material = Material.query.get(new_project['wall1_id']).name
-    wall2_material = Material.query.get(new_project['wall2_id']).name
-    wall4_material = Material.query.get(new_project['wall4_id']).name
-    floor_material = Material.query.get(new_project['floor']).name
-    front_wall_material = Material.query.get(new_project['wall3_id']).name
-
-     # Get the material list from the session variable
-    # material_list = [] 
-    # material_list = new_project['material_list_quantity']
-    # print("Full List: ", material_list)
-
-
-    # Retrieve the project name, length, width, and height from the session variable
-    length = new_project['length']
-    width = new_project['width']
-    height = new_project['height']
-
+    # Get the related objects from the database based on the stored IDs in the project
+    norm = Norms.query.get(project.norm_id).name
+    sufit = Material.query.get(project.sufit_id).name
+    wall1_material = Material.query.get(project.wall1_id).name
+    wall2_material = Material.query.get(project.wall2_id).name
+    wall4_material = Material.query.get(project.wall4_id).name
+    floor_material = Material.query.get(project.floor).name
+    front_wall_material = Material.query.get(project.wall3_id).name
+    furniture = project.furniture
 
     # Render the template with the stored data
     template_name = "display_newproject.html"
-    rendered_template = render_template(template_name, project_name=project_name, norm_id=norm, 
-            new_project=new_project, norm=norm, sufit=sufit, wall1_material=wall1_material, wall2_material=wall2_material, 
-            front_wall_material=front_wall_material, height=height, length=length, width=width, back_wall_material = wall4_material, floor_material = floor_material)
+    rendered_template = render_template(template_name, project_name=project_name, norm_id=norm,
+            project=project, norm=norm, sufit=sufit, wall1_material=wall1_material, wall2_material=wall2_material,
+            front_wall_material=front_wall_material, height=project.height, length=project.length, width=project.width,
+            back_wall_material=wall4_material, floor_material=floor_material,furniture=furniture)
 
     # Return the rendered template as a response
     return rendered_template
@@ -161,23 +151,23 @@ def new_project():
                 print("Final absorption list:", final_absorption_list)
 
                 # Store the data in a session variable
-                session[project_name] = {
-                    'project_name': project_name,
-                    'norm_id': norm_id,
-                    'length': length,
-                    'width': width,
-                    'height': height,
-                    'sufit_id': sufit_id,
-                    'wall1_id': wall1_id,
-                    'wall2_id': wall2_id,
-                    'wall3_id': wall3_id,
-                    'wall4_id': wall4_id,
-                    'floor': floor,
+                # session[project_name] = {
+                #     'project_name': project_name,
+                #     'norm_id': norm_id,
+                #     'length': length,
+                #     'width': width,
+                #     'height': height,
+                #     'sufit_id': sufit_id,
+                #     'wall1_id': wall1_id,
+                #     'wall2_id': wall2_id,
+                #     'wall3_id': wall3_id,
+                #     'wall4_id': wall4_id,
+                #     'floor': floor,
                     # 'material_list_quantity': material_json
-                }
+                # }
                 return redirect(url_for('views.display_new_project', project_name=project_name))
-            else:
-                flash('Podany projekt nie spelnia wybranej normy!', category='error')
+            # else:
+            #     # flash('Podany projekt nie spelnia wybranej normy!', category='error')
 
 
 
@@ -193,21 +183,17 @@ def new_project():
                           
 
 @views.route('/myProjects', methods=['GET', 'POST'])
+@login_required
 def my_Projects():
     projects = Projects.query.filter_by(user_id=current_user.id).all()
+
     if request.method == 'POST':
+        project_id = request.form['project_id']
+        selected_project = Projects.query.get(project_id)
+        print(selected_project)
 
 
-        if len(note) < 1:
-            flash('Note is too short!', category='error')
-        else:
-            new_note = Notes(data=note, user_id=current_user.id)
-            db.session.add(new_note)
-            db.session.commit()
-            flash('Note added!', category='success')
-
-
-    return render_template("myProjects.html", user=current_user, projects=projects)
+    return render_template('myProjects.html', projects=projects, user=current_user)
 
 
 @views.route('/', methods=['GET', 'POST'])

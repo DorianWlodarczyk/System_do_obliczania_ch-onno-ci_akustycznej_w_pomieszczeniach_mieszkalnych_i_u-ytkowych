@@ -15,7 +15,8 @@
       <li>Materiał Ściany Frontowej: {{ front_wall_material }}</li>
       <li>Materiał Ściany Tylnej: {{ back_wall_material }}</li>
       <li>Materiał Podłogi: {{ floor_material }}</li>
-      <li>Materiały:</li>
+      <li>Materiały:{{ furniture  }}</li>
+
       <ul>
         {% for material in material_list %}
           <li>{{ material }}</li>
