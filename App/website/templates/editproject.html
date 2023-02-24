@@ -70,7 +70,7 @@
     <div class="form-group">
       <label style="font-size: 20px" for="sufit">Wybierz materiał dla sufitu</label>
       <select class="form-control" id="sufit" name="sufit">
-          <option value="null" selected>{{ sufit }}</option>
+          <option value="{{ sufit_id }}" selected>{{ sufit }}</option>
           {% for material_ceiling in materials_ceiling %}
               <option value="{{ material_ceiling.pkey }}">{{ material_ceiling.name }}</option>
           {% endfor %}
@@ -81,7 +81,7 @@
   <div class="form-group">
       <label style="font-size: 20px" for="norms">Wybierz materiał ściany prawej</label>
       <select class="form-control" id="wall1" name="wall1">
-      <option value="null" selected>{{ wall1_material }}</option>
+      <option value="{{ wall1_material_id }}" selected>{{ wall1_material }}</option>
           {% for material_wall in materials_walls %}
               <option value="{{ material_wall.pkey }}" >{{ material_wall.name }}</option>
           {% endfor %}
@@ -91,7 +91,7 @@
     <div class="form-group">
       <label style="font-size: 20px" for="norms">Wybierz materiał ściany lewej</label>
       <select class="form-control" id="wall2" name="wall2">
-      <option value=null selected>{{ wall2_material }}</option>
+      <option value="{{ wall2_material_id }}" selected>{{ wall2_material }}</option>
           {% for material_wall in materials_walls %}
               <option value="{{ material_wall.pkey }}" >{{ material_wall.name }}</option>
           {% endfor %}
@@ -101,7 +101,7 @@
   <div class="form-group">
       <label style="font-size: 20px" for="norms">Wybierz materiał ściany na wprost</label>
       <select class="form-control" id="wall3" name="wall3">
-      <option value="null" selected>{{ front_wall_material }}</option>
+      <option value="{{ front_wall_material_id }}" selected>{{ front_wall_material }}</option>
           {% for material_wall in materials_walls %}
               <option value="{{ material_wall.pkey }}" >{{ material_wall.name }}</option>
           {% endfor %}
@@ -111,7 +111,7 @@
   <div class="form-group">
       <label style="font-size: 20px" for="norms">Wybierz materiał ściany z tyłu</label>
       <select class="form-control" id="wall4" name="wall4">
-      <option value="null" selected>{{ back_wall_material }}</option>
+      <option value="{{ back_wall_material_id }}" selected>{{ back_wall_material }}</option>
           {% for material_wall in materials_walls %}
               <option value="{{ material_wall.pkey }}" >{{ material_wall.name }}</option>
           {% endfor %}
@@ -121,7 +121,7 @@
   <div class="form-group">
       <label style="font-size: 20px" for="flor">Wybierz materiał dla podłogi</label>
       <select class="form-control" id="podloga" name="podloga">
-      <option value="null" selected>{{ floor_material }}</option>
+      <option value="{{ floor_material_id }}" selected>{{ floor_material }}</option>
           {% for material_floor in material_floor %}
               <option value="{{ material_floor.pkey }}">{{ material_floor.name }}</option>
           {% endfor %}
@@ -145,8 +145,8 @@
     <button type="button" class="btn btn-secondary" id="checker-button">Sprawdź czy pomieszczenie spełnia normy</button> 
 </form>
 <script>
-document.getElementById("submit-button").disabled = true;
-document.getElementById("checker-button").disabled = true;
+document.getElementById("submit-button").enabled = true;
+document.getElementById("checker-button").enabled = true;
 let sufit = document.getElementById("sufit");
 sufit.addEventListener("change", checkInputs);
 let wall_1 = document.getElementById("wall1");
@@ -164,11 +164,11 @@ podloga.addEventListener("change", checkInputs);
 
 function checkInputs() {
   if (wall_1.value !== "null" && wall_2.value !== "null" && wall_3.value !== "null" && wall_4.value !== "null" && sufit.value !=="null" && podloga.value !== "null") {
-    document.getElementById("submit-button").disabled = false;
-    document.getElementById("checker-button").disabled = false;
+    document.getElementById("submit-button").enabled = true;
+    document.getElementById("checker-button").enabled = true;
   } else {
-    document.getElementById("submit-button").disabled = true;
-    document.getElementById("checker-button").disabled = true;
+    document.getElementById("submit-button").enabled = true;
+    document.getElementById("checker-button").enabled = true;
     {#podloga.setAttribute("style","background-color:red;");#}
   }
 }
