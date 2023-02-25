@@ -42,18 +42,14 @@ def download_pdf():
 
 
         # version for linux
-        # config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
+        config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
         # Windows
-        config = pdfkit.configuration(wkhtmltopdf='C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe')
+        # config = pdfkit.configuration(wkhtmltopdf='C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe')
         pdf = pdfkit.from_string(''.join(temp), options=pdfkit_options, configuration=config)
         response = make_response(pdf)
         response.headers["Content-Type"] = "application/pdf"
-        response.headers["Content-Disposition"] = "inline; filename=output.pdf"
+        response.headers["Content-Disposition"] = f"inline; filename={project_name}.pdf"
         return response
-
-def prepare_html(html):
-
-    return html
 
 @views.route('/newproject/display/<project_name>')
 @login_required
