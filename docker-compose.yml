@@ -11,6 +11,9 @@ services:
             - my_network
     flask_app:
         container_name: flask_app
+        environment:
+            - POSTGRES_USER
+            - POSTGRES_PASSWORD
         build: ./App
         networks:
             - my_network

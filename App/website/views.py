@@ -42,9 +42,7 @@ def download_pdf():
 
 
         # version for linux
-        # config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
-        # Windows
-        config = pdfkit.configuration(wkhtmltopdf='C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe')
+        config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
         pdf = pdfkit.from_string(''.join(temp), options=pdfkit_options, configuration=config)
         response = make_response(pdf)
         response.headers["Content-Type"] = "application/pdf"
