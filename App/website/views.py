@@ -131,7 +131,7 @@ def edit_project(project_name=''):
                 material_json.append({'quantity': quantity, 'material': material})
         # json_materials = json.dumps(material_json, cls=MaterialEncoder)
 
-        print("Full List: ", material_json)
+
         plain_list = [(int(item['quantity']), item['material'].pkey) for item in material_json]
         if float(length) <= 0.0 or float(width) <= 0.0 or float(height) <= 0.0:
             flash('Wymiary pomieszczenia musza byc wieksze od zera!', category='error')
@@ -230,7 +230,7 @@ def edit_project(project_name=''):
 
 
             flash('Podany projekt spelnia normy!', category='success')
-            print("Final absorption list:", final_absorption_list)
+
 
             return redirect(url_for('views.display_new_project', project_name=project_name))
 
