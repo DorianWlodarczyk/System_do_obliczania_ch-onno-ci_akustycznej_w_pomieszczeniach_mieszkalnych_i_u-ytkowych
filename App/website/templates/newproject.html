@@ -28,6 +28,7 @@
         class="form-control"
         id="length"
         name="length"
+        value=0
         placeholder="Wpisz długość pomieszczenia"
       />
     </div>
@@ -39,7 +40,7 @@
         class="form-control"
         id="width"
         name="width"
-        value=""
+        value= 0
         placeholder="Wpisz szerokość pomieszczenia"
       />
     </div>
@@ -51,7 +52,7 @@
         class="form-control"
         id="height"
         name="height"
-        value=""
+        value= 0
         placeholder="Wpisz wysokość pomieszczenia"
       />
     </div>
@@ -145,6 +146,13 @@
 </form>
 <script>
 document.getElementById("submit-button").disabled = true;
+
+let height1 = document.getElementById("height");
+height1.addEventListener("change", checkInputs);
+let width1 = document.getElementById("width");
+width1.addEventListener("change", checkInputs);
+let length1 = document.getElementById("length");
+length1.addEventListener("change", checkInputs);
 let sufit = document.getElementById("sufit");
 sufit.addEventListener("change", checkInputs);
 let wall_1 = document.getElementById("wall1");
@@ -157,11 +165,15 @@ const wall_4 = document.getElementById("wall4");
 wall_4.addEventListener("change", checkInputs);
 const podloga = document.getElementById("podloga");
 podloga.addEventListener("change", checkInputs);
+const porojectName = document.getElementById("projectName");
+projectName.addEventListener("change", checkInputs);
 
 
 
 function checkInputs() {
-  if (wall_1.value !== "null" && wall_2.value !== "null" && wall_3.value !== "null" && wall_4.value !== "null" && sufit.value !=="null" && podloga.value !== "null") {
+  if (wall_1.value !== "null" && wall_2.value !== "null" &&
+      wall_3.value !== "null" && wall_4.value !== "null" &&
+      sufit.value !=="null" && podloga.value !== "null" && projectName !== '' && projectName !== "null" && projectName.value !== '' && projectName.value !== "null") {
     document.getElementById("submit-button").disabled = false;
 
   } else {
