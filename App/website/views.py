@@ -19,7 +19,7 @@ import json
 views = Blueprint('views', __name__)
 app = Flask(__name__)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
-# app.json_encoder = MaterialEncoder
+
 
 @views.route('/download_pdf', methods=['POST'])
 def download_pdf():
@@ -76,7 +76,13 @@ def display_new_project(project_name):
     _1000_absorption = project._1000
     _2000_absorption = project._2000
     _4000_absorption = project._4000
-    print(_120_absorption)
+    _120_reverb_time = project.reverb_time_120
+    _250_reverb_time = project.reverb_time_250
+    _500_reverb_time = project.reverb_time_500
+    _1000_reverb_time = project.reverb_time_1000
+    _2000_reverb_time = project.reverb_time_2000
+    _4000_reverb_time = project.reverb_time_4000
+
     # Render the template with the stored data
     template_name = "display_newproject.html"
     rendered_template = render_template(template_name,user=current_user, project_name=project_name, norm_id=norm,
@@ -86,7 +92,9 @@ def display_new_project(project_name):
                                         front_wall_material=front_wall_material, height=project.height,
                                         length=project.length, width=project.width, back_wall_material=wall4_material,
                                         floor_material=floor_material, furniture=project.furniture, _120_absorption=_120_absorption,_250_absorption=_250_absorption,
-                                        _500_absorption=_500_absorption,_1000_absorption=_1000_absorption,_2000_absorption=_2000_absorption,_4000_absorption=_4000_absorption)
+                                        _500_absorption=_500_absorption,_1000_absorption=_1000_absorption,_2000_absorption=_2000_absorption,_4000_absorption=_4000_absorption,
+                                        _120_reverb_time=_120_reverb_time, _250_reverb_time= _250_reverb_time,_500_reverb_time=_500_reverb_time,_1000_reverb_time=_1000_reverb_time,
+                                        _2000_reverb_time=_2000_reverb_time,_4000_reverb_time=_4000_reverb_time)
 
     # Return the rendered template as a response
     return rendered_template
@@ -170,7 +178,9 @@ def edit_project(project_name=''):
                     furniture_absorption_value[j] *= plain_list[i][0]
                     final_absorption_list[j] += furniture_absorption_value[j]
 
-            print("Lista mebli: ", list_of_furniture)
+            for i in range(len(reverb_time)):
+                reverb_time[i] += 0.163 * volume / final_absorption_list[i] if final_absorption_list[i] != 0 else 0
+
             # Calculate absorption coefficient per square meter for the room
             for i in range(len(final_absorption_list)):
                 final_absorption_list[i] /= volume
@@ -203,11 +213,17 @@ def edit_project(project_name=''):
                 existing_project._1000 = final_absorption_list[3]
                 existing_project._2000 = final_absorption_list[4]
                 existing_project._4000 = final_absorption_list[5]
+                existing_project.reverb_time_120 = reverb_time[0]
+                existing_project.reverb_time_250 = reverb_time[1]
+                existing_project.reverb_time_500 = reverb_time[2]
+                existing_project.reverb_time_1000 = reverb_time[3]
+                existing_project.reverb_time_2000 = reverb_time[4]
+                existing_project.reverb_time_4000 = reverb_time[5]
                 db.session.commit()
                 flash('Projekt został zaktualizowany!')
             else:
                 # If the project does not exist, create a new one
-                new_projekt = Projects(user_id=current_user.id, name=project_name, norm_id=norm_id, up_to_norm=up_to_norm, length=length, width=width, height=height, floor=floor, sufit_id=sufit_id, wall1_id=wall1_id, wall2_id=wall2_id, wall3_id=wall3_id, wall4_id=wall4_id, furniture=list_of_furniture_json, _120=final_absorption_list[0], _250=final_absorption_list[1], _500=final_absorption_list[2], _1000=final_absorption_list[3], _2000=final_absorption_list[4], _4000=final_absorption_list[5])
+                new_projekt = Projects(user_id=current_user.id, name=project_name, norm_id=norm_id, up_to_norm=up_to_norm, length=length, width=width, height=height, floor=floor, sufit_id=sufit_id, wall1_id=wall1_id, wall2_id=wall2_id, wall3_id=wall3_id, wall4_id=wall4_id, furniture=list_of_furniture_json, _120=final_absorption_list[0], _250=final_absorption_list[1], _500=final_absorption_list[2], _1000=final_absorption_list[3], _2000=final_absorption_list[4], _4000=final_absorption_list[5],reverb_time_120=reverb_time[0],reverb_time_250=reverb_time[1],reverb_time_500=reverb_time[2],reverb_time_1000=reverb_time[3],reverb_time_2000=reverb_time[4],reverb_time_4000=reverb_time[5])
                 db.session.add(new_projekt)
                 db.session.commit()
                 flash('Projekt został dodany!')
@@ -313,7 +329,6 @@ def new_project(project_name=''):
             list_of_furniture = []
             # norm = Norms.query.filter_by(pkey=norm_id)
             norm = Norms.query.filter_by(pkey=norm_id).with_entities(Norms.absorption_multiplayer).first()
-            print("norm:", norm[0])
 
             #Obsluga bledow
             if float(length) <= 0.0 or float(width) <= 0.0 or float(height) <= 0.0:
@@ -346,7 +361,8 @@ def new_project(project_name=''):
                     furniture_absorption_value[j] *= plain_list[i][0]
                     final_absorption_list[j] += furniture_absorption_value[j]
 
-            print("Lista mebli: ", list_of_furniture)
+            for i in range(len(reverb_time)):
+                reverb_time[i] += 0.163 * volume / final_absorption_list[i] if final_absorption_list[i] != 0 else 0
             # Calculate absorption coefficient per square meter for the room
             for i in range(len(final_absorption_list)):
                 final_absorption_list[i] /= volume
@@ -379,17 +395,23 @@ def new_project(project_name=''):
                 existing_project._1000 = final_absorption_list[3]
                 existing_project._2000 = final_absorption_list[4]
                 existing_project._4000 = final_absorption_list[5]
+                existing_project.reverb_time_120 = reverb_time[0]
+                existing_project.reverb_time_250 = reverb_time[1]
+                existing_project.reverb_time_500 = reverb_time[2]
+                existing_project.reverb_time_1000 = reverb_time[3]
+                existing_project.reverb_time_2000 = reverb_time[4]
+                existing_project.reverb_time_4000 = reverb_time[5]
                 db.session.commit()
                 flash('Projekt został zaktualizowany!')
             else:
                 # If the project does not exist, create a new one
-                new_projekt = Projects(user_id=current_user.id, name=project_name, norm_id=norm_id, up_to_norm=up_to_norm, length=length, width=width, height=height, floor=floor, sufit_id=sufit_id, wall1_id=wall1_id, wall2_id=wall2_id, wall3_id=wall3_id, wall4_id=wall4_id, furniture=list_of_furniture_json, _120=final_absorption_list[0], _250=final_absorption_list[1], _500=final_absorption_list[2], _1000=final_absorption_list[3], _2000=final_absorption_list[4], _4000=final_absorption_list[5])
+                new_projekt = Projects(user_id=current_user.id, name=project_name, norm_id=norm_id, up_to_norm=up_to_norm, length=length, width=width, height=height, floor=floor, sufit_id=sufit_id, wall1_id=wall1_id, wall2_id=wall2_id, wall3_id=wall3_id, wall4_id=wall4_id, furniture=list_of_furniture_json, _120=final_absorption_list[0], _250=final_absorption_list[1], _500=final_absorption_list[2], _1000=final_absorption_list[3], _2000=final_absorption_list[4], _4000=final_absorption_list[5], reverb_time_120=reverb_time[0],reverb_time_250=reverb_time[1],reverb_time_500=reverb_time[2],reverb_time_1000=reverb_time[3],reverb_time_2000=reverb_time[4],reverb_time_4000=reverb_time[5])
                 db.session.add(new_projekt)
                 db.session.commit()
                 flash('Projekt został dodany!')
 
             # flash('Podany projekt spelnia normy!', category='success')
-            print("Final absorption list:", final_absorption_list)
+
 
             return redirect(url_for('views.display_new_project', project_name=project_name))
 
@@ -428,8 +450,6 @@ def home():
 def delete_project(project_name):
     if project_name:
         selected_project = request.form.get('project_name')
-        print(selected_project)
-        print(project_name)
         project = Projects.query.filter_by(name=project_name).first()
         db.session.delete(project)
         db.session.commit()

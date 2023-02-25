@@ -54,7 +54,14 @@ CREATE TABLE projects (
 	"_500"  decimal(22,2) not null,
 	"_1000" decimal(22,2) not null,
 	"_2000" decimal(22,2) not null,
-	"_4000" decimal(22,2) not null
+	"_4000" decimal(22,2) not null,
+    "reverb_time_120" decimal(22,2) NOT NULL,
+    "reverb_time_250" decimal(22,2) NOT NULL,
+    "reverb_time_500" decimal(22,2) NOT NULL,
+    "reverb_time_1000" decimal(22,2) NOT NULL,
+    "reverb_time_2000" decimal(22,2) NOT NULL,
+    "reverb_time_4000" decimal(22,2) NOT NULL
+
 );
 
 
