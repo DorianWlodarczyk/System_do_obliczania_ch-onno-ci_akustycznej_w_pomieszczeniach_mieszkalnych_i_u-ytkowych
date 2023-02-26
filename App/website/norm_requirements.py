@@ -1,3 +1,4 @@
+from .models import NormsReverbTimeVolumeReq, NormsReverbTimeNoReq, NormsAbsorptionMultiplayer, NormsReverbTimeHeightReq
 def norm_requirements(Volume,surface_area, project_id,height, absorption_list, reverb_time_list):
     if(project_id == 1):
         if(Volume <= 120):
@@ -194,8 +195,9 @@ def absorption_norm_checker(absorption_list, absorption_norm,surface_area , mult
             return up_to_norm
 
 def reverb_time_norm_checker(reverb_time_norm, reverb_time_list):
+    reverb_time = float(reverb_time_norm[0])
     for i in range(len(reverb_time_list)):
-        if(reverb_time_list[i] <= reverb_time_norm):
+        if(reverb_time_list[i] <= reverb_time):
             up_to_norm = 'Pomieszczenie spelnia wymagana norme'
             return up_to_norm
         else:
