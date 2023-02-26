@@ -382,7 +382,7 @@ def new_project(project_name=''):
             #     up_to_norm = 'Tak'
             # else:
             #     up_to_norm = 'Nie'
-            requirements, up_to_norm = norm_requirements(volume, surface_area, int(norm_id), height, final_absorption_list, reverb_time)
+            requirements, up_to_norm = norm_requirements(volume, surface_area, int(norm_id), float(height), final_absorption_list, reverb_time)
             print(requirements)
             print(up_to_norm)
 
