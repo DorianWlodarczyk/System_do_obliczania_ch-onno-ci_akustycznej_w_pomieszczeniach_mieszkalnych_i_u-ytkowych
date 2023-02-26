@@ -329,9 +329,9 @@ Insert into materials values (default,'Inne','Muzyk z instrumentem (2,3 m² / os
 Insert into materials values (default,'Inne','Osoba dorosła',0.25,0.35,0.42,0.46,0.5,0.5);
 
 insert into norms_speech_transmission_index values
-(1,null,0.6,0.6,0.6,99.9);
+(1,null,0.6,0.6,99.9);
 insert into norms_speech_transmission_index values
-(11,null,0.6,0.6,0.6,99.9);
+(11,0.6,0.6,0.6,99.9);
 
 insert into norms_absorption_multiplayer
 values(6,0.6);
