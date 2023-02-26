@@ -15,7 +15,6 @@ create table materials(
 );
 
 
-
 create table norms(
 	pkey serial PRIMARY KEY,
 	name text not null
@@ -67,11 +66,6 @@ create table norms_speech_transmission_index(
 
 
 
-create table norms_tips(
-	norm_id INTEGER REFERENCES norms(pkey) not null,
-	small_room_tip text,
-	large_room_tip text
-);
 
 
 
@@ -90,7 +84,7 @@ CREATE TABLE projects (
     user_id INTEGER REFERENCES users(id),
     name varchar(255) UNIQUE not null,
     norm_id INTEGER not null,
-    up_to_norm varchar(3) not null,
+    up_to_norm TEXT not null,
     length decimal(22,2) not null,
     width decimal(22,2) not null,
     height decimal(22,2) not null,
@@ -102,18 +96,18 @@ CREATE TABLE projects (
     wall4_id INTEGER not null,
     furniture TEXT not null,
     "_120"  decimal(22,2) not null,
-	"_250"  decimal(22,2) not null,
-	"_500"  decimal(22,2) not null,
-	"_1000" decimal(22,2) not null,
-	"_2000" decimal(22,2) not null,
-	"_4000" decimal(22,2) not null,
+    "_250"  decimal(22,2) not null,
+    "_500"  decimal(22,2) not null,
+    "_1000" decimal(22,2) not null,
+    "_2000" decimal(22,2) not null,
+    "_4000" decimal(22,2) not null,
     "reverb_time_120" decimal(22,2) NOT NULL,
     "reverb_time_250" decimal(22,2) NOT NULL,
     "reverb_time_500" decimal(22,2) NOT NULL,
     "reverb_time_1000" decimal(22,2) NOT NULL,
     "reverb_time_2000" decimal(22,2) NOT NULL,
-    "reverb_time_4000" decimal(22,2) NOT NULL
-
+    "reverb_time_4000" decimal(22,2) NOT null,
+    requirements text not null
 );
 
 
@@ -329,9 +323,9 @@ Insert into materials values (default,'Inne','Muzyk z instrumentem (2,3 m² / os
 Insert into materials values (default,'Inne','Osoba dorosła',0.25,0.35,0.42,0.46,0.5,0.5);
 
 insert into norms_speech_transmission_index values
-(1,null,0.6,0.6,0.6,99.9);
+(1,null,0.6,0.6,99.9);
 insert into norms_speech_transmission_index values
-(11,null,0.6,0.6,0.6,99.9);
+(11,0.6,0.6,0.6,99.9);
 
 insert into norms_absorption_multiplayer
 values(6,0.6);
@@ -385,51 +379,3 @@ INSERT INTO norms_reverb_time_height_req
 VALUES(23, 1.2, 1.5, 1.8);
 INSERT INTO norms_reverb_time_height_req
 VALUES(24, 1.5, 2.0, 2.5);
-
-
-create table norms_tips(
-	norm_id INTEGER REFERENCES norms(pkey) not null,
-	norms_tips text,
-	project_tips text
-);
-
-
-
-INSERT INTO norms_tips
-(norm_id, norms_tips, project_tips)
-VALUES(1, 'Funkcja tych pomieszczeń opiera się na komunikacji słownej bezpośredniej (bez wykorzystania
-nagłośnienia) a czasami również pośredniej (poprzez nagłośnienie). Najważniejsze jest więc
-zapewnienie dobrej zrozumiałości mowy w obu tych sytuacjach. W tym celu należy zadbać
-o ograniczenie czasu pogłosu oraz poziomu tła akustycznego w pustym pomieszczeniu (< 35-
-40 dBA). Czas pogłosu powinien być w miarę możliwości zbliżony we wszystkich oktawowych
-pasmach częstotliwości 125 Hz - 8 kHz. Można to osiągnąć poprzez rozmieszczenie
-w pomieszczeniu materiałów dźwiękochłonnych o działaniu szerokopasmowym. W przypadku większych pomieszczeń (odległość mówca-słuchacz > 8 m) należy zapewnić właściwą
-propagację dźwięku (poprzez odpowiednie rozmieszczenie powierzchni odbijających
-dźwięk), która powinna zapewnić dostateczny dla zrozumiałości mowy poziom głosu mówcy
-w tylnej części sali. Należy pamiętać, że w pomieszczeniu, w którym zapewniono dobre
-warunki akustyczne do komunikacji słownej bezpośredniej będą także odpowiednie warunki do komunikacji słownej pośredniej (wzmocnionej elektroakustycznie), natomiast nie zawsze
-zachodzi odwrotna zależność.', 'Małe pomieszczenia o długości do 9-10 m. Na całej powierzchni sufitu materiały dźwiękochłonne
-o αw ≥ 0,95. Preferowane sufity podwieszane z pustką powietrzną ze względu na większą niż w przypadku
-innych rozwiązań chłonność akustyczną w niskich częstotliwościach (125 - 250 Hz). Dla zapewnienia
-możliwie płaskiej charakterystyki czasu pogłosu zalecane jest ułożenie na suficie podwieszanym
-dodatkowej warstwy płyt dźwiękochłonnych zwiększających pochłanianie w niskich częstotliwościach
-(125 - 250 Hz). Na tylnej ścianie od wysokości ok. 100 cm do 220 cm umieszczone dźwiękochłonne
-panele ścienne o αw ≥ 0,95. Takie same panele ścienne mogą być umieszczone na jednej ze ścian bocznych od wysokości ok. 120 cm do 240 cm. Zabieg ten nie jest konieczny, jeśli przy tych ścianach stoją
-wysokie regały, szafy itp.
-Większe pomieszczenia o długości ponad 9-10 m i wysokości do 4 m. Na 60-70% powierzchni
-sufitu materiały dźwiękochłonne o αw ≥ 0,95. Preferowane sufity podwieszane ze względu na większą
-niż w przypadku innych rozwiązań chłonność akustyczną w niskich częstotliwościach (125 - 250 Hz).
-Dla zapewnienie możliwie płaskiej charakterystyki czasu pogłosu zalecane jest ułożenie na suficie
-podwieszanym dodatkowej warstwy płyt dźwiękochłonnych zwiększających pochłanianie w niskich
-częstotliwościach. Na pozostałych 30-40% (przednia i centralna częśc sali z wyłączeniem marginesów
-wzdłuż ścian bocznych) materiał charakteryzujący się wciąż stosunkowo dobrym pochłanianiem
-w paśmie 125 Hz (αp
- ≥ 0,4) i możliwie odbijający (αp
- < 0,4) w pozostałych pasmach. Na tylnej ścianie
-od wysokości ok. 100 cm do 220 cm umieszczone dźwiękochłonne panele ścienne o αw ≥ 0,95.
-Takie same panele ścienne mogą być umieszczone na jednej ze ścian bocznych od wysokości
-ok. 120 cm do 240 cm. Zabieg ten nie jest konieczny, jeśli przy tych ścianach stoją wysokie regały,
-szafy itp. W audytoriach obowiązuje podobna zasada: przednie partie sufitu mają odbijać dźwięk
-w kierunku tylnej części widowni, tylne zaś powinny być dźwiękochłonne. Istotny jest kształt i nachylenie
-odbijających partii sufitu. Dźwiękochłonne panele ścienne na tylnej ścianie oraz tylnych partiach ścian
-bocznych.');
