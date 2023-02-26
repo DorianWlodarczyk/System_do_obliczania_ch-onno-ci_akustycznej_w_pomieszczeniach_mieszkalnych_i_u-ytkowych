@@ -186,8 +186,9 @@ def norm_requirements(Volume,surface_area, project_id,height, absorption_list, r
 
 
 def absorption_norm_checker(absorption_list, absorption_norm,surface_area , multiplayer):
+    absorption =float(absorption_norm)
     for i in range(len(absorption_list)):
-        if(absorption_list[i] >= absorption_norm * multiplayer):
+        if(absorption_list[i] >= absorption * multiplayer * surface_area):
             up_to_norm = 'Pomieszczenie spelnia wymagana norme'
             return up_to_norm
         else:
