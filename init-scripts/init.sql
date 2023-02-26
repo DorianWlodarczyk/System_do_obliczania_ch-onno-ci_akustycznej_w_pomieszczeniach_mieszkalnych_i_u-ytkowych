@@ -18,9 +18,61 @@ create table materials(
 
 create table norms(
 	pkey serial PRIMARY KEY,
-	name varchar(255) not null,
+	name text not null
+);
+
+create table norms_absorption_multiplayer(
+	norm_id INTEGER REFERENCES norms(pkey) not null,
 	absorption_multiplayer decimal(22,2) not null
 );
+
+
+create table norms_reverb_time_no_req(
+	norm_id INTEGER REFERENCES norms(pkey) not null,
+	no_cubature_req decimal(22,2)
+);
+
+
+
+create  table norms_reverb_time_volume_req(
+	norm_id INTEGER REFERENCES norms(pkey) not null,
+	less_120 decimal(22,2),
+	between_120_250 decimal(22,2),
+	between_250_500 decimal(22,2),
+	between_500_2000 decimal(22,2),
+	more_2000 decimal(22,2),
+	less_5000 decimal(22,2),
+	more_5000 decimal(22,2)
+);
+
+
+create table norms_reverb_time_height_req(
+	norm_id INTEGER references norms(pkey) not null,
+	h_less_4 decimal(22,2),
+	h_between_4_16 decimal(22,2),
+	h_more_16 decimal(22,2)
+);
+
+
+
+
+create table norms_speech_transmission_index(
+	norm_id INTEGER REFERENCES norms(pkey) not null,
+	between_120_250 decimal(22,2),
+	between_250_500 decimal(22,2),
+	between_500_2000 decimal(22,2),
+	more_2000 decimal(22,2)
+);
+
+
+
+
+create table norms_tips(
+	norm_id INTEGER REFERENCES norms(pkey) not null,
+	small_room_tip text,
+	large_room_tip text
+);
+
 
 
 CREATE TABLE users (
@@ -66,34 +118,77 @@ CREATE TABLE projects (
 
 
 insert into norms values
-(default,'Biura wielkoprzestrzenne, pomieszczenia biurowe typu "open space", sale operacyjne banków i urzędów, biura obsługi klienta oraz inne pomieszczenia o podobnym przeznaczeniu',1.1);
+(default,'Sale i pracownie szkolne, sale audytoryjne, wykładowe w szkołach podstawowych,średnich i wyższych, pomieszczenia do nauki przedmiotów ogólnych w szkołach muzycznych i inne pomieszczenia o podobnym przeznaczeniu');
 
 insert into norms values
-(default,'Centra obsługi telefonicznej',1.3);
+(default, 'Sale w żłobkach i przedszkolach');
 
 insert into norms values
-(default,'Szatnie w szkołach i przedszkołach, w których ubrania zamknięte są w szafkach z pełnymi drzwiami',0.6);
+(default, 'Świetlice szkolne');
 
 insert into norms values
-(default,'Pracownie do zajęć technicznych i warsztaty szkolne',0.6);
+(default, 'Sale konsumpcyjne w stołówkach szkolnych');
 
 insert into norms values
-(default,'Sale chorych na oddziałach intensywnej opieki medycznej',0.8);
+(default, 'Pokoje nauczycielskie, socjalne i inne pomieszczenia o podobnym przeznaczeniu w szkołach i przedszkolach');
 
 insert into norms values
-(default,'Poczekalnie i punkty przyjęć w szpitalach i przychodniach lekarskich',0.8);
+(default, 'Pracownie do zajęć technicznych i warsztaty szkolne');
 
 insert into norms values
-(default,'Korytarze w przedszkolach, szkołach podstawowych, gimnazjach i szkołach ponadgimnazjalnych',1.0);
+(default, 'Szatnie w szkołach i przedszkolach, w których ubrania zamknięte są w szafkach z pełnymi drzwiami');
 
 insert into norms values
-(default,'Korytarze w hotelach, szpitalach i przychodniach lekarskich',0.6);
+(default, 'Czytelnie, wypożyczalnie oraz pomieszczenia księgozbiorów z wolnym dostępem w bibliotekach');
 
 insert into norms values
-(default,'Klatki schodowe w przedszkolach, szkołach, obiektach służby zdrowia i administracji publicznej',0.4);
+(default, 'Sale gimnastyczne, hale sportowe i inne pomieszczenia o podobnym przeznaczeniu');
 
 insert into norms values
-(default,'Kuchnie i pomieszczenia zaplecza gastronomicznego (z wyjatkiem magazynów)',0.4);
+(default, 'Hale basenowe pływalni, parków wodnych i innych obiektów o podobnym przeznaczeniu');
+
+insert into norms values
+(default, 'Sale rozpraw sądowych, sale konferencyjne, audytoria i inne pomieszczenia o podobnym przeznaczeniu');
+
+insert into norms values
+(default,'Biura wielkoprzestrzenne, pomieszczenia biurowe typu "open space", sale operacyjne banków i urzędów, biura obsługi klienta oraz inne pomieszczenia o podobnym przeznaczeniu');
+
+insert into norms values
+(default,'Centra obsługi telefonicznej');
+
+insert into norms values
+(default, 'Pokoje biurowe i inne pomieszczenia o zbliżonej funkcji');
+
+insert into norms values
+(default, 'Gabinety lekarskie i zabiegowe oraz inne pomieszczenia o podobnym przeznaczeniu');
+
+insert into norms values
+(default,'Sale chorych na oddziałach intensywnej opieki medycznej');
+
+insert into norms values
+(default,'Poczekalnie i punkty przyjęć w szpitalach i przychodniach lekarskich');
+
+insert into norms values
+(default,'Korytarze w przedszkolach, szkołach podstawowych, gimnazjach i szkołach ponadgimnazjalnych');
+
+insert into norms values
+(default,'Korytarze w hotelach, szpitalach i przychodniach lekarskich');
+
+insert into norms values
+(default,'Klatki schodowe w przedszkolach, szkołach, obiektach służby zdrowia i administracji publicznej');
+
+insert into norms values
+(default,'Kuchnie i pomieszczenia zaplecza gastronomicznego (z wyjatkiem magazynów)');
+
+insert into norms values
+(default,'Atria, hole, foyer i inne pomieszczenia o podobnym przeznaczeniu, wielokondygnacyjne strefy komunikacji ogólnej w centrach handlowych');
+
+insert into norms values
+(default, 'Terminale pasażerskie portów lotniczych, dworce kolejowe i autobusowe: obszary komunikacji ogólnej, strefy odpraw pasażerów, odbioru bagażu, kas i informacji, poczekalnie');
+
+insert into norms values
+(default, 'Galerie wystawowe, sale ekspozycyjne w muzeach i inne pomieszczenia o podobnym przeznaczeniu');
+
 
 
 Insert into materials values (default,'Ściany','Fasada aluminiowa słupowo-ryglowa',0.15,0.05,0.03,0.03,0.02,0.02);
@@ -233,3 +328,60 @@ Insert into materials values (default,'Inne','Muzyk z instrumentem (1,1 m² / os
 Insert into materials values (default,'Inne','Muzyk z instrumentem (2,3 m² / osoba)',0.03,0.13,0.43,0.7,0.86,0.99);
 Insert into materials values (default,'Inne','Osoba dorosła',0.25,0.35,0.42,0.46,0.5,0.5);
 
+insert into norms_speech_transmission_index values
+(1,null,0.6,0.6,0.6,99.9);
+insert into norms_speech_transmission_index values
+(11,null,0.6,0.6,0.6,99.9);
+
+insert into norms_absorption_multiplayer
+values(6,0.6);
+insert into norms_absorption_multiplayer
+values(7,0.6);
+insert into norms_absorption_multiplayer
+values(18,1.0);
+insert into norms_absorption_multiplayer
+values(20,0.4);
+insert into norms_absorption_multiplayer
+values(12,1.1);
+insert into norms_absorption_multiplayer
+values(13,1.3);
+insert into norms_absorption_multiplayer
+values(16,0.8);
+insert into norms_absorption_multiplayer
+values(17,0.8);
+insert into norms_absorption_multiplayer
+values(19,0.6);
+insert into norms_absorption_multiplayer
+values(21,0.6);
+
+
+insert into norms_reverb_time_no_req
+values(2,0.4);
+insert into norms_reverb_time_no_req
+values(3,0.6);
+insert into norms_reverb_time_no_req
+values(4,0.6);
+insert into norms_reverb_time_no_req
+values(5,0.6);
+insert into norms_reverb_time_no_req
+values(14,0.6);
+insert into norms_reverb_time_no_req
+values(15,0.8);
+
+insert into norms_reverb_time_volume_req
+values(1, 0.6, 0.6, 0.8, 1.0, 99.9);
+insert into norms_reverb_time_volume_req
+values(9, 1.5, 1.5, 1.5, 1.5, null, 1.5, 1.8);
+insert into norms_reverb_time_volume_req
+values(10, 1.8, 1.8, 1.8, 1.8, null, 1.8, 2.2);
+insert into norms_reverb_time_volume_req
+values(11, 0.8, 0.8, 0.8, 1.0, 99.9);
+
+INSERT INTO norms_reverb_time_height_req
+VALUES(8, 0.6, 0.8, 0.8);
+INSERT INTO norms_reverb_time_height_req
+VALUES(22, 1.2, 1.5, 1.8);
+INSERT INTO norms_reverb_time_height_req
+VALUES(23, 1.2, 1.5, 1.8);
+INSERT INTO norms_reverb_time_height_req
+VALUES(24, 1.5, 2.0, 2.5);
