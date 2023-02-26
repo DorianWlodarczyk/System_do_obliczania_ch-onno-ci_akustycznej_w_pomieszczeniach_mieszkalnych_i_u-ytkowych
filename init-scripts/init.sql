@@ -15,7 +15,6 @@ create table materials(
 );
 
 
-
 create table norms(
 	pkey serial PRIMARY KEY,
 	name text not null
@@ -67,11 +66,6 @@ create table norms_speech_transmission_index(
 
 
 
-create table norms_tips(
-	norm_id INTEGER REFERENCES norms(pkey) not null,
-	small_room_tip text,
-	large_room_tip text
-);
 
 
 
