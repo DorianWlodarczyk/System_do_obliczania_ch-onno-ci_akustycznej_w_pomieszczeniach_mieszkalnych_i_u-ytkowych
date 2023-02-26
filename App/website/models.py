@@ -57,6 +57,7 @@ class Projects(db.Model):
     reverb_time_1000 = db.Column(db.Numeric(22, 2), nullable=False)
     reverb_time_2000 = db.Column(db.Numeric(22, 2), nullable=False)
     reverb_time_4000 = db.Column(db.Numeric(22, 2), nullable=False)
+    requirements = db.Column(db.Text, nullable=False)
 
 class NormsAbsorptionMultiplayer(db.Model):
     tablename = 'norms_absorption_multiplayer'

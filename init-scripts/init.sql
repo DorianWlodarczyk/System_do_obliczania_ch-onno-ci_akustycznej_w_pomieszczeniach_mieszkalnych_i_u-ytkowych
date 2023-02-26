@@ -96,18 +96,18 @@ CREATE TABLE projects (
     wall4_id INTEGER not null,
     furniture TEXT not null,
     "_120"  decimal(22,2) not null,
-	"_250"  decimal(22,2) not null,
-	"_500"  decimal(22,2) not null,
-	"_1000" decimal(22,2) not null,
-	"_2000" decimal(22,2) not null,
-	"_4000" decimal(22,2) not null,
+    "_250"  decimal(22,2) not null,
+    "_500"  decimal(22,2) not null,
+    "_1000" decimal(22,2) not null,
+    "_2000" decimal(22,2) not null,
+    "_4000" decimal(22,2) not null,
     "reverb_time_120" decimal(22,2) NOT NULL,
     "reverb_time_250" decimal(22,2) NOT NULL,
     "reverb_time_500" decimal(22,2) NOT NULL,
     "reverb_time_1000" decimal(22,2) NOT NULL,
     "reverb_time_2000" decimal(22,2) NOT NULL,
-    "reverb_time_4000" decimal(22,2) NOT NULL
-
+    "reverb_time_4000" decimal(22,2) NOT null,
+    requirements text not null
 );
 
 

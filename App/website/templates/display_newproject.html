@@ -25,6 +25,7 @@
     <ul>
       <li style="margin-bottom: 7px" >Nazwa projektu: {{ project_name }}</li>
       <li style="margin-bottom: 7px">Norma: {{ norm }}</li>
+        <li style="margin-bottom: 7px">Wymagania: {{ requirements }}</li>
       <li style="margin-bottom: 7px">Spełnia normę: {{ up_to_norm }}</li>
       <li style="margin-bottom: 7px">Wysokość: {{ height }}</li>
       <li style="margin-bottom: 7px">Długość: {{ length }}</li>
@@ -61,23 +62,13 @@
 </thead>
 <tbody>
   <tr>
-      <td class="tg-0lax"><span style="font-weight:bold">Wartość</span></td>
+      <td class="tg-0lax"><span style="font-weight:bold">Chłonność akustyczna pomieszczenia</span></td>
     <td class="tg-0lax">{{_120_absorption}}</td>
     <td class="tg-0lax">{{_250_absorption}}</td>
     <td class="tg-0lax">{{_500_absorption}}</td>
     <td class="tg-0lax">{{_1000_absorption}}</td>
     <td class="tg-0lax">{{_2000_absorption}}</td>
     <td class="tg-0lax">{{_4000_absorption}}</td>
-      <th class="tg-0lax">Na 1m2</th>
-  </tr>
-    <tr>
-      <td class="tg-0lax"><span style="font-weight:bold">Próg</span></td>
-    <td class="tg-0lax">{{norm_value}}</td>
-    <td class="tg-0lax">{{norm_value}}</td>
-    <td class="tg-0lax">{{norm_value}}</td>
-    <td class="tg-0lax">{{norm_value}}</td>
-    <td class="tg-0lax">{{norm_value}}</td>
-    <td class="tg-0lax">{{norm_value}}</td>
       <th class="tg-0lax">Na 1m2</th>
   </tr>
  <tr>
