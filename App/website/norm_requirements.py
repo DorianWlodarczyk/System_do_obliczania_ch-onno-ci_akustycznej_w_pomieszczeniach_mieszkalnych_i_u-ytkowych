@@ -64,13 +64,13 @@ def norm_requirements(Volume,surface_area, project_id,height, absorption_list, r
 
     if (project_id == 8):
         if(height <=4):
-            requirements = 'Dla pomieszczenia o wysokosci mniejszej badz rownej 4, T musi byc mniejsze badz rowne 0.6s '
+            requirements = 'Dla pomieszczenia o wysokosci mniejszej badz rownej 4m, T musi byc mniejsze badz rowne 0.6s '
             reverb_time_norm = NormsReverbTimeHeightReq.query.with_entities(NormsReverbTimeHeightReq.h_less_4).filter_by(norm_id=project_id).first()
             up_to_norm = reverb_time_norm_checker(reverb_time_norm, reverb_time_list)
             return requirements, up_to_norm
 
         elif (height > 4):
-            requirements = 'Dla pomieszczenia o wysokosci wiekszej od 4, T musi byc mniejsze badz rowne 0.8s '
+            requirements = 'Dla pomieszczenia o wysokosci wiekszej od 4m, T musi byc mniejsze badz rowne 0.8s '
             reverb_time_norm = NormsReverbTimeHeightReq.query.with_entities(NormsReverbTimeHeightReq.h_between_4_16).filter_by(norm_id=project_id).first()
             up_to_norm = reverb_time_norm_checker(reverb_time_norm, reverb_time_list)
             return requirements, up_to_norm
@@ -146,7 +146,7 @@ def norm_requirements(Volume,surface_area, project_id,height, absorption_list, r
 
     if(project_id == 22 or project_id == 23):
         if (height <= 4):
-            requirements = 'Dla pomieszczenia o wysokosci mniejszej badz rownej 4, T musi byc mniejsze badz rowne 1.2s '
+            requirements = 'Dla pomieszczenia o wysokosci mniejszej badz rownej 4m, T musi byc mniejsze badz rowne 1.2s '
             reverb_time_norm = NormsReverbTimeHeightReq.query.with_entities(NormsReverbTimeHeightReq.h_less_4).filter_by(norm_id=project_id).first()
             up_to_norm = reverb_time_norm_checker(reverb_time_norm, reverb_time_list)
             return requirements, up_to_norm
@@ -158,14 +158,14 @@ def norm_requirements(Volume,surface_area, project_id,height, absorption_list, r
             return requirements, up_to_norm
 
         elif (height >16):
-            requirements = 'Dla pomieszczenia o wysokosci wiekszej od 16, T musi byc mniejsze badz rowne 1.8s '
+            requirements = 'Dla pomieszczenia o wysokosci wiekszej od 16m, T musi byc mniejsze badz rowne 1.8s '
             reverb_time_norm = NormsReverbTimeHeightReq.query.with_entities(NormsReverbTimeHeightReq.h_more_16).filter_by(norm_id=project_id).first()
             up_to_norm = reverb_time_norm_checker(reverb_time_norm, reverb_time_list)
             return requirements, up_to_norm
 
     if(project_id == 24):
         if (height <= 4):
-            requirements = 'Dla pomieszczenia o wysokosci mniejszej badz rownej 4, T musi byc mniejsze badz rowne 1.5s '
+            requirements = 'Dla pomieszczenia o wysokosci mniejszej badz rownej 4m, T musi byc mniejsze badz rowne 1.5s '
             reverb_time_norm = NormsReverbTimeHeightReq.query.with_entities(NormsReverbTimeHeightReq.h_less_4).filter_by(norm_id=project_id).first()
             up_to_norm = reverb_time_norm_checker(reverb_time_norm, reverb_time_list)
             return requirements, up_to_norm
@@ -177,7 +177,7 @@ def norm_requirements(Volume,surface_area, project_id,height, absorption_list, r
             return requirements, up_to_norm
 
         elif (height >16):
-            requirements = 'Dla pomieszczenia o wysokosci wiekszej od 16, T musi byc mniejsze badz rowne 2.5s '
+            requirements = 'Dla pomieszczenia o wysokosci wiekszej od 16m, T musi byc mniejsze badz rowne 2.5s '
             reverb_time_norm = NormsReverbTimeHeightReq.query.with_entities(NormsReverbTimeHeightReq.h_more_16).filter_by(norm_id=project_id).first()
             up_to_norm = reverb_time_norm_checker(reverb_time_norm, reverb_time_list)
             return requirements, up_to_norm
