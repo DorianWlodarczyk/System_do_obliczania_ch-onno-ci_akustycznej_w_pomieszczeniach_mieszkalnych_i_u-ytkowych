@@ -188,19 +188,19 @@ def norm_requirements(Volume,surface_area, project_id,height, absorption_list, r
 def absorption_norm_checker(absorption_list, absorption_norm,surface_area , multiplayer):
     absorption =float(absorption_norm[0])
     for i in range(len(absorption_list)):
-        if(absorption_list[i] >= absorption * multiplayer * surface_area):
-            up_to_norm = 'Pomieszczenie spelnia wymagana norme'
+        if(absorption_list[i] < absorption * multiplayer * surface_area):
+            up_to_norm = 'Chlonnosc akustyczna jest niezgodna z norma'
             return up_to_norm
         else:
-            up_to_norm = 'Chlonnosc akustyczna jest niezgodna z norma'
+            up_to_norm = 'Pomieszczenie spelnia wymagana norme'
             return up_to_norm
 
 def reverb_time_norm_checker(reverb_time_norm, reverb_time_list):
     reverb_time = float(reverb_time_norm[0])
     for i in range(len(reverb_time_list)):
-        if(reverb_time_list[i] <= reverb_time):
-            up_to_norm = 'Pomieszczenie spelnia wymagana norme'
+        if(reverb_time_list[i] > reverb_time):
+            up_to_norm = 'Czas poglosu jest niezgodny z norma'
             return up_to_norm
         else:
-            up_to_norm = 'Czas poglosu jest niezgodny z norma'
+            up_to_norm = 'Pomieszczenie spelnia wymagana norme'
             return  up_to_norm
