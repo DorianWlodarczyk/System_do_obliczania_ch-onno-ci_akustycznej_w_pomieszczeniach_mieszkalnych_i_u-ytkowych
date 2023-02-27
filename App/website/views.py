@@ -129,7 +129,7 @@ def edit_project(project_name=''):
                 material_json.append({'quantity': quantity, 'material': material})
         # json_materials = json.dumps(material_json, cls=MaterialEncoder)
 
-
+        print("Full List: ", material_json)
         plain_list = [(int(item['quantity']), item['material'].pkey) for item in material_json]
         if float(length) <= 0.0 or float(width) <= 0.0 or float(height) <= 0.0:
             flash('Wymiary pomieszczenia musza byc wieksze od zera!', category='error')
@@ -143,8 +143,7 @@ def edit_project(project_name=''):
             reverb_time = [0] * len(frequency_list)
             list_of_furniture = []
             # norm = Norms.query.filter_by(pkey=norm_id)
-            norm = Norms.query.filter_by(pkey=norm_id).with_entities(Norms.absorption_multiplayer).first()
-            print("norm:", norm[0])
+            # norm = Norms.query.filter_by(pkey=norm_id).with_entities(Norms.absorption_multiplayer).first()
 
             #Obsluga bledow
             if float(length) <= 0.0 or float(width) <= 0.0 or float(height) <= 0.0:
@@ -154,17 +153,20 @@ def edit_project(project_name=''):
             final_absorption_list = [0] * len(frequency_list)
 
             # Loop through surfaces and floor materials, calculate absorption values and add to final absorption list
-            for surface_id in [sufit_id, wall1_id, wall2_id, wall3_id, wall4_id]:
+            surfaces = [sufit_id, wall1_id, wall2_id, wall3_id, wall4_id]
+            areas = [surface_area, float(length)*float(height), float(length)*float(height), float(width)*float(height), float(width)*float(height)]
+
+            for surface_id, area in zip(surfaces, areas):
                 surface_absorption_list = Material.query.filter_by(pkey=surface_id).first()
                 surface_absorption_values = [float(getattr(surface_absorption_list, f)) for f in frequency_list]
                 for i in range(len(surface_absorption_values)):
-                    surface_absorption_values[i] *= volume
+                    surface_absorption_values[i] *= area
                     final_absorption_list[i] += surface_absorption_values[i]
 
             floor_material_list = Material.query.filter_by(pkey=floor).first()
             floor_material_values = [float(getattr(floor_material_list, f)) for f in frequency_list]
             for i in range(len(floor_material_values)):
-                floor_material_values[i] *= volume
+                floor_material_values[i] *= surface_area
                 final_absorption_list[i] += floor_material_values[i]
 
             #Obliczanie umeblowania
@@ -178,18 +180,20 @@ def edit_project(project_name=''):
                     final_absorption_list[j] += furniture_absorption_value[j]
 
             for i in range(len(reverb_time)):
-                reverb_time[i] += (0.161 * volume) / final_absorption_list[i] if final_absorption_list[i] != 0 else 0
+                reverb_time[i] += (0.161 * volume) / final_absorption_list[i]
+                print(reverb_time[i])
             # Calculate absorption coefficient per square meter for the room
-            for i in range(len(final_absorption_list)):
-                final_absorption_list[i] /= volume
+            # for i in range(len(final_absorption_list)):
+            #     final_absorption_list[i] /= volume
             list_of_furniture_json = json.dumps(list_of_furniture, ensure_ascii=False)
             # if (final_absorption_list[2] >= norm[0] and final_absorption_list[3] >= norm[0] and
             #         final_absorption_list[4] >= norm[0]):
             #     up_to_norm = 'Tak'
             # else:
             #     up_to_norm = 'Nie'
-            requirements, up_to_norm = norm_requirements(volume, surface_area, norm_id, height, final_absorption_list,
-                                                         reverb_time)
+            requirements, up_to_norm = norm_requirements(volume, surface_area, int(norm_id), float(height), final_absorption_list, reverb_time)
+            print(requirements)
+            print(up_to_norm)
 
             existing_project = Projects.query.filter_by(name=project_name, user_id=current_user.id).first()
 
