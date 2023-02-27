@@ -78,6 +78,7 @@ def display_new_project(project_name):
     _2000_reverb_time = project.reverb_time_2000
     _4000_reverb_time = project.reverb_time_4000
     requirements = project.requirements
+    volume = round(project.length * project.width * project.height, 2)
 
     # Render the template with the stored data
     template_name = "display_newproject.html"
@@ -86,7 +87,7 @@ def display_new_project(project_name):
                                         new_project=project, norm=norm, sufit=sufit, wall1_material=wall1_material,
                                         wall2_material=wall2_material,
                                         front_wall_material=front_wall_material, height=project.height,
-                                        length=project.length, width=project.width, back_wall_material=wall4_material,
+                                        length=project.length, width=project.width,volume=volume, back_wall_material=wall4_material,
                                         floor_material=floor_material, furniture=project.furniture, _120_absorption=_120_absorption,_250_absorption=_250_absorption,
                                         _500_absorption=_500_absorption,_1000_absorption=_1000_absorption,_2000_absorption=_2000_absorption,_4000_absorption=_4000_absorption,
                                         _120_reverb_time=_120_reverb_time, _250_reverb_time= _250_reverb_time,_500_reverb_time=_500_reverb_time,_1000_reverb_time=_1000_reverb_time,
