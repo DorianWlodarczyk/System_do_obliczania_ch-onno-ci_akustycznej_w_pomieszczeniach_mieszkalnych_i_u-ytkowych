@@ -238,7 +238,6 @@ def edit_project(project_name=''):
                 flash('Projekt został dodany!')
 
 
-            flash('Podany projekt spelnia normy!', category='success')
 
 
             return redirect(url_for('views.display_new_project', project_name=project_name))
@@ -435,7 +434,6 @@ def new_project(project_name=''):
                 db.session.commit()
                 flash('Projekt został dodany!')
 
-            # flash('Podany projekt spelnia normy!', category='success')
 
 
             return redirect(url_for('views.display_new_project', project_name=project_name))
